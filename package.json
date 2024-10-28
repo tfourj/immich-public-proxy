@@ -6,6 +6,7 @@
     "dev": "node src/index.js",
     "start": "node src/index.js"
   },
+  "type": "module",
   "author": "",
   "license": "ISC",
   "description": "",
