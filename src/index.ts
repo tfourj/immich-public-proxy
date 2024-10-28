@@ -7,7 +7,7 @@ const app = express()
 require('dotenv').config()
 
 app.get('/share/:key', async (req, res) => {
-  if (req.params.key.match(/[^A-Za-z0-9-_]/)) {
+  if (req.params.key.match(/[^\w-]/)) {
     // Invalid characters in the incoming URL
     res.status(404).send()
   } else {
