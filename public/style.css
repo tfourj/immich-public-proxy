@@ -1,0 +1,14 @@
+html {
+    background: #191919;
+}
+
+#lightgallery a {
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+#lightgallery img {
+    height: 250px;
+    margin: 4px;
+}

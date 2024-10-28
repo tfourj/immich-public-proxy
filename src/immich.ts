@@ -1,4 +1,4 @@
-import { SharedLink } from './types'
+import { Asset, AssetType, ImageSize, SharedLink } from './types'
 
 class Immich {
   async request (endpoint: string, json = true) {
@@ -7,10 +7,12 @@ class Immich {
         'x-api-key': process.env.API_KEY || ''
       }
     })
-    if (json) {
-      return res.json()
-    } else {
-      return res
+    if (res.status === 200) {
+      if (json) {
+        return res.json()
+      } else {
+        return res
+      }
     }
   }
 
@@ -19,9 +21,18 @@ class Immich {
     return links.find(x => x.key === key)
   }
 
-  async getImage (id: string, size = 'original') {
-    size = size === 'thumbnail' ? 'thumbnail' : 'original'
-    return this.request('/assets/' + id + '/' + size, false)
+  async getAssetBuffer (asset: Asset, size?: ImageSize) {
+    switch (asset.type) {
+      case AssetType.image:
+        size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
+        return this.request('/assets/' + asset.id + '/' + size, false)
+      case AssetType.video:
+        return this.request('/assets/' + asset.id + '/video/playback', false)
+    }
+  }
+
+  imageUrl (id: string, size?: ImageSize) {
+    return `${process.env.SERVER_URL}/photo/${id}` + (size ? `?size=${size}` : '')
   }
 }
 

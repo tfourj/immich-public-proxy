@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/home/node/app:Z
     ports:
-      - ${PORT}:3000
+      - ${SERVER_PORT}:3000
     command: "npm start"
     restart: always
     healthcheck:

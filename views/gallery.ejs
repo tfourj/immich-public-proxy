@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Gallery</title>
+    <link type="text/css" rel="stylesheet" href="/style.css"/>
+    <link type="text/css" rel="stylesheet" href="/lightgallery-bundle.min.css"/>
+</head>
+<body>
+<div id="lightgallery">
+    <% photos.forEach(photo => { %>
+        <a href="<%- photo.originalUrl %>">
+            <img alt="" src="<%- photo.thumbnailUrl %>" />
+        </a>
+    <% }) %>
+</div>
+<script src="/lightgallery.min.js"></script>
+<script src="/lg-thumbnail.min.js"></script>
+<script src="/lg-zoom.min.js"></script>
+<script type="text/javascript">
+  lightGallery(document.getElementById('lightgallery'), {
+    plugins: [lgZoom, lgThumbnail],
+    licenseKey: '0000-0000-000-0000',
+    speed: 500
+  });
+</script>
+</body>
+</html>
