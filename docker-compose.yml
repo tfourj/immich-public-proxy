@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  public-proxy:
+    image: "node:22"
+    container_name: immich-public-proxy
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app:Z
+    ports:
+      - ${PORT}:3000
+    command: "npm start"
+    restart: always
+    healthcheck:
+      disable: true
