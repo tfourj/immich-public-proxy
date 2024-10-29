@@ -27,10 +27,10 @@ app.get('/share/:key', async (req, res) => {
       // This is an individual item (not a gallery)
       const asset = share.assets[0]
       if (asset.type === AssetType.image) {
-        // Output the image directly
+        // For photos, output the image directly
         await render.assetBuffer(res, share.assets[0], getSize(req))
       } else if (asset.type === AssetType.video) {
-        // Show the video as a web player
+        // For videos, show the video as a web player
         await render.gallery(res, share.assets, 1)
       }
     } else {
@@ -42,7 +42,7 @@ app.get('/share/:key', async (req, res) => {
 
 // Output the buffer data for an photo or video
 app.get('/:type(photo|video)/:id', (req, res) => {
-  if (!immich.isId(req.params.id)) {
+  if (!immich.isId(req.params.id) || !['photo', 'video'].includes(req.params.type)) {
     // Invalid characters in the incoming URL
     res.status(404).send()
     return
@@ -51,12 +51,12 @@ app.get('/:type(photo|video)/:id', (req, res) => {
     id: req.params.id,
     type: req.params.type === 'video' ? AssetType.video : AssetType.image
   }
-  switch (req.params.type) {
-    case 'photo':
-    case 'video':
-      render.assetBuffer(res, asset, getSize(req)).then()
-      break
-  }
+  render.assetBuffer(res, asset, getSize(req)).then()
+})
+
+// Send a 404 for all other unmatched routes
+app.get('*', (_req, res) => {
+  res.status(404).send()
 })
 
 app.listen(3000, () => {
