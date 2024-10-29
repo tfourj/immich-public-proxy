@@ -1,5 +1,9 @@
 # Immich Public Proxy
 
+<p align="center" width="100%">
+<img src="public/images/immich.png" width="180" height="180">
+</p>
+
 Immich is a wonderful bit of software, but since it holds all your private photos it's best to keep it fully locked down.
 This presents a problem when you want to share a photo or a gallery with someone.
 
@@ -10,10 +14,6 @@ those shared images.
 It exposes no ports, allows no incoming data, and has no API to exploit.
 
 The ideal setup is to have Immich secured privately behind VPN or mTLS, and only allow public access to Immich Public Proxy.
-
-<p align="center" width="100%">
-<img src="public/images/immich.png" width="200" height="200">
-</p>
 
 ## How to install
 
