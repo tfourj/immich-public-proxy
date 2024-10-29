@@ -69,14 +69,14 @@ class Immich {
    * Return the image data URL for a photo
    */
   photoUrl (key: string, id: string, size?: ImageSize) {
-    return `${process.env.SERVER_URL}/photo/${key}/${id}` + (size ? `?size=${size}` : '')
+    return `/photo/${key}/${id}` + (size ? `?size=${size}` : '')
   }
 
   /**
    * Return the video data URL for a video
    */
   videoUrl (key: string, id: string) {
-    return `${process.env.SERVER_URL}/video/${key}/${id}`
+    return `/video/${key}/${id}`
   }
 
   /**

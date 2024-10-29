@@ -10,7 +10,7 @@ services:
     volumes:
       - ./:/home/node/app:Z
     ports:
-      - ${SERVER_PORT}:3000
+      - ${PORT}:3000
     command: bash -c "cd /home/node/app && npm install && npm start"
     restart: always
     healthcheck:

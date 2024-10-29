@@ -1,5 +1,9 @@
 # Immich Public Proxy
 
+Share your Immich photos and albums in a safe way without exposing your Immich instance to the public.
+
+[Live demo](https://share.alan.gr/share/UiOulNielojwHbS0IJi5blwBOFzYC18CuPVtU23Bl3XK5YNVkbRONRT-HOTMQSMgdNs)
+
 <p align="center" width="100%">
 <img src="public/images/immich.png" width="180" height="180">
 </p>
@@ -28,13 +32,12 @@ git clone https://github.com/alangrainger/immich-public-proxy.git
 ```
 IMMICH_URL=http://localhost:2283
 API_KEY="Get this from your Immich Account Settings page"
-SERVER_URL=https://shared.example.com
-SERVER_PORT=3000
+PORT=3000
 CACHE_AGE=2592000
 ```
 
 - `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
-- `SERVER_URL` will be the public URL for accessing this Immich Public Proxy app.
+- `API_KEY` get this from the Account Settings page of your Immich user account
 - `CACHE_AGE` by default, assets will be cached for 30 days. Set this to 0 to disable caching.
 
 3. Start the docker container:
@@ -43,7 +46,7 @@ CACHE_AGE=2592000
 docker-compose up -d
 ```
 
-4. Set the "External domain" in your Immich **Server Settings** to be the same as your `SERVER_URL`:
+4. Set the "External domain" in your Immich **Server Settings** to be the same as the public URL for your Immich Public Proxy:
 
 <img src="public/images/server-settings.png" width="418" height="205">
 
