@@ -6,11 +6,13 @@ export enum AssetType {
 export interface Asset {
   id: string;
   type: AssetType;
+  isTrashed: boolean;
 }
 
 export interface SharedLink {
   key: string;
-  assets: Asset[]
+  assets: Asset[];
+  expiresAt: string | null;
 }
 
 export enum ImageSize {

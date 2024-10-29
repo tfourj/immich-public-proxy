@@ -1,4 +1,5 @@
 import { Asset, AssetType, ImageSize, SharedLink } from './types'
+import dayjs from 'dayjs'
 
 class Immich {
   /**
@@ -29,7 +30,16 @@ class Immich {
    */
   async getShareByKey (key: string) {
     const res = (await this.request('/shared-links') || []) as SharedLink[]
-    return res?.find(x => x.key === key)
+    const link = res.find(x => x.key === key)
+    if (link) {
+      // Filter assets to exclude trashed assets
+      link.assets = link.assets.filter(x => !x.isTrashed)
+      if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
+        // This link has expired
+      } else {
+        return link
+      }
+    }
   }
 
   /**
