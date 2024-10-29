@@ -11,7 +11,7 @@ services:
       - ./:/home/node/app:Z
     ports:
       - ${SERVER_PORT}:3000
-    command: "npm start"
+    command: bash -c "cd /home/node/app && npm install && npm start"
     restart: always
     healthcheck:
       test: (ps ax | grep -q "[n]ode dist/index.js" && echo "Ok") || exit 1
