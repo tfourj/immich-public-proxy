@@ -43,7 +43,7 @@ CACHE_AGE=2592000
 docker-compose up -d
 ```
 
-4. Set the same `SERVER_URL` as your "External domain" in your Immich **Server Settings**:
+4. Set the "External domain" in your Immich **Server Settings** to be the same as your `SERVER_URL`:
 
 <img src="public/images/server-settings.png" width="418" height="205">
 
