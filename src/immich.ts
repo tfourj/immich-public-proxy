@@ -51,9 +51,9 @@ class Immich {
     switch (asset.type) {
       case AssetType.image:
         size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
-        return this.request('/assets/' + asset.id + '/' + size)
+        return this.request('/assets/' + encodeURIComponent(asset.id) + '/' + size)
       case AssetType.video:
-        return this.request('/assets/' + asset.id + '/video/playback')
+        return this.request('/assets/' + encodeURIComponent(asset.id) + '/video/playback')
     }
   }
 
