@@ -2,11 +2,6 @@ html {
     background: #191919;
 }
 
-#lightgallery img {
-    height: 300px;
-    margin: 4px;
-}
-
 #lightgallery a {
     position: relative;
     display: inline-block;
@@ -14,6 +9,25 @@ html {
     margin: 0;
     padding: 0;
     cursor: pointer;
+}
+
+#lightgallery img {
+    max-height: 250px;
+    margin: 4px;
+}
+
+@media (max-width:800px) {
+    #lightgallery a {
+        width: calc(100vw / 3 - 10px);
+        height: calc(100vw / 3 - 10px);
+        overflow: hidden;
+    }
+    #lightgallery img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+    }
 }
 
 .play-icon {
