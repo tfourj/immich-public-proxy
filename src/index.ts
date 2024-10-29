@@ -16,42 +16,46 @@ const getSize = (req: Request) => {
 }
 
 app.get('/share/:key', async (req, res) => {
-  if (req.params.key.match(/[^\w-]/)) {
-    // Invalid characters in the incoming URL
+  if (!immich.isKey(req.params.key)) {
     res.status(404).send()
   } else {
-    const share = await immich.getShareByKey(req.params.key)
-    if (!share || !share.assets.length) {
+    const sharedLink = await immich.getShareByKey(req.params.key)
+    if (!sharedLink || !sharedLink.assets.length) {
       res.status(404).send()
-    } else if (share.assets.length === 1) {
+    } else if (sharedLink.assets.length === 1) {
       // This is an individual item (not a gallery)
-      const asset = share.assets[0]
+      const asset = sharedLink.assets[0]
       if (asset.type === AssetType.image) {
         // For photos, output the image directly
-        await render.assetBuffer(res, share.assets[0], getSize(req))
+        await render.assetBuffer(res, sharedLink.assets[0], getSize(req))
       } else if (asset.type === AssetType.video) {
         // For videos, show the video as a web player
-        await render.gallery(res, share.assets, 1)
+        await render.gallery(res, sharedLink, 1)
       }
     } else {
       // Multiple images - render as a gallery
-      await render.gallery(res, share.assets)
+      await render.gallery(res, sharedLink)
     }
   }
 })
 
 // Output the buffer data for an photo or video
-app.get('/:type(photo|video)/:id', (req, res) => {
-  if (!immich.isId(req.params.id) || !['photo', 'video'].includes(req.params.type)) {
-    // Invalid characters in the incoming URL
-    res.status(404).send()
-    return
+app.get('/:type(photo|video)/:key/:id', async (req, res) => {
+  // Check for valid key and ID
+  if (immich.isKey(req.params.key) && immich.isId(req.params.id)) {
+    // Check if the key is a valid share link
+    const sharedLink = await immich.getShareByKey(req.params.key)
+    if (sharedLink?.assets.length) {
+      // Check that the requested asset exists in this share
+      const asset = sharedLink.assets.find(x => x.id === req.params.id)
+      if (asset) {
+        asset.type = req.params.type === 'video' ? AssetType.video : AssetType.image
+        render.assetBuffer(res, asset, getSize(req)).then()
+        return
+      }
+    }
   }
-  const asset = {
-    id: req.params.id,
-    type: req.params.type === 'video' ? AssetType.video : AssetType.image
-  }
-  render.assetBuffer(res, asset, getSize(req)).then()
+  res.status(404).send()
 })
 
 // Send a 404 for all other unmatched routes

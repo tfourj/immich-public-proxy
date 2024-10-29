@@ -1,6 +1,6 @@
 import immich from './immich'
 import { Response } from 'express-serve-static-core'
-import { Asset, AssetType, ImageSize } from './types'
+import { Asset, AssetType, ImageSize, SharedLink } from './types'
 import dayjs from 'dayjs'
 
 class Render {
@@ -17,16 +17,16 @@ class Render {
     }
   }
 
-  async gallery (res: Response, assets: Asset[], openItem?: number) {
+  async gallery (res: Response, share: SharedLink, openItem?: number) {
     const items = []
-    for (const asset of assets) {
+    for (const asset of share.assets) {
       let video
       if (asset.type === AssetType.video) {
         // Populate the data-video property
         video = JSON.stringify({
           source: [
             {
-              src: immich.videoUrl(asset.id),
+              src: immich.videoUrl(share.key, asset.id),
               type: await immich.getContentType(asset)
             }
           ],
@@ -37,8 +37,8 @@ class Render {
         })
       }
       items.push({
-        originalUrl: immich.photoUrl(asset.id),
-        thumbnailUrl: immich.photoUrl(asset.id, ImageSize.thumbnail),
+        originalUrl: immich.photoUrl(share.key, asset.id),
+        thumbnailUrl: immich.photoUrl(share.key, asset.id, ImageSize.thumbnail),
         video
       })
     }
