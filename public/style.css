@@ -2,13 +2,32 @@ html {
     background: #191919;
 }
 
-#lightgallery a {
-    text-decoration: none;
-    margin: 0;
-    padding: 0;
-}
-
 #lightgallery img {
     height: 250px;
     margin: 4px;
+}
+
+#lightgallery a {
+    position: relative; /* Establishes a positioning context */
+    display: inline-block; /* Allows the container to wrap around the image */
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background-image: url('/images/play.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+}
+#lightgallery a:has(.play-icon):hover .play-icon {
+    opacity: 1;
 }

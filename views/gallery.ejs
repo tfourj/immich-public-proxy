@@ -7,21 +7,36 @@
 </head>
 <body>
 <div id="lightgallery">
-    <% photos.forEach(photo => { %>
-        <a href="<%- photo.originalUrl %>">
-            <img alt="" src="<%- photo.thumbnailUrl %>" />
+    <% items.forEach(item => {
+    if (item.video) { %>
+        <a data-video='<%- item.video %>'>
+            <img alt="" src="<%- item.thumbnailUrl %>"/>
+            <div class="play-icon"></div>
         </a>
-    <% }) %>
+    <% } else { %>
+        <a href="<%- item.originalUrl %>">
+            <img alt="" src="<%- item.thumbnailUrl %>"/>
+        </a>
+    <% }
+    }) %>
 </div>
 <script src="/lightgallery.min.js"></script>
 <script src="/lg-thumbnail.min.js"></script>
+<script src="/lg-video.min.js"></script>
 <script src="/lg-zoom.min.js"></script>
 <script type="text/javascript">
   lightGallery(document.getElementById('lightgallery'), {
-    plugins: [lgZoom, lgThumbnail],
+    plugins: [lgZoom, lgThumbnail, lgVideo],
     licenseKey: '0000-0000-000-0000',
     speed: 500
-  });
+  })
+  <% if (openItem) { %>
+  const openItem = <%- openItem %>
+  const thumbs = document.querySelectorAll('#lightgallery a')
+  if (thumbs.length >= openItem) {
+    thumbs[openItem - 1].click()
+  }
+  <% } %>
 </script>
 </body>
 </html>
