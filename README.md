@@ -1,5 +1,9 @@
 # Immich Public Proxy
 
+<p align="center" width="100%">
+<img src="public/images/immich.png" width="200" height="200">
+</p>
+
 Immich is a wonderful bit of software, but since it holds all your private photos it's best to keep it fully locked down.
 This presents a problem when you want to share a photo or a gallery with someone.
 
@@ -26,10 +30,12 @@ IMMICH_URL=http://localhost:2283
 API_KEY="Get this from your Immich Account Settings page"
 SERVER_URL=https://shared.example.com
 SERVER_PORT=3000
+CACHE_AGE=2592000
 ```
 
 - `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
 - `SERVER_URL` will be the public URL for accessing this Immich Public Proxy app.
+- `CACHE_AGE` by default, assets will be cached for 30 days. Set this to 0 to disable caching.
 
 3. Start the docker container:
 

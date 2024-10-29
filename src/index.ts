@@ -16,6 +16,7 @@ const getSize = (req: Request) => {
 }
 
 app.get('/share/:key', async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
   if (!immich.isKey(req.params.key)) {
     res.status(404).send()
   } else {
@@ -41,6 +42,7 @@ app.get('/share/:key', async (req, res) => {
 
 // Output the buffer data for an photo or video
 app.get('/:type(photo|video)/:key/:id', async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
   // Check for valid key and ID
   if (immich.isKey(req.params.key) && immich.isId(req.params.id)) {
     // Check if the key is a valid share link
