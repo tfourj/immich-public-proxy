@@ -35,7 +35,7 @@ app.get('/share/:key', async (req, res) => {
       }
     } else {
       // Multiple images - render as a gallery
-      await render.gallery(res, share.assets, 1)
+      await render.gallery(res, share.assets)
     }
   }
 })
