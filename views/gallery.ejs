@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Gallery</title>
     <link type="text/css" rel="stylesheet" href="/style.css"/>
     <link type="text/css" rel="stylesheet" href="/lightgallery-bundle.min.css"/>
@@ -21,12 +22,13 @@
     }) %>
 </div>
 <script src="/lightgallery.min.js"></script>
+<script src="/lg-fullscreen.min.js"></script>
 <script src="/lg-thumbnail.min.js"></script>
 <script src="/lg-video.min.js"></script>
 <script src="/lg-zoom.min.js"></script>
 <script type="text/javascript">
   lightGallery(document.getElementById('lightgallery'), {
-    plugins: [lgZoom, lgThumbnail, lgVideo],
+    plugins: [lgZoom, lgThumbnail, lgVideo, lgFullscreen],
     licenseKey: '0000-0000-000-0000',
     speed: 500
   })

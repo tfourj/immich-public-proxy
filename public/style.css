@@ -3,13 +3,13 @@ html {
 }
 
 #lightgallery img {
-    height: 250px;
+    height: 300px;
     margin: 4px;
 }
 
 #lightgallery a {
-    position: relative; /* Establishes a positioning context */
-    display: inline-block; /* Allows the container to wrap around the image */
+    position: relative;
+    display: inline-block;
     text-decoration: none;
     margin: 0;
     padding: 0;
