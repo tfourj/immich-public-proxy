@@ -2,8 +2,6 @@
 
 Share your Immich photos and albums in a safe way without exposing your Immich instance to the public.
 
-[Live demo](https://share.alan.gr/share/UiOulNielojwHbS0IJi5blwBOFzYC18CuPVtU23Bl3XK5YNVkbRONRT-HOTMQSMgdNs)
-
 <p align="center" width="100%">
 <img src="public/images/immich.png" width="180" height="180">
 </p>
@@ -18,6 +16,8 @@ those shared images.
 It exposes no ports, allows no incoming data, and has no API to exploit.
 
 The ideal setup is to have Immich secured privately behind VPN or mTLS, and only allow public access to Immich Public Proxy.
+
+[Live demo](https://share.alan.gr/share/UiOulNielojwHbS0IJi5blwBOFzYC18CuPVtU23Bl3XK5YNVkbRONRT-HOTMQSMgdNs)
 
 ## How to install
 
