@@ -11,12 +11,7 @@ const app = express()
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-const getSize = (req: Request) => {
-  return req?.query?.size === 'thumbnail' ? ImageSize.thumbnail : ImageSize.original
-}
-
-export const log = (message: string) => console.log(dayjs().format() + ' ' + message)
-
+// An incoming request for a shared link
 app.get('/share/:key', async (req, res) => {
   res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
   if (!immich.isKey(req.params.key)) {
@@ -49,7 +44,7 @@ app.get('/share/:key', async (req, res) => {
   }
 })
 
-// Output the buffer data for an photo or video
+// Output the buffer data for a photo or video
 app.get('/:type(photo|video)/:key/:id', async (req, res) => {
   res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
   // Check for valid key and ID
@@ -70,11 +65,24 @@ app.get('/:type(photo|video)/:key/:id', async (req, res) => {
   res.status(404).send()
 })
 
-// Send a 404 for all other unmatched routes
+// Send a 404 for all other routes
 app.get('*', (req, res) => {
   log('Invalid route ' + req.path)
   res.status(404).send()
 })
+
+/**
+ * Sanitise the data for an incoming query string `size` parameter
+ * e.g. https://example.com/share/abc...xyz?size=thumbnail
+ */
+const getSize = (req: Request) => {
+  return req?.query?.size === 'thumbnail' ? ImageSize.thumbnail : ImageSize.original
+}
+
+/**
+ * Output a console.log message with timestamp
+ */
+export const log = (message: string) => console.log(dayjs().format() + ' ' + message)
 
 app.listen(3000, () => {
   console.log(dayjs().format() + ' Server started')
