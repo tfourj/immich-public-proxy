@@ -99,3 +99,9 @@ lightGallery(document.getElementById('lightgallery'), {
 You can find all of lightGallery's settings here:
 
 https://www.lightgalleryjs.com/docs/settings/
+
+## Feature requests
+
+You can [add feature requests here](https://github.com/alangrainger/immich-public-proxy/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop),
+however my goal with this project is to keep it as lean as possible. I want anyone with a bit of coding knowledge
+to be able to read the codebase and fully understand everything it is doing.
