@@ -19,7 +19,7 @@ The ideal setup is to have Immich secured privately behind VPN or mTLS, and only
 
 [Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 
-## How to install
+## How to install with Docker
 
 1. Clone the repo:
 
