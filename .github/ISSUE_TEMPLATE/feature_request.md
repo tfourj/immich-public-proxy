@@ -11,4 +11,4 @@ Please vote for feature requests on the Discussions page:
 
 https://github.com/alangrainger/immich-public-proxy/discussions/categories/feature-requests
 
-Feature requests created as an Issue will be closed.
+🚨 Feature requests created as an Issue will be closed.
