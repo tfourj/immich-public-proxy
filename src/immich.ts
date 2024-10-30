@@ -25,6 +25,7 @@ class Immich {
   /**
    * Query Immich for the SharedLink metadata for a given key.
    * The key is what is returned in the URL when you create a share in Immich.
+   *
    * Immich doesn't have a method to query by key, so this method gets all
    * known shared links, and returns the link which matches the provided key.
    */
@@ -44,6 +45,7 @@ class Immich {
 
   /**
    * Stream asset buffer data from Immich.
+   *
    * For photos, you can request 'thumbnail' or 'original' size.
    * For videos, it is Immich's streaming quality, not the original quality.
    */
