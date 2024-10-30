@@ -8,7 +8,9 @@ import { Request } from 'express-serve-static-core'
 require('dotenv').config()
 
 const app = express()
+// Add the EJS view engine, to render the gallery page
 app.set('view engine', 'ejs')
+// Serve static assets from the /public folder
 app.use(express.static('public'))
 
 // An incoming request for a shared link
