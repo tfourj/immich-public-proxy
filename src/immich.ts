@@ -1,5 +1,6 @@
 import { Asset, AssetType, ImageSize, SharedLink } from './types'
 import dayjs from 'dayjs'
+import { log } from './index'
 
 class Immich {
   /**
@@ -37,6 +38,7 @@ class Immich {
       link.assets = link.assets.filter(x => !x.isTrashed)
       if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
         // This link has expired
+        log('Expired link ' + key)
       } else {
         return link
       }

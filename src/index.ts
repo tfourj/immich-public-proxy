@@ -15,7 +15,7 @@ const getSize = (req: Request) => {
   return req?.query?.size === 'thumbnail' ? ImageSize.thumbnail : ImageSize.original
 }
 
-const log = (message: string) => console.log(dayjs().format() + ' ' + message)
+export const log = (message: string) => console.log(dayjs().format() + ' ' + message)
 
 app.get('/share/:key', async (req, res) => {
   res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
