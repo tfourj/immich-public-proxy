@@ -29,28 +29,17 @@ class Immich {
   /**
    * Query Immich for the SharedLink metadata for a given key.
    * The key is what is returned in the URL when you create a share in Immich.
-   *
-   * Immich doesn't have a method to query by key, so this method gets all
-   * known shared links, and returns the link which matches the provided key.
    */
   async getShareByKey (key: string) {
-    const res = (await this.request('/shared-links') || []) as SharedLink[]
-    const link = res.find(x => x.key === key)
+    const link = (await this.request('/shared-links/me?key=' + encodeURIComponent(key)) || []) as SharedLink
     if (link) {
       if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
         // This link has expired
         log('Expired link ' + key)
       } else {
-        if (link.type === 'ALBUM') {
-          // Fetch the assets from the album and populate the SharedLink assets array
-          const albumId = link.album?.id
-          if (albumId) {
-            const album = (await this.request('/albums/' + encodeURIComponent(albumId))) as Album
-            link.assets = album.assets || []
-          }
-        }
         // Filter assets to exclude trashed assets
-        link.assets = link.assets.filter(x => !x.isTrashed)
+        link.assets = link.assets.filter(asset => !asset.isTrashed)
+        link.assets.forEach(asset => { asset.key = key })
         return link
       }
     }
@@ -66,9 +55,9 @@ class Immich {
     switch (asset.type) {
       case AssetType.image:
         size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
-        return this.request('/assets/' + encodeURIComponent(asset.id) + '/' + size)
+        return this.request('/assets/' + encodeURIComponent(asset.id) + '/' + size + '?key=' + encodeURIComponent(asset.key))
       case AssetType.video:
-        return this.request('/assets/' + encodeURIComponent(asset.id) + '/video/playback')
+        return this.request('/assets/' + encodeURIComponent(asset.id) + '/video/playback?key=' + encodeURIComponent(asset.key))
     }
   }
 

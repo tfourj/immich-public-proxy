@@ -5,6 +5,7 @@ export enum AssetType {
 
 export interface Asset {
   id: string;
+  key: string;
   type: AssetType;
   isTrashed: boolean;
 }
