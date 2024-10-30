@@ -46,7 +46,7 @@ docker-compose up -d
 
 4. Set the "External domain" in your Immich **Server Settings** to be the same as the public URL for your Immich Public Proxy:
 
-<img src="public/images/server-settings.png" width="418" height="205">
+<img src="public/images/server-settings.png" width="400" height="182">
 
 Now whenever you share an image or gallery through Immich, it will automatically create the
 correct public path for you.
