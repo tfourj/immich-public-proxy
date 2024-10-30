@@ -11,8 +11,16 @@ export interface Asset {
 
 export interface SharedLink {
   key: string;
+  type: string;
   assets: Asset[];
+  album?: {
+    id: string;
+  }
   expiresAt: string | null;
+}
+
+export interface Album {
+  assets: Asset[]
 }
 
 export enum ImageSize {

@@ -1,4 +1,4 @@
-import { Asset, AssetType, ImageSize, SharedLink } from './types'
+import { Album, Asset, AssetType, ImageSize, SharedLink } from './types'
 import dayjs from 'dayjs'
 import { log } from './index'
 
@@ -37,12 +37,20 @@ class Immich {
     const res = (await this.request('/shared-links') || []) as SharedLink[]
     const link = res.find(x => x.key === key)
     if (link) {
-      // Filter assets to exclude trashed assets
-      link.assets = link.assets.filter(x => !x.isTrashed)
       if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
         // This link has expired
         log('Expired link ' + key)
       } else {
+        if (link.type === 'ALBUM') {
+          // Fetch the assets from the album and populate the SharedLink assets array
+          const albumId = link.album?.id
+          if (albumId) {
+            const album = (await this.request('/albums/' + encodeURIComponent(albumId))) as Album
+            link.assets = album.assets || []
+          }
+        }
+        // Filter assets to exclude trashed assets
+        link.assets = link.assets.filter(x => !x.isTrashed)
         return link
       }
     }
