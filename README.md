@@ -53,6 +53,27 @@ docker-compose up -d
 Now whenever you share an image or gallery through Immich, it will automatically create the
 correct public path for you.
 
+## How it works
+
+You share your photos/videos as normal through Immich. Because you have set the **External domain** in Immich settings
+to be the URL for your proxy app, the links that Immich generates will automaticaly have the correct URL.
+
+When the proxy receives a request, it will come as a link like this:
+
+```
+https://your-proxy-url.com/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo
+```
+
+The part after `/share/` is Immich's shared link public ID (called the `key` [in the docs](https://immich.app/docs/api/get-all-shared-links/)).
+
+**Immich Public Proxy** takes that key and makes an API call to your Immich instance over your local network, to ask what 
+photos or videos are shared in that share URL.
+
+If it is a valid share URL, the proxy fetches just those assets via local API and returns them to the visitor as an 
+individual image or gallery.
+
+If the shared link is expired or any of the assets have been put in the Immich trash, it will not return those.
+
 ## Configuration
 
 The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery). You can change various settings to change how your gallery displays by
