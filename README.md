@@ -17,7 +17,7 @@ It exposes no ports, allows no incoming data, and has no API to exploit.
 
 The ideal setup is to have Immich secured privately behind VPN or mTLS, and only allow public access to Immich Public Proxy.
 
-[Live demo](https://immich-demo.note.sx/share/UiOulNielojwHbS0IJi5blwBOFzYC18CuPVtU23Bl3XK5YNVkbRONRT-HOTMQSMgdNs)
+[Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 
 ## How to install
 
