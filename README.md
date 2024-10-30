@@ -37,8 +37,8 @@ CACHE_AGE=2592000
 ```
 
 - `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
-- `API_KEY` get this from the Account Settings page of your Immich user account
-- `CACHE_AGE` by default, assets will be cached for 30 days. Set this to 0 to disable caching.
+- `API_KEY` get this from the Account Settings page of your Immich user account.
+- `CACHE_AGE` this is setting the `cache-control` header, to tell the browser to cache the assets. Set to 0 to disable caching.
 
 3. Start the docker container:
 
