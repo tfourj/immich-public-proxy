@@ -52,3 +52,29 @@ docker-compose up -d
 
 Now whenever you share an image or gallery through Immich, it will automatically create the 
 correct public path for you.
+
+## Configuration
+
+The gallery is created using [LightGallery](https://github.com/sachinchoolur/lightGallery). You can change various settings to change how your gallery displays by
+updating the `lightGallery` section in `/views/gallery.ejs`:
+
+```javascript
+lightGallery(document.getElementById('lightgallery'), {
+  plugins: [lgZoom, lgThumbnail, lgVideo, lgFullscreen],
+  speed: 500
+})
+```
+
+For example to disable the download button for images, you would add `download: false`:
+
+```javascript
+lightGallery(document.getElementById('lightgallery'), {
+  plugins: [lgZoom, lgThumbnail, lgVideo, lgFullscreen],
+  download: false,
+  speed: 500
+})
+```
+
+You can find all of LightGallery's settings here:
+
+https://www.lightgalleryjs.com/docs/settings/
