@@ -1,7 +1,6 @@
 import immich from './immich'
 import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, SharedLink } from './types'
-import dayjs from 'dayjs'
 
 class Render {
   async assetBuffer (res: Response, asset: Asset, size?: ImageSize) {
@@ -10,7 +9,6 @@ class Render {
       for (const header of ['content-type', 'content-length']) {
         res.set(header, data.headers[header])
       }
-      console.log(`${dayjs().format()} Serving asset ${asset.id}`)
       res.send(Buffer.from(await data.arrayBuffer()))
     } else {
       res.status(404).send()

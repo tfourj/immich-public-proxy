@@ -32,6 +32,7 @@ app.get('/share/:key', async (req, res) => {
       res.status(404).send()
     } else if (sharedLink.assets.length === 1) {
       // This is an individual item (not a gallery)
+      log('Serving link ' + req.params.key)
       const asset = sharedLink.assets[0]
       if (asset.type === AssetType.image) {
         // For photos, output the image directly
@@ -42,6 +43,7 @@ app.get('/share/:key', async (req, res) => {
       }
     } else {
       // Multiple images - render as a gallery
+      log('Serving link ' + req.params.key)
       await render.gallery(res, sharedLink)
     }
   }
