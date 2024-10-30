@@ -55,7 +55,7 @@ correct public path for you.
 
 ## Configuration
 
-The gallery is created using [LightGallery](https://github.com/sachinchoolur/lightGallery). You can change various settings to change how your gallery displays by
+The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery). You can change various settings to change how your gallery displays by
 updating the `lightGallery` section in `/views/gallery.ejs`:
 
 ```javascript
@@ -75,6 +75,6 @@ lightGallery(document.getElementById('lightgallery'), {
 })
 ```
 
-You can find all of LightGallery's settings here:
+You can find all of lightGallery's settings here:
 
 https://www.lightgalleryjs.com/docs/settings/
