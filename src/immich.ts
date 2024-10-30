@@ -31,7 +31,7 @@ class Immich {
    * The key is what is returned in the URL when you create a share in Immich.
    */
   async getShareByKey (key: string) {
-    const link = (await this.request('/shared-links/me?key=' + encodeURIComponent(key)) || []) as SharedLink
+    const link = (await this.request('/shared-links/me?key=' + encodeURIComponent(key))) as SharedLink
     if (link) {
       if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
         // This link has expired
