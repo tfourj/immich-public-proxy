@@ -20,6 +20,9 @@ class Immich {
       } else {
         return res
       }
+    } else {
+      log('Immich API status ' + res.status)
+      console.log(await res.text())
     }
   }
 
