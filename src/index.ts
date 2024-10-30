@@ -15,13 +15,20 @@ const getSize = (req: Request) => {
   return req?.query?.size === 'thumbnail' ? ImageSize.thumbnail : ImageSize.original
 }
 
+const log = (message: string) => console.log(dayjs().format() + ' ' + message)
+
 app.get('/share/:key', async (req, res) => {
   res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
   if (!immich.isKey(req.params.key)) {
+    log('Invalid share key ' + req.params.key)
     res.status(404).send()
   } else {
     const sharedLink = await immich.getShareByKey(req.params.key)
-    if (!sharedLink || !sharedLink.assets.length) {
+    if (!sharedLink) {
+      log('Unknown share key ' + req.params.key)
+      res.status(404).send()
+    } else if (!sharedLink.assets.length) {
+      log('No assets for key ' + req.params.key)
       res.status(404).send()
     } else if (sharedLink.assets.length === 1) {
       // This is an individual item (not a gallery)
@@ -57,11 +64,13 @@ app.get('/:type(photo|video)/:key/:id', async (req, res) => {
       }
     }
   }
+  log('No asset found for ' + req.path)
   res.status(404).send()
 })
 
 // Send a 404 for all other unmatched routes
-app.get('*', (_req, res) => {
+app.get('*', (req, res) => {
+  log('Invalid route ' + req.path)
   res.status(404).send()
 })
 
