@@ -27,21 +27,20 @@ Here is an example setup for [securing Immich behind mTLS](./docs/securing-immic
 
 ## How to install with Docker
 
-1. Clone the repo:
-
-```bash
-git clone https://github.com/alangrainger/immich-public-proxy.git
-```
+1. Download the [docker-compose.yml](https://github.com/alangrainger/immich-public-proxy/blob/main/docker-compose.yml) file.
 
 2. Create a `.env` file to configure the app.
 
 ```
 IMMICH_URL=http://localhost:2283
+PROXY_PUBLIC_URL=https://your-proxy-url.com
 PORT=3000
 CACHE_AGE=2592000
 ```
 
 - `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
+- `PROXY_PUBLIC_URL` is the public URL for your proxy.
+- `PORT` is the external port you want for the docker container.
 - `CACHE_AGE` this is setting the `cache-control` header, to tell the browser to cache the assets. Set to 0 to disable caching.
 
 3. Start the docker container:
@@ -50,7 +49,7 @@ CACHE_AGE=2592000
 docker-compose up -d
 ```
 
-4. Set the "External domain" in your Immich **Server Settings** to be the same as the public URL for your Immich Public Proxy:
+4. Set the "External domain" in your Immich **Server Settings** to be the same as the `PROXY_PUBLIC_URL`:
 
 <img src="public/images/server-settings.png" width="400" height="182">
 
@@ -111,5 +110,3 @@ however my goal with this project is to keep it as lean as possible.
 
 Due to the sensitivity of data contained within Immich, I want anyone with a bit of coding knowledge
 to be able to read this codebase and fully understand everything it is doing.
-
-## D
