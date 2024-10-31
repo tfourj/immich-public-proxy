@@ -9,3 +9,7 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
+    healthcheck:
+      test: ([ "$(wget -qO- ${PROXY_PUBLIC_URL}/healthcheck)" = "ok" ] && exit 0) || exit 1
+      interval: 120s
+      start_period: 5s
