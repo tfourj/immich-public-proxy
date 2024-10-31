@@ -8,7 +8,7 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 
 ### Table of Contents
 
-- [Demo <img src="./public/images/external-link.png" width="12" height="12">](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
+- [Demo <img src="./public/images/external-link.png" width="14" height="14">](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 - [About this project](#about-this-project)
 - [Install with Docker](#how-to-install-with-docker)
 - [How it works](#how-it-works)
@@ -25,8 +25,6 @@ which you have publicly shared. When it receives a valid request, it talks to Im
 those shared images.
 
 It exposes no ports, allows no incoming data, and has no API to exploit.
-
-[Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 
 ### Why not simply put Immich behind a reverse proxy and only expose the `/share/` path to the public?
 
