@@ -1,4 +1,4 @@
-import { Album, Asset, AssetType, ImageSize, SharedLink } from './types'
+import { Asset, AssetType, ImageSize, SharedLink } from './types'
 import dayjs from 'dayjs'
 import { log } from './index'
 
@@ -35,6 +35,7 @@ class Immich {
       } else {
         // Filter assets to exclude trashed assets
         link.assets = link.assets.filter(asset => !asset.isTrashed)
+        // Populate the shared assets with the public key
         link.assets.forEach(asset => { asset.key = key })
         return link
       }

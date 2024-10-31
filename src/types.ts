@@ -20,10 +20,6 @@ export interface SharedLink {
   expiresAt: string | null;
 }
 
-export interface Album {
-  assets: Asset[]
-}
-
 export enum ImageSize {
   thumbnail = 'thumbnail',
   original = 'original'
