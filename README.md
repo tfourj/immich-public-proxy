@@ -15,9 +15,16 @@ those shared images.
 
 It exposes no ports, allows no incoming data, and has no API to exploit.
 
+[Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
+
+### Why not simply put Immich behind a reverse proxy and only expose the `/share/` path to the public?
+
+To view a shared album in Immich, you need access to the `/api/` path. If you're sharing a gallery with the public, you need
+to make that path public. Any existing or future vulnerabilities could compromise your Immich instance.
+
 The ideal setup is to have Immich secured privately behind VPN or mTLS, and only allow public access to Immich Public Proxy.
 
-[Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
+Here is an example setup for [securing Immich behind mTLS](./docs/securing-immich-with-mtls.md).
 
 ## How to install with Docker
 
@@ -64,10 +71,10 @@ https://your-proxy-url.com/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIA
 
 The part after `/share/` is Immich's shared link public ID (called the `key` [in the docs](https://immich.app/docs/api/get-my-shared-link)).
 
-**Immich Public Proxy** takes that key and makes an API call to your Immich instance over your local network, to ask what 
+**Immich Public Proxy** takes that key and makes an API call to your Immich instance over your local network, to ask what
 photos or videos are shared in that share URL.
 
-If it is a valid share URL, the proxy fetches just those assets via local API and returns them to the visitor as an 
+If it is a valid share URL, the proxy fetches just those assets via local API and returns them to the visitor as an
 individual image or gallery.
 
 If the shared link has expired or any of the assets have been put in the Immich trash, it will not return those.
@@ -101,7 +108,9 @@ https://www.lightgalleryjs.com/docs/settings/
 ## Feature requests
 
 You can [add feature requests here](https://github.com/alangrainger/immich-public-proxy/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop),
-however my goal with this project is to keep it as lean as possible. 
+however my goal with this project is to keep it as lean as possible.
 
 Due to the sensitivity of data contained within Immich, I want anyone with a bit of coding knowledge
 to be able to read this codebase and fully understand everything it is doing.
+
+## D
