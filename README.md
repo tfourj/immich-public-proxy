@@ -8,7 +8,7 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 
 **Table of Contents**
 
-- [About this project](#description)
+- [About this project](#about-this-project)
 - [Install with Docker](#how-to-install-with-docker)
 - [How it works](#how-it-works)
 - [Additional configuration](#configuration)
