@@ -29,7 +29,7 @@ Here is an example setup for [securing Immich behind mTLS](./docs/securing-immic
 
 1. Download the [docker-compose.yml](https://github.com/alangrainger/immich-public-proxy/blob/main/docker-compose.yml) file.
 
-2. Create a `.env` file to configure the app.
+2. Create a `.env` file to configure the app:
 
 ```
 IMMICH_URL=http://localhost:2283
