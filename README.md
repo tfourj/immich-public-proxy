@@ -6,8 +6,9 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 <img src="public/images/immich.png" width="180" height="180">
 </p>
 
-**Table of Contents**
+### Table of Contents
 
+- [Demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 - [About this project](#about-this-project)
 - [Install with Docker](#how-to-install-with-docker)
 - [How it works](#how-it-works)
