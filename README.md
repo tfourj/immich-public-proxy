@@ -6,6 +6,16 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 <img src="public/images/immich.png" width="180" height="180">
 </p>
 
+**Table of Contents**
+
+- [About this project](#description)
+- [Install with Docker](#how-to-install-with-docker)
+- [How it works](#how-it-works)
+- [Additional configuration](#configuration)
+- [Feature requests](#feature-requests)
+
+## About this project
+
 Immich is a wonderful bit of software, but since it holds all your private photos it's best to keep it fully locked down.
 This presents a problem when you want to share a photo or a gallery with someone.
 

@@ -3,7 +3,7 @@ name: Create and publish a Docker image
 on:
   push:
     tags:
-      - 'v*'  # Only on version tags like v1.0, v2.0, etc.
+      - 'v*' # Only on version tags like v1.0, v2.0, etc.
 
 env:
   REGISTRY: ghcr.io
@@ -39,9 +39,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags:
-            # set latest tag for default branch
-            type=raw,value=latest,enable={{is_default_branch}}
+          # set 'latest' tag for default branch (main)
+          tags: type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
