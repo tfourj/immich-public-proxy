@@ -20,9 +20,9 @@ It exposes no ports, allows no incoming data, and has no API to exploit.
 ### Why not simply put Immich behind a reverse proxy and only expose the `/share/` path to the public?
 
 To view a shared album in Immich, you need access to the `/api/` path. If you're sharing a gallery with the public, you need
-to make that path public. Any existing or future vulnerabilities could compromise your Immich instance.
+to make that path public. Any existing or future vulnerability has the potential to compromise your Immich instance.
 
-The ideal setup is to have Immich secured privately behind VPN or mTLS, and only allow public access to Immich Public Proxy.
+For me, the ideal setup is to have Immich secured privately behind mTLS or VPN, and only allow public access to Immich Public Proxy.
 
 Here is an example setup for [securing Immich behind mTLS](./docs/securing-immich-with-mtls.md).
 
