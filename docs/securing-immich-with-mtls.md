@@ -7,9 +7,7 @@ version: "3.7"
 
 services:
   caddy:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: caddy:2
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
