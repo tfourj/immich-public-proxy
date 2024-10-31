@@ -2,12 +2,10 @@ services:
   immich-public-proxy:
     image: ghcr.io/alangrainger/immich-public-proxy:latest
     container_name: immich-public-proxy
-    restart: unless-stopped
+    restart: always
     ports:
       - ${PORT}:3000
     environment:
       - NODE_ENV=production
     env_file:
       - .env
-
-
