@@ -62,7 +62,7 @@ When the proxy receives a request, it will come as a link like this:
 https://your-proxy-url.com/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo
 ```
 
-The part after `/share/` is Immich's shared link public ID (called the `key` [in the docs](https://immich.app/docs/api/get-all-shared-links/)).
+The part after `/share/` is Immich's shared link public ID (called the `key` [in the docs](https://immich.app/docs/api/get-my-shared-link)).
 
 **Immich Public Proxy** takes that key and makes an API call to your Immich instance over your local network, to ask what 
 photos or videos are shared in that share URL.
@@ -70,7 +70,7 @@ photos or videos are shared in that share URL.
 If it is a valid share URL, the proxy fetches just those assets via local API and returns them to the visitor as an 
 individual image or gallery.
 
-If the shared link is expired or any of the assets have been put in the Immich trash, it will not return those.
+If the shared link has expired or any of the assets have been put in the Immich trash, it will not return those.
 
 ## Configuration
 

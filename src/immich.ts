@@ -8,11 +8,7 @@ class Immich {
    * the possible attack surface of this app.
    */
   async request (endpoint: string) {
-    const res = await fetch(process.env.IMMICH_URL + '/api' + endpoint, {
-      headers: {
-        'x-api-key': process.env.API_KEY || ''
-      }
-    })
+    const res = await fetch(process.env.IMMICH_URL + '/api' + endpoint)
     if (res.status === 200) {
       const contentType = res.headers.get('Content-Type') || ''
       if (contentType.includes('application/json')) {
