@@ -1,19 +1,13 @@
-version: "3"
-
 services:
-  public-proxy:
-    image: "node:22"
+  immich-public-proxy:
+    image: ghcr.io/alangrainger/immich-public-proxy:latest
     container_name: immich-public-proxy
-    working_dir: /home/node/app
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - ./:/home/node/app:Z
+    restart: unless-stopped
     ports:
       - ${PORT}:3000
-    command: bash -c "cd /home/node/app && npm install && npm start"
-    restart: always
-    healthcheck:
-      test: (ps ax | grep -q "[n]ode dist/index.js" && echo "Ok") || exit 1
-      interval: 60s
-      start_period: 10s
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+
+
