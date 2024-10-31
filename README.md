@@ -15,9 +15,16 @@ those shared images.
 
 It exposes no ports, allows no incoming data, and has no API to exploit.
 
+[Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
+
+### Why not simply put Immich behind a reverse proxy and only expose the `/share/` path to the public?
+
+To view a shared album in Immich, you need access to the `/api/` path. If you're sharing a gallery with the public, you need
+to make that path public. Any existing or future vulnerabilities could compromise your Immich instance.
+
 The ideal setup is to have Immich secured privately behind VPN or mTLS, and only allow public access to Immich Public Proxy.
 
-[Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
+Here is an example setup for [securing Immich behind mTLS](./docs/securing-immich-with-mtls.md).
 
 ## How to install with Docker
 
@@ -31,13 +38,11 @@ git clone https://github.com/alangrainger/immich-public-proxy.git
 
 ```
 IMMICH_URL=http://localhost:2283
-API_KEY="Get this from your Immich Account Settings page"
 PORT=3000
 CACHE_AGE=2592000
 ```
 
 - `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
-- `API_KEY` get this from the Account Settings page of your Immich user account.
 - `CACHE_AGE` this is setting the `cache-control` header, to tell the browser to cache the assets. Set to 0 to disable caching.
 
 3. Start the docker container:
@@ -48,7 +53,7 @@ docker-compose up -d
 
 4. Set the "External domain" in your Immich **Server Settings** to be the same as the public URL for your Immich Public Proxy:
 
-<img src="public/images/server-settings.png" width="418" height="205">
+<img src="public/images/server-settings.png" width="400" height="182">
 
 Now whenever you share an image or gallery through Immich, it will automatically create the
 correct public path for you.
@@ -64,15 +69,15 @@ When the proxy receives a request, it will come as a link like this:
 https://your-proxy-url.com/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo
 ```
 
-The part after `/share/` is Immich's shared link public ID (called the `key` [in the docs](https://immich.app/docs/api/get-all-shared-links/)).
+The part after `/share/` is Immich's shared link public ID (called the `key` [in the docs](https://immich.app/docs/api/get-my-shared-link)).
 
-**Immich Public Proxy** takes that key and makes an API call to your Immich instance over your local network, to ask what 
+**Immich Public Proxy** takes that key and makes an API call to your Immich instance over your local network, to ask what
 photos or videos are shared in that share URL.
 
-If it is a valid share URL, the proxy fetches just those assets via local API and returns them to the visitor as an 
+If it is a valid share URL, the proxy fetches just those assets via local API and returns them to the visitor as an
 individual image or gallery.
 
-If the shared link is expired or any of the assets have been put in the Immich trash, it will not return those.
+If the shared link has expired or any of the assets have been put in the Immich trash, it will not return those.
 
 ## Configuration
 
@@ -103,7 +108,9 @@ https://www.lightgalleryjs.com/docs/settings/
 ## Feature requests
 
 You can [add feature requests here](https://github.com/alangrainger/immich-public-proxy/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop),
-however my goal with this project is to keep it as lean as possible. 
+however my goal with this project is to keep it as lean as possible.
 
 Due to the sensitivity of data contained within Immich, I want anyone with a bit of coding knowledge
 to be able to read this codebase and fully understand everything it is doing.
+
+## D
