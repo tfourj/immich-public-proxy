@@ -10,6 +10,6 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: ([ "$(wget -qO- ${PROXY_PUBLIC_URL}/healthcheck)" = "ok" ] && exit 0) || exit 1
+      test: node /app/healthcheck.js
       interval: 120s
       start_period: 5s
