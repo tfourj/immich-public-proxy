@@ -67,6 +67,11 @@ app.get('/:type(photo|video)/:key/:id', async (req, res) => {
   res.status(404).send()
 })
 
+// Healthcheck
+app.get('/healthcheck', (_req, res) => {
+  res.send('ok')
+})
+
 // Send a 404 for all other routes
 app.get('*', (req, res) => {
   log('Invalid route ' + req.path)
