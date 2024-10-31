@@ -1,6 +1,7 @@
 name: Create and publish a Docker image
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*' # Only on version tags like v1.0, v2.0, etc.
