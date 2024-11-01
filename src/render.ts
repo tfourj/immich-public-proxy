@@ -49,8 +49,16 @@ class Render {
     }
     res.render('gallery', {
       items,
-      openItem
+      openItem,
+      title: this.title(share)
     })
+  }
+
+  /**
+   * Attempt to get a title from the link description or the album title
+   */
+  title (share: SharedLink) {
+    return share.description || share?.album?.albumName || ''
   }
 }
 

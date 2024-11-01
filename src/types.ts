@@ -14,9 +14,11 @@ export interface Asset {
 export interface SharedLink {
   key: string;
   type: string;
+  description?: string;
   assets: Asset[];
   album?: {
     id: string;
+    albumName?: string;
   }
   expiresAt: string | null;
 }
