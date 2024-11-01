@@ -11,6 +11,7 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 - [Demo <img src="./public/images/external-link.png" width="14" height="14">](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 - [About this project](#about-this-project)
 - [Install with Docker](#how-to-install-with-docker)
+- [How to use it](#how-to-use-it)
 - [How it works](#how-it-works)
 - [Additional configuration](#configuration)
 - [Feature requests](#feature-requests)
@@ -65,10 +66,14 @@ docker-compose up -d
 Now whenever you share an image or gallery through Immich, it will automatically create the
 correct public path for you.
 
-## How it works
+## How to use it
+
+Other than the initial configuration above, everything else is managed through Immich.
 
 You share your photos/videos as normal through Immich. Because you have set the **External domain** in Immich settings
 to be the URL for your proxy app, the links that Immich generates will automaticaly have the correct URL.
+
+## How it works
 
 When the proxy receives a request, it will come as a link like this:
 
