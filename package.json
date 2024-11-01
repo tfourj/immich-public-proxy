@@ -1,16 +1,20 @@
 {
   "name": "immich-public-proxy",
   "version": "1.2.2",
-  "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "npx tsc",
     "test": "podman build -t immich-proxy-test . && podman run --init -it -p=3000:3000 immich-proxy-test",
     "start": "node dist/index.js"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Alan Grainger",
+  "license": "GPL-3.0",
+  "description": "Share your Immich photos and albums in a safe way without exposing your Immich instance to the public.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alangrainger/immich-public-proxy.git"
+  },
+  "main": "dist/index.js",
   "dependencies": {
     "express": "^4.21.1",
     "dotenv": "^16.4.5",
