@@ -5,8 +5,7 @@ services:
     restart: always
     ports:
       - ${PORT}:3000
-    env_file:
-      - .env
+    env_file: .env
     healthcheck:
       test: node /app/healthcheck.js
       interval: 120s
