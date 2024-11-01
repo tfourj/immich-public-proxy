@@ -3,12 +3,12 @@
 Share your Immich photos and albums in a safe way without exposing your Immich instance to the public.
 
 <p align="center" width="100%">
-<img src="public/images/immich.png" width="180" height="180">
+<img src="docs/immich.png" width="180" height="180">
 </p>
 
 ### Table of Contents
 
-- [Demo <img src="./public/images/external-link.png" width="14" height="14">](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
+- [Demo <img src="./docs/external-link.png" width="14" height="14">](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 - [About this project](#about-this-project)
 - [Install with Docker](#how-to-install-with-docker)
 - [How to use it](#how-to-use-it)
@@ -18,12 +18,16 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 
 ## About this project
 
-Immich is a wonderful bit of software, but since it holds all your private photos it's best to keep it fully locked down.
+[Immich](https://github.com/immich-app/immich) is a wonderful bit of software, but since it holds all your private photos it's best to keep it fully locked down.
 This presents a problem when you want to share a photo or a gallery with someone.
 
 **Immich Public Proxy** provides a barrier of security between the public and Immich, and _only_ allows through requests
 which you have publicly shared. When it receives a valid request, it talks to Immich locally via API and returns only
 those shared images.
+
+It does not require an API key which reduces the attack surface even further. The only things that the proxy
+can access are photos that you have made publicly available in Immich. It is stateless and does not know anything
+about your Immich instance.
 
 ### Features
 
@@ -66,7 +70,7 @@ docker-compose up -d
 
 4. Set the "External domain" in your Immich **Server Settings** to be the same as the `PROXY_PUBLIC_URL`:
 
-<img src="public/images/server-settings.png" width="400" height="182">
+<img src="docs/server-settings.png" width="400" height="182">
 
 Now whenever you share an image or gallery through Immich, it will automatically create the
 correct public path for you.
@@ -76,7 +80,9 @@ correct public path for you.
 Other than the initial configuration above, everything else is managed through Immich.
 
 You share your photos/videos as normal through Immich. Because you have set the **External domain** in Immich settings
-to be the URL for your proxy app, the links that Immich generates will automaticaly have the correct URL.
+to be the URL for your proxy app, the links that Immich generates will automaticaly have the correct URL:
+
+<img src="docs/share-link.webp" width="601" height="419">
 
 ## How it works
 
