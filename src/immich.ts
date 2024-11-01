@@ -208,7 +208,9 @@ class Immich {
   }
 
   /**
-   * Check if a provided key matches the Immich shared-link key format
+   * Check if a provided key matches the Immich shared-link key format.
+   * It appears that the key is always 67 chars long, but since I don't know that this
+   * will always be the case, I've left it open-ended.
    */
   isKey (key: string) {
     return !!key.match(/^[\w-]+$/)
