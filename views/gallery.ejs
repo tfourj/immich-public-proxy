@@ -28,7 +28,7 @@
 <script src="/lg-video.min.js"></script>
 <script src="/lg-zoom.min.js"></script>
 <script type="text/javascript">
-  initLightGallery() // from web.js
+  initLightGallery(<%- JSON.stringify(lgConfig) %>) // initLightGallery imported from web.js
   <% if (openItem) { %>
   const openItem = <%- openItem %>
   const thumbs = document.querySelectorAll('#lightgallery a')

@@ -3,6 +3,16 @@ import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, SharedLink } from './types'
 
 class Render {
+  lgConfig = {}
+
+  constructor () {
+    try {
+      // Import user-provided lightGallery config (if exists)
+      const config = require('../config.json')
+      if (typeof config === 'object' && config.lightGallery) this.lgConfig = config.lightGallery
+    } catch (e) { }
+  }
+
   async assetBuffer (res: Response, asset: Asset, size?: ImageSize) {
     const data = await immich.getAssetBuffer(asset, size)
     if (data) {
@@ -50,7 +60,8 @@ class Render {
     res.render('gallery', {
       items,
       openItem,
-      title: this.title(share)
+      title: this.title(share),
+      lgConfig: this.lgConfig
     })
   }
 

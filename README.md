@@ -13,7 +13,7 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 - [Install with Docker](#how-to-install-with-docker)
 - [How to use it](#how-to-use-it)
 - [How it works](#how-it-works)
-- [Additional configuration](#configuration)
+- [Additional configuration](#additional-configuration)
 - [Feature requests](#feature-requests)
 
 ## About this project
@@ -82,7 +82,7 @@ Other than the initial configuration above, everything else is managed through I
 You share your photos/videos as normal through Immich. Because you have set the **External domain** in Immich settings
 to be the URL for your proxy app, the links that Immich generates will automaticaly have the correct URL:
 
-<img src="docs/share-link.webp" width="601" height="419">
+<img src="docs/share-link.webp" width="751" height="524">
 
 ## How it works
 
@@ -102,31 +102,39 @@ individual image or gallery.
 
 If the shared link has expired or any of the assets have been put in the Immich trash, it will not return those.
 
-## Configuration
+## Additional configuration
 
-The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery). You can change various settings to change how your gallery displays by
-updating the `lightGallery` section in `/views/gallery.ejs`:
+The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery). You can adjust various settings to customise how your gallery displays. 
 
-```javascript
-lightGallery(document.getElementById('lightgallery'), {
-  plugins: [lgZoom, lgThumbnail, lgVideo, lgFullscreen],
-  speed: 500
-})
+1. Make a copy of `config.json` in the same folder as your `docker-compose.yml`.
+
+2. Pass the config to your docker container by adding a volume like this:
+
+```yaml
+    volumes:
+      - ./config.json:/app/config.json:ro
 ```
 
-For example to disable the download button for images, you would add `download: false`:
-
-```javascript
-lightGallery(document.getElementById('lightgallery'), {
-  plugins: [lgZoom, lgThumbnail, lgVideo, lgFullscreen],
-  download: false,
-  speed: 500
-})
-```
+3. Restart your container and your custom configuration should be active.
 
 You can find all of lightGallery's settings here:
-
 https://www.lightgalleryjs.com/docs/settings/
+
+For example to disable the download button for images, you would change `download` to `false`:
+
+```json
+{
+  "lightGallery": {
+    "controls": true,
+    "download": false,
+    "mobileSettings": {
+      "controls": false,
+      "showCloseIcon": true,
+      "download": false
+    }
+  }
+}
+```
 
 ## Feature requests
 
