@@ -9,8 +9,6 @@ services:
       - NODE_ENV=production
     env_file:
       - .env
-    volumes:
-      - ./config.json:/app/config.json:ro
     healthcheck:
       test: node /app/healthcheck.js
       interval: 120s
