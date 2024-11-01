@@ -25,7 +25,12 @@ This presents a problem when you want to share a photo or a gallery with someone
 which you have publicly shared. When it receives a valid request, it talks to Immich locally via API and returns only
 those shared images.
 
-It exposes no ports, allows no incoming data, and has no API to exploit.
+### Features
+
+- Supports sharing photos and videos.
+- Supports password-protected shares.
+- If sharing a single image, the link will directly open the image file so that you can embed it anywhere you would a normal image.
+- All usage happens through Immich - you won't need to touch this app after the initial configuration.
 
 ### Why not simply put Immich behind a reverse proxy and only expose the `/share/` path to the public?
 
