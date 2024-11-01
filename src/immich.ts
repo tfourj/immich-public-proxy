@@ -55,7 +55,7 @@ class Immich {
         // Password required - show the visitor the password page
         // `req.params.key` should already be sanitised at this point, but it never hurts to be explicit
         const key = request.key.replace(/[^\w-]/g, '')
-        res.render('password', { key })
+        res.render('password', { key, lgConfig: render.lgConfig })
       } else if (sharedLinkRes.link) {
         // Valid shared link
         const link = sharedLinkRes.link
