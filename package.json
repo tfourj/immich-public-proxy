@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "npx tsc",
+    "test": "podman build -t immich-proxy-test . && podman run --init -it -p=3000:3000 immich-proxy-test",
     "start": "node dist/index.js"
   },
   "author": "",
@@ -15,13 +16,16 @@
     "dotenv": "^16.4.5",
     "dayjs": "^1.11.13",
     "ejs": "^3.1.10",
-    "@types/express": "^4.17.21",
+    "typescript": "^5.6.2",
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
     "@types/node": "^16.18.111",
+    "@types/express": "^4.17.21",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
     "eslint": "^8.49.0",
-    "eslint-config-standard": "^17.1.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "eslint-config-standard": "^17.1.0"
   }
 }

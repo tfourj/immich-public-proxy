@@ -91,6 +91,10 @@ const getSize = (req: Request) => {
  */
 export const log = (message: string) => console.log(dayjs().format() + ' ' + message)
 
+// Handle process termination requests (e.g. Ctrl+C)
+process.on('SIGTERM', () => { process.exit(0) })
+process.on('SIGINT', () => { process.exit(0) })
+
 app.listen(3000, () => {
   console.log(dayjs().format() + ' Server started')
 })
