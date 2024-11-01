@@ -106,7 +106,7 @@ If the shared link has expired or any of the assets have been put in the Immich 
 
 The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery). You can adjust various settings to customise how your gallery displays. 
 
-1. Make a copy of [config.json](https://github.com/alangrainger/immich-public-proxy/blob/v1.3.2/config.json) in the same folder as your `docker-compose.yml`.
+1. Make a copy of [config.json](https://github.com/alangrainger/immich-public-proxy/blob/main/config.json) in the same folder as your `docker-compose.yml`.
 
 2. Pass the config to your docker container by adding a volume like this:
 
@@ -120,7 +120,7 @@ The gallery is created using [lightGallery](https://github.com/sachinchoolur/lig
 You can find all of lightGallery's settings here:
 https://www.lightgalleryjs.com/docs/settings/
 
-For example to disable the download button for images, you would change `download` to `false`:
+For example, to disable the download button for images, you would change `download` to `false`:
 
 ```json
 {
