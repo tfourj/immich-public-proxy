@@ -50,7 +50,7 @@ CACHE_AGE=2592000
 - `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
 - `PROXY_PUBLIC_URL` is the public URL for your proxy.
 - `PORT` is the external port you want for the docker container.
-- `CACHE_AGE` this is setting the `cache-control` header, to tell the browser to cache the assets. Set to 0 to disable caching.
+- `CACHE_AGE` this is setting the Cache-Control header, to tell the visitor's browser to cache the assets. Set to 0 to disable caching. By default this is 30 days.
 
 3. Start the docker container:
 
