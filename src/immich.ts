@@ -25,6 +25,16 @@ class Immich {
     }
   }
 
+  /**
+   * Handle an incoming request for a shared link `key`. This is the main function which
+   * communicates with Immich and returns the output back to the visitor.
+   *
+   * Possible HTTP responses are:
+   *
+   * 200 - either a photo gallery or the unlock page.
+   * 401 - the visitor provided a password but it was invalid.
+   * 404 - any other failed request. Check console.log for details.
+   */
   async handleShareRequest (request: IncomingShareRequest, res: Response) {
     res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
     if (!immich.isKey(request.key)) {
