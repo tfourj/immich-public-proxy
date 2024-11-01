@@ -1,6 +1,9 @@
-import { Asset, AssetType, ImageSize, SharedLink } from './types'
+import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink, SharedLinkResult } from './types'
 import dayjs from 'dayjs'
 import { log } from './index'
+import render from './render'
+import { Response } from 'express-serve-static-core'
+import { encrypt } from './encrypt'
 
 class Immich {
   /**
@@ -22,23 +25,99 @@ class Immich {
     }
   }
 
+  async handleShareRequest (request: IncomingShareRequest, res: Response) {
+    res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
+    if (!immich.isKey(request.key)) {
+      // This is not a valid key format
+      log('Invalid share key ' + request.key)
+      res.status(404).send()
+    } else {
+      // Get information about the shared link via Immich API
+      const sharedLinkRes = await immich.getShareByKey(request.key, request.password)
+      if (!sharedLinkRes.valid) {
+        // This isn't a valid request - check the console for more information
+        res.status(404).send()
+      } else if (sharedLinkRes.passwordRequired) {
+        // Password required - show the visitor the password page
+        // `req.params.key` should already be sanitised at this point, but it never hurts to be explicit
+        const key = request.key.replace(/[^\w-]/g, '')
+        res.render('password', { key })
+      } else if (sharedLinkRes.link) {
+        // Valid shared link
+        const link = sharedLinkRes.link
+        if (!link.assets.length) {
+          log('No assets for key ' + request.key)
+          res.status(404).send()
+        } else if (link.assets.length === 1) {
+          // This is an individual item (not a gallery)
+          log('Serving link ' + request.key)
+          const asset = link.assets[0]
+          if (asset.type === AssetType.image) {
+            // For photos, output the image directly
+            await render.assetBuffer(res, link.assets[0], request.size)
+          } else if (asset.type === AssetType.video) {
+            // For videos, show the video as a web player
+            await render.gallery(res, link, 1)
+          }
+        } else {
+          // Multiple images - render as a gallery
+          log('Serving link ' + request.key)
+          await render.gallery(res, link)
+        }
+      } else {
+        log('Unknown error with key ' + request.key)
+        res.status(404).send()
+      }
+    }
+  }
+
   /**
    * Query Immich for the SharedLink metadata for a given key.
    * The key is what is returned in the URL when you create a share in Immich.
    */
-  async getShareByKey (key: string) {
-    const link = (await this.request('/shared-links/me?key=' + encodeURIComponent(key))) as SharedLink
-    if (link) {
-      if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
-        // This link has expired
-        log('Expired link ' + key)
-      } else {
-        // Filter assets to exclude trashed assets
-        link.assets = link.assets.filter(asset => !asset.isTrashed)
-        // Populate the shared assets with the public key
-        link.assets.forEach(asset => { asset.key = key })
-        return link
+  async getShareByKey (key: string, password?: string): Promise<SharedLinkResult> {
+    let link
+    const url = this.buildUrl(process.env.IMMICH_URL + '/api/shared-links/me', {
+      key,
+      password
+    })
+    const res = await fetch(url)
+    const contentType = res.headers.get('Content-Type') || ''
+    if (contentType.includes('application/json')) {
+      const jsonBody = await res.json()
+      if (jsonBody) {
+        if (res.status === 200) {
+          // Normal response - get the shared assets
+          link = jsonBody as SharedLink
+          if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
+            // This link has expired
+            log('Expired link ' + key)
+          } else {
+            // Filter assets to exclude trashed assets
+            link.assets = link.assets.filter(asset => !asset.isTrashed)
+            // Populate the shared assets with the public key/password
+            link.assets.forEach(asset => {
+              asset.key = key
+              asset.password = password
+            })
+            return {
+              valid: true,
+              link
+            }
+          }
+        } else if (res.status === 401 && jsonBody?.message === 'Invalid password') {
+          // Password authentication required
+          return {
+            valid: true,
+            passwordRequired: true
+          }
+        }
       }
+    }
+    // Otherwise return failure
+    log('Immich response ' + res.status + ' for key ' + key)
+    return {
+      valid: false
     }
   }
 
@@ -52,9 +131,15 @@ class Immich {
     switch (asset.type) {
       case AssetType.image:
         size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
-        return this.request('/assets/' + encodeURIComponent(asset.id) + '/' + size + '?key=' + encodeURIComponent(asset.key))
+        return this.request(this.buildUrl('/assets/' + encodeURIComponent(asset.id) + '/' + size, {
+          key: asset.key,
+          password: asset.password
+        }))
       case AssetType.video:
-        return this.request('/assets/' + encodeURIComponent(asset.id) + '/video/playback?key=' + encodeURIComponent(asset.key))
+        return this.request(this.buildUrl('/assets/' + encodeURIComponent(asset.id) + '/video/playback', {
+          key: asset.key,
+          password: asset.password
+        }))
     }
   }
 
@@ -67,17 +152,34 @@ class Immich {
   }
 
   /**
+   * Build safely-encoded URL string
+   */
+  buildUrl (baseUrl: string, params: { [key: string]: string | undefined } = {}) {
+    // Remove empty properties
+    params = Object.fromEntries(Object.entries(params).filter(([_, value]) => !!value))
+    let query = ''
+    // Safely encode query parameters
+    if (Object.entries(params).length) query = '?' + (new URLSearchParams(params as { [key: string]: string })).toString()
+    return baseUrl + query
+  }
+
+  /**
    * Return the image data URL for a photo
    */
-  photoUrl (key: string, id: string, size?: ImageSize) {
-    return `/photo/${key}/${id}` + (size ? `?size=${size}` : '')
+  photoUrl (key: string, id: string, size?: ImageSize, password?: string) {
+    const params = { key }
+    if (password) {
+      Object.assign(params, encrypt(password))
+    }
+    return this.buildUrl(`/photo/${key}/${id}`, params)
   }
 
   /**
    * Return the video data URL for a video
    */
-  videoUrl (key: string, id: string) {
-    return `/video/${key}/${id}`
+  videoUrl (key: string, id: string, password?: string) {
+    const params = password ? encrypt(password) : {}
+    return this.buildUrl(`/video/${key}/${id}`, params)
   }
 
   /**

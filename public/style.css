@@ -45,3 +45,7 @@ html {
 #lightgallery a:has(.play-icon):hover .play-icon {
     opacity: 1;
 }
+
+#password {
+    color: white;
+}

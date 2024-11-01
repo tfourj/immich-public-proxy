@@ -6,6 +6,7 @@ export enum AssetType {
 export interface Asset {
   id: string;
   key: string;
+  password?: string;
   type: AssetType;
   isTrashed: boolean;
 }
@@ -20,7 +21,20 @@ export interface SharedLink {
   expiresAt: string | null;
 }
 
+export interface SharedLinkResult {
+  valid: boolean;
+  key?: string;
+  passwordRequired?: boolean;
+  link?: SharedLink;
+}
+
 export enum ImageSize {
   thumbnail = 'thumbnail',
   original = 'original'
+}
+
+export interface IncomingShareRequest {
+  key: string;
+  password?: string;
+  size?: ImageSize;
 }

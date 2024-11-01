@@ -31,7 +31,7 @@ class Render {
         video = JSON.stringify({
           source: [
             {
-              src: immich.videoUrl(share.key, asset.id),
+              src: immich.videoUrl(share.key, asset.id, asset.password),
               type: await immich.getContentType(asset)
             }
           ],
@@ -42,8 +42,8 @@ class Render {
         })
       }
       items.push({
-        originalUrl: immich.photoUrl(share.key, asset.id),
-        thumbnailUrl: immich.photoUrl(share.key, asset.id, ImageSize.thumbnail),
+        originalUrl: immich.photoUrl(share.key, asset.id, undefined, asset.password),
+        thumbnailUrl: immich.photoUrl(share.key, asset.id, ImageSize.thumbnail, asset.password),
         video
       })
     }
