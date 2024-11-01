@@ -38,7 +38,7 @@ class Immich {
         // This isn't a valid request - check the console for more information
         res.status(404).send()
       } else if (sharedLinkRes.passwordRequired && request.password) {
-        // Invalid password
+        // A password is required, but the visitor-provided one doesn't match
         log('Invalid password for key ' + request.key)
         res.status(401).send()
       } else if (sharedLinkRes.passwordRequired) {
