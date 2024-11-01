@@ -8,6 +8,8 @@ RUN npm install --omit=dev
 
 COPY . .
 
+ENV NODE_ENV=production
+
 # Build without type checking, as we have removed the Typescript
 # dev-dependencies above to save space in the final build
 RUN npx tsc --noCheck
