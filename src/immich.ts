@@ -37,6 +37,10 @@ class Immich {
       if (!sharedLinkRes.valid) {
         // This isn't a valid request - check the console for more information
         res.status(404).send()
+      } else if (sharedLinkRes.passwordRequired && request.password) {
+        // Invalid password
+        log('Invalid password for key ' + request.key)
+        res.status(401).send()
       } else if (sharedLinkRes.passwordRequired) {
         // Password required - show the visitor the password page
         // `req.params.key` should already be sanitised at this point, but it never hurts to be explicit
@@ -159,7 +163,11 @@ class Immich {
     params = Object.fromEntries(Object.entries(params).filter(([_, value]) => !!value))
     let query = ''
     // Safely encode query parameters
-    if (Object.entries(params).length) query = '?' + (new URLSearchParams(params as { [key: string]: string })).toString()
+    if (Object.entries(params).length) {
+      query = '?' + (new URLSearchParams(params as {
+        [key: string]: string
+      })).toString()
+    }
     return baseUrl + query
   }
 
@@ -167,7 +175,7 @@ class Immich {
    * Return the image data URL for a photo
    */
   photoUrl (key: string, id: string, size?: ImageSize, password?: string) {
-    const params = { key }
+    const params = { key, size }
     if (password) {
       Object.assign(params, encrypt(password))
     }
