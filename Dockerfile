@@ -2,11 +2,12 @@ FROM node:lts-slim
 
 WORKDIR /app
 
-COPY package.json ./
+COPY app/package.json ./
 
 RUN npm install --omit=dev
+RUN npm install pm2 -g
 
-COPY . .
+COPY app/ ./
 
 ENV NODE_ENV=production
 
@@ -14,4 +15,8 @@ ENV NODE_ENV=production
 # dev-dependencies above to save space in the final build
 RUN npx tsc --noCheck
 
-CMD [ "node", "dist/index.js" ]
+RUN chown -R node:node /app
+
+USER node
+
+CMD ["pm2-runtime", "dist/index.js" ]
