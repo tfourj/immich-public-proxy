@@ -52,13 +52,11 @@ Here is an example setup for [securing Immich behind mTLS](./docs/securing-immic
 
 ```
 IMMICH_URL=http://localhost:2283
-PROXY_PUBLIC_URL=https://your-proxy-url.com
 PORT=3000
 CACHE_AGE=2592000
 ```
 
 - `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
-- `PROXY_PUBLIC_URL` is the public URL for your proxy.
 - `PORT` is the external port you want for the docker container.
 - `CACHE_AGE` this is setting the Cache-Control header, to tell the visitor's browser to cache the assets. Set to 0 to disable caching. By default this is 30 days.
 

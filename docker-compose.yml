@@ -8,5 +8,5 @@ services:
     env_file: .env
     healthcheck:
       test: node /app/healthcheck.js
-      interval: 120s
+      interval: 30s
       start_period: 5s
