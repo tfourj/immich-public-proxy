@@ -19,4 +19,6 @@ RUN chown -R node:node /app
 
 USER node
 
+HEALTHCHECK --interval=30s --start-period=10s --timeout=5s CMD node /app/healthcheck.js || exit 1
+
 CMD ["pm2-runtime", "dist/index.js" ]
