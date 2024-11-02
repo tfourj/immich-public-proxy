@@ -9,4 +9,4 @@ services:
     healthcheck:
       test: node /app/healthcheck.js
       interval: 30s
-      start_period: 5s
+      start_period: 10s
