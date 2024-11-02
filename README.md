@@ -18,16 +18,16 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 
 ## About this project
 
-[Immich](https://github.com/immich-app/immich) is a wonderful bit of software, but since it holds all your private photos it's best to keep it fully locked down.
-This presents a problem when you want to share a photo or a gallery with someone.
+[Immich](https://github.com/immich-app/immich) is a wonderful bit of software, but since it holds all your private photos it's 
+best to keep it fully locked down. This presents a problem when you want to share a photo or a gallery with someone.
 
 **Immich Public Proxy** provides a barrier of security between the public and Immich, and _only_ allows through requests
-which you have publicly shared. When it receives a valid request, it talks to Immich locally via API and returns only
-those shared images.
+which you have publicly shared.
 
-It does not require an API key which reduces the attack surface even further. The only things that the proxy
-can access are photos that you have made publicly available in Immich. It is stateless and does not know anything
-about your Immich instance.
+It does this using the built-in sharing functionalty, so you don't need to make any changes to your sharing workflow.
+
+It is stateless and does not know anything about your Immich instance. It does not require an API key which reduces the attack 
+surface even further. The only things that the proxy can access are photos that you have made publicly available in Immich. 
 
 ### Features
 
