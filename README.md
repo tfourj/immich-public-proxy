@@ -67,7 +67,7 @@ CACHE_AGE=2592000
 docker-compose up -d
 ```
 
-4. Set the "External domain" in your Immich **Server Settings** to be the same as the `PROXY_PUBLIC_URL`:
+4. Set the "External domain" in your Immich **Server Settings** to be whatever domain you use to publicly serve Immich Public Proxy:
 
 <img src="docs/server-settings.png" width="400" height="182">
 
