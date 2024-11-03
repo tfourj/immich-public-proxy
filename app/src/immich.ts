@@ -219,7 +219,9 @@ class Immich {
   /**
    * When loading assets from a password-protected link, make the decryption key valid for a
    * short time. If the visitor loads the share link again, it will renew that expiry time.
-   * This prevents people from sharing the image links and bypassing password protection.
+   * Even though the recipient already knows the password, this is just in case - for example
+   * to protect against the password-protected link being revoked, but the asset links still
+   * being valid.
    */
   encryptPassword (password: string) {
     return encrypt(JSON.stringify({
