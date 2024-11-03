@@ -17,7 +17,7 @@ class Render {
     const data = await immich.getAssetBuffer(asset, size)
     if (data) {
       for (const header of ['content-type', 'content-length']) {
-        res.set(header, data.headers[header])
+        res.set(header, data.headers.get(header))
       }
       res.send(Buffer.from(await data.arrayBuffer()))
     } else {
