@@ -12,6 +12,8 @@ USER node
 
 RUN npm install --omit=dev
 
+ARG PACKAGE_VERSION
+ENV APP_VERSION=${PACKAGE_VERSION}
 ENV NODE_ENV=production
 
 # Build without type checking, as we have removed the Typescript
