@@ -37,13 +37,20 @@ app.get('/:type(photo|video)/:key/:id', async (req, res) => {
   res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
   // Check for valid key and ID
   if (immich.isKey(req.params.key) && immich.isId(req.params.id)) {
-    // Decrypt the password, if one was provided
     let password
+    // Validate the password payload, if one was provided
     if (req.query?.cr && req.query?.iv) {
-      password = decrypt({
-        iv: toString(req.query.iv),
-        cr: toString(req.query.cr)
-      })
+      try {
+        const payload = JSON.parse(decrypt({
+          iv: toString(req.query.iv),
+          cr: toString(req.query.cr)
+        }))
+        if (payload?.expires && dayjs(payload.expires) > dayjs()) {
+          password = payload.password
+        } else {
+          log(`Attempted to load assets from ${req.params.key} with an expired decryption token`)
+        }
+      } catch (e) { }
     }
     // Check if the key is a valid share link
     const sharedLink = (await immich.getShareByKey(req.params.key, password))?.link

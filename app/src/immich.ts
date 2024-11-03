@@ -187,7 +187,7 @@ class Immich {
   photoUrl (key: string, id: string, size?: ImageSize, password?: string) {
     const params = { key, size }
     if (password) {
-      Object.assign(params, encrypt(password))
+      Object.assign(params, this.encryptPassword(password))
     }
     return this.buildUrl(`/photo/${key}/${id}`, params)
   }
@@ -196,7 +196,7 @@ class Immich {
    * Return the video data URL for a video
    */
   videoUrl (key: string, id: string, password?: string) {
-    const params = password ? encrypt(password) : {}
+    const params = password ? this.encryptPassword(password) : {}
     return this.buildUrl(`/video/${key}/${id}`, params)
   }
 
@@ -214,6 +214,18 @@ class Immich {
    */
   isKey (key: string) {
     return !!key.match(/^[\w-]+$/)
+  }
+
+  /**
+   * When loading assets from a password-protected link, make the decryption key valid for a
+   * short time. If the visitor loads the share link again, it will renew that expiry time.
+   * This prevents people from sharing the image links and bypassing password protection.
+   */
+  encryptPassword (password: string) {
+    return encrypt(JSON.stringify({
+      password,
+      expires: dayjs().add(1, 'hour').format()
+    }))
   }
 }
 
