@@ -1,6 +1,6 @@
 # Immich Public Proxy
 
-Share your Immich photos and albums in a safe way without exposing your Immich instance to the public. Set up takes 5 minutes,
+Share your Immich photos and albums in a safe way without exposing your Immich instance to the public. Set up takes less than a minute,
 and all of your sharing is managed within Immich.
 
 <p align="center" width="100%">
