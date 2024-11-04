@@ -1,7 +1,7 @@
 # Immich Public Proxy
 
 Share your Immich photos and albums in a safe way without exposing your Immich instance to the public. Set up takes less than a minute,
-and all of your sharing is managed within Immich.
+and you never need to touch this again as all of your sharing stays managed within Immich.
 
 <p align="center" width="100%">
 <img src="docs/immich.png" width="180" height="180">
@@ -25,7 +25,7 @@ best to keep it fully locked down. This presents a problem when you want to shar
 **Immich Public Proxy** provides a barrier of security between the public and Immich, and _only_ allows through requests
 which you have publicly shared.
 
-It does this using the built-in sharing functionalty, so you don't need to make any changes to your sharing workflow.
+It does this using the built-in sharing functionality, so you don't need to make any changes to your sharing workflow.
 
 It is stateless and does not know anything about your Immich instance. It does not require an API key which reduces the attack 
 surface even further. The only things that the proxy can access are photos that you have made publicly available in Immich. 
