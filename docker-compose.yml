@@ -6,3 +6,7 @@ services:
     ports:
       - ${PORT}:3000
     env_file: .env
+    healthcheck:
+      test: wget -q http://localhost:3000/healthcheck || exit 1
+      start_period: 10s
+      timeout: 5s

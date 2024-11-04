@@ -11,17 +11,21 @@ class Immich {
    * the possible attack surface of this app.
    */
   async request (endpoint: string) {
-    const res = await fetch(process.env.IMMICH_URL + '/api' + endpoint)
-    if (res.status === 200) {
-      const contentType = res.headers.get('Content-Type') || ''
-      if (contentType.includes('application/json')) {
-        return res.json()
+    try {
+      const res = await fetch(process.env.IMMICH_URL + '/api' + endpoint)
+      if (res.status === 200) {
+        const contentType = res.headers.get('Content-Type') || ''
+        if (contentType.includes('application/json')) {
+          return res.json()
+        } else {
+          return res
+        }
       } else {
-        return res
+        log('Immich API status ' + res.status)
+        console.log(await res.text())
       }
-    } else {
-      log('Immich API status ' + res.status)
-      console.log(await res.text())
+    } catch (e) {
+      log('Unable to reach Immich on ' + process.env.IMMICH_URL)
     }
   }
 
@@ -228,6 +232,10 @@ class Immich {
       password,
       expires: dayjs().add(1, 'hour').format()
     }))
+  }
+
+  async accessible () {
+    return !!(await immich.request('/server/ping'))
   }
 }
 

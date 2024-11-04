@@ -69,8 +69,12 @@ app.get('/:type(photo|video)/:key/:id', async (req, res) => {
 })
 
 // Healthcheck
-app.get('/healthcheck', (_req, res) => {
-  res.send('ok')
+app.get('/healthcheck', async (_req, res) => {
+  if (await immich.accessible()) {
+    res.send('ok')
+  } else {
+    res.status(502).send()
+  }
 })
 
 // Send a 404 for all other routes
