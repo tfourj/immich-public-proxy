@@ -1,16 +1,13 @@
 import immich from './immich'
 import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, SharedLink } from './types'
+import { getConfigOption } from './functions'
 
 class Render {
-  lgConfig = {}
+  lgConfig
 
   constructor () {
-    try {
-      // Import user-provided lightGallery config (if exists)
-      const config = require('../config.json')
-      if (typeof config === 'object' && config.lightGallery) this.lgConfig = config.lightGallery
-    } catch (e) { }
+    this.lgConfig = getConfigOption('lightGallery', {})
   }
 
   async assetBuffer (res: Response, asset: Asset, size?: ImageSize) {
@@ -61,7 +58,7 @@ class Render {
       items,
       openItem,
       title: this.title(share),
-      lgConfig: this.lgConfig
+      lgConfig: getConfigOption('lightGallery', {})
     })
   }
 

@@ -4,8 +4,9 @@ services:
     container_name: immich-public-proxy
     restart: always
     ports:
-      - ${PORT}:3000
-    env_file: .env
+      - "3000:3000"
+    environment:
+      - IMMICH_URL=http://localhost:2283
     healthcheck:
       test: wget -q http://localhost:3000/healthcheck || exit 1
       start_period: 10s

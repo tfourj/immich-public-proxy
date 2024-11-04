@@ -1,4 +1,11 @@
 {
+  "ipp": {
+    "responseHeaders": {
+      "Cache-Control": "public, max-age=2592000"
+    },
+    "singleImageGallery": false,
+    "singleItemAutoOpen": true
+  },
   "lightGallery": {
     "controls": true,
     "download": true,

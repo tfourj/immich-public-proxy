@@ -48,17 +48,7 @@ Here is an example setup for [securing Immich behind mTLS](./docs/securing-immic
 
 1. Download the [docker-compose.yml](https://github.com/alangrainger/immich-public-proxy/blob/main/docker-compose.yml) file.
 
-2. Create a `.env` file to configure the app:
-
-```
-IMMICH_URL=http://localhost:2283
-PORT=3000
-CACHE_AGE=2592000
-```
-
-- `IMMICH_URL` is the URL to access Immich in your local network. This is not your public URL.
-- `PORT` is the external port you want for the docker container.
-- `CACHE_AGE` this is setting the Cache-Control header, to tell the visitor's browser to cache the assets. Set to 0 to disable caching. By default this is 30 days.
+2. Update the value for `IMMICH_URL` in your docker-compose file to point to your local URL for Immich. This should not be a public URL.
 
 3. Start the docker container:
 
@@ -102,7 +92,7 @@ If the shared link has expired or any of the assets have been put in the Immich 
 
 ## Additional configuration
 
-The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery). You can adjust various settings to customise how your gallery displays. 
+There are some additional configuration options you can change, for example the way the gallery is set up.
 
 1. Make a copy of [config.json](https://github.com/alangrainger/immich-public-proxy/blob/main/app/config.json) in the same folder as your `docker-compose.yml`.
 
@@ -115,10 +105,13 @@ The gallery is created using [lightGallery](https://github.com/sachinchoolur/lig
 
 3. Restart your container and your custom configuration should be active.
 
+### lightGallery
+
+The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery).
 You can find all of lightGallery's settings here:
 https://www.lightgalleryjs.com/docs/settings/
 
-For example, to disable the download button for images, you would change `download` to `false`:
+For example, to disable the download button for images, you would edit the `lightGallery` section and change `download` to `false`:
 
 ```json
 {

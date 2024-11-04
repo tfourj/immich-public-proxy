@@ -1,6 +1,6 @@
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink, SharedLinkResult } from './types'
 import dayjs from 'dayjs'
-import { log } from './index'
+import { getConfigOption, log } from './functions'
 import render from './render'
 import { Response } from 'express-serve-static-core'
 import { encrypt } from './encrypt'
@@ -70,12 +70,13 @@ class Immich {
           // This is an individual item (not a gallery)
           log('Serving link ' + request.key)
           const asset = link.assets[0]
-          if (asset.type === AssetType.image) {
-            // For photos, output the image directly
+          if (asset.type === AssetType.image && !getConfigOption('ipp.singleImageGallery')) {
+            // For photos, output the image directly unless configured to show a gallery
             await render.assetBuffer(res, link.assets[0], request.size)
-          } else if (asset.type === AssetType.video) {
-            // For videos, show the video as a web player
-            await render.gallery(res, link, 1)
+          } else {
+            // Show a gallery page
+            const openItem = getConfigOption('ipp.singleItemAutoOpen', true) ? 1 : 0
+            await render.gallery(res, link, openItem)
           }
         } else {
           // Multiple images - render as a gallery
