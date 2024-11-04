@@ -1,6 +1,6 @@
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink, SharedLinkResult } from './types'
 import dayjs from 'dayjs'
-import { getConfigOption, log } from './functions'
+import { addResponseHeaders, getConfigOption, log } from './functions'
 import render from './render'
 import { Response } from 'express-serve-static-core'
 import { encrypt } from './encrypt'
@@ -40,7 +40,7 @@ class Immich {
    * 404 - any other failed request. Check console.log for details.
    */
   async handleShareRequest (request: IncomingShareRequest, res: Response) {
-    res.set('Cache-Control', 'public, max-age=' + process.env.CACHE_AGE)
+    addResponseHeaders(res)
     if (!immich.isKey(request.key)) {
       // This is not a valid key format
       log('Invalid share key ' + request.key)
