@@ -5,7 +5,7 @@ Share your Immich photos and albums in a safe way without exposing your Immich i
 Setup takes less than a minute, and you never need to touch this again as all of your sharing stays managed within Immich.
 
 <p align="center" width="100%">
-<img src="docs/shield.png" width="180" height="180">
+<img src="docs/shield.png" width="200" height="200">
 </p>
 
 ### Table of Contents
