@@ -15,14 +15,17 @@ class Render {
    */
   async assetBuffer (req: IncomingShareRequest, res: Response, asset: Asset, size?: ImageSize) {
     // Prepare the request
+    const headerList = ['content-type', 'content-length', 'last-modified', 'etag']
     size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
     const subpath = asset.type === AssetType.video ? '/video/playback' : '/' + size
     const headers = { range: '' }
-    if (asset.type === AssetType.video && req.range) {
-      const start = req.range.replace(/bytes=/, '').split('-')[0]
+    if (asset.type === AssetType.video) {
+      const start = (req.range || '').replace(/bytes=/, '').split('-')[0]
       const startByte = parseInt(start, 10) || 0
       const endByte = startByte + 2499999
       headers.range = `bytes=${startByte}-${endByte}`
+      headerList.push('accept-ranges', 'cache-control', 'content-range')
+      res.status(206) // Partial Content
     }
     const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + subpath, {
       key: asset.key,
@@ -33,12 +36,10 @@ class Render {
     // Return the response to the client
     if (data.status >= 200 && data.status < 300) {
       // Populate the response headers
-      ['content-type', 'content-length', 'last-modified', 'etag', 'content-range']
-        .forEach(header => {
-          const value = data.headers.get(header)
-          if (value) res.setHeader(header, value)
-        })
-      if (headers.range) res.status(206) // Partial Content
+      headerList.forEach(header => {
+        const value = data.headers.get(header)
+        if (value) res.setHeader(header, value)
+      })
       // Return the body
       await data.body?.pipeTo(
         new WritableStream({
