@@ -12,7 +12,7 @@ class Immich {
    */
   async request (endpoint: string) {
     try {
-      const res = await fetch(process.env.IMMICH_URL + '/api' + endpoint)
+      const res = await fetch(this.apiUrl() + endpoint)
       if (res.status === 200) {
         const contentType = res.headers.get('Content-Type') || ''
         if (contentType.includes('application/json')) {
@@ -27,6 +27,10 @@ class Immich {
     } catch (e) {
       log('Unable to reach Immich on ' + process.env.IMMICH_URL)
     }
+  }
+
+  apiUrl () {
+    return process.env.IMMICH_URL + '/api'
   }
 
   /**
@@ -72,7 +76,7 @@ class Immich {
           const asset = link.assets[0]
           if (asset.type === AssetType.image && !getConfigOption('ipp.singleImageGallery')) {
             // For photos, output the image directly unless configured to show a gallery
-            await render.assetBuffer(res, link.assets[0], request.size)
+            await render.assetBuffer(request, res, link.assets[0], request.size)
           } else {
             // Show a gallery page
             const openItem = getConfigOption('ipp.singleItemAutoOpen', true) ? 1 : 0

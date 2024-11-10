@@ -1,6 +1,6 @@
 import immich from './immich'
 import { Response } from 'express-serve-static-core'
-import { Asset, AssetType, ImageSize, SharedLink } from './types'
+import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink } from './types'
 import { getConfigOption } from './functions'
 
 class Render {
@@ -10,13 +10,44 @@ class Render {
     this.lgConfig = getConfigOption('lightGallery', {})
   }
 
-  async assetBuffer (res: Response, asset: Asset, size?: ImageSize) {
-    const data = await immich.getAssetBuffer(asset, size)
-    if (data) {
-      for (const header of ['content-type', 'content-length']) {
-        res.set(header, data.headers.get(header))
-      }
-      res.send(Buffer.from(await data.arrayBuffer()))
+  /**
+   * Stream data from Immich back to the client
+   */
+  async assetBuffer (req: IncomingShareRequest, res: Response, asset: Asset, size?: ImageSize) {
+    // Prepare the request
+    size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
+    const subpath = asset.type === AssetType.video ? '/video/playback' : '/' + size
+    const headers = { range: '' }
+    if (asset.type === AssetType.video && req.range) {
+      const start = req.range.replace(/bytes=/, '').split('-')[0]
+      const startByte = parseInt(start, 10) || 0
+      const endByte = startByte + 2499999
+      headers.range = `bytes=${startByte}-${endByte}`
+    }
+    const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + subpath, {
+      key: asset.key,
+      password: asset.password
+    })
+    const data = await fetch(url, { headers })
+
+    // Return the response to the client
+    if (data.status >= 200 && data.status < 300) {
+      // Populate the response headers
+      ['content-type', 'content-length', 'last-modified', 'etag', 'content-range']
+        .forEach(header => {
+          const value = data.headers.get(header)
+          if (value) res.setHeader(header, value)
+        })
+      if (headers.range) res.status(206) // Partial Content
+      // Return the body
+      await data.body?.pipeTo(
+        new WritableStream({
+          write (chunk) {
+            res.write(chunk)
+          }
+        })
+      )
+      res.end()
     } else {
       res.status(404).send()
     }

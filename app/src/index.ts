@@ -54,12 +54,13 @@ app.get('/:type(photo|video)/:key/:id', async (req, res) => {
     }
     // Check if the key is a valid share link
     const sharedLink = (await immich.getShareByKey(req.params.key, password))?.link
+    const request = { key: req.params.key, range: req.headers.range || '' }
     if (sharedLink?.assets.length) {
       // Check that the requested asset exists in this share
       const asset = sharedLink.assets.find(x => x.id === req.params.id)
       if (asset) {
         asset.type = req.params.type === 'video' ? AssetType.video : AssetType.image
-        render.assetBuffer(res, asset, getSize(req)).then()
+        render.assetBuffer(request, res, asset, getSize(req)).then()
         return
       }
     }

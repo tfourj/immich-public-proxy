@@ -39,4 +39,5 @@ export interface IncomingShareRequest {
   key: string;
   password?: string;
   size?: ImageSize;
+  range?: string;
 }
