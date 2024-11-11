@@ -19,15 +19,18 @@ class Render {
     size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
     const subpath = asset.type === AssetType.video ? '/video/playback' : '/' + size
     const headers = { range: '' }
+
+    // Stream the video in 2.5MB chunks
     if (asset.type === AssetType.video) {
-      const start = (req.range || '').replace(/bytes=/, '').split('-')[0]
-      const startByte = parseInt(start, 10) || 0
-      const endByte = startByte + 2499999
-      headers.range = `bytes=${startByte}-${endByte}`
+      const range = (req.range || '').replace(/bytes=/, '').split('-')
+      const start = parseInt(range[0], 10) || 0
+      headers.range = `bytes=${start}-${start + 2499999}`
       headerList.push('cache-control', 'content-range')
       res.setHeader('accept-ranges', 'bytes')
       res.status(206) // Partial Content
     }
+
+    // Request data from Immich
     const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + subpath, {
       key: asset.key,
       password: asset.password
@@ -44,9 +47,7 @@ class Render {
       // Return the body
       await data.body?.pipeTo(
         new WritableStream({
-          write (chunk) {
-            res.write(chunk)
-          }
+          write (chunk) { res.write(chunk) }
         })
       )
       res.end()
@@ -72,7 +73,7 @@ class Render {
           source: [
             {
               src: immich.videoUrl(share.key, asset.id, asset.password),
-              type: await immich.getContentType(asset)
+              type: await immich.getVideoContentType(asset)
             }
           ],
           attributes: {

@@ -145,33 +145,14 @@ class Immich {
   }
 
   /**
-   * Stream asset buffer data from Immich.
-   *
-   * For photos, you can request 'thumbnail' or 'original' size.
-   * For videos, it is Immich's streaming quality, not the original quality.
+   * Get the content-type of a video, for passing back to lightGallery
    */
-  async getAssetBuffer (asset: Asset, size?: ImageSize) {
-    switch (asset.type) {
-      case AssetType.image:
-        size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
-        return this.request(this.buildUrl('/assets/' + encodeURIComponent(asset.id) + '/' + size, {
-          key: asset.key,
-          password: asset.password
-        }))
-      case AssetType.video:
-        return this.request(this.buildUrl('/assets/' + encodeURIComponent(asset.id) + '/video/playback', {
-          key: asset.key,
-          password: asset.password
-        }))
-    }
-  }
-
-  /**
-   * Get the content-type of an Immich asset
-   */
-  async getContentType (asset: Asset) {
-    const assetBuffer = await this.getAssetBuffer(asset)
-    return assetBuffer.headers.get('Content-Type')
+  async getVideoContentType (asset: Asset) {
+    const data = await this.request(this.buildUrl('/assets/' + encodeURIComponent(asset.id) + '/video/playback', {
+      key: asset.key,
+      password: asset.password
+    }))
+    return data.headers.get('Content-Type')
   }
 
   /**
