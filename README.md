@@ -16,6 +16,7 @@ Setup takes less than a minute, and you never need to touch it again as all of y
 - [How to use it](#how-to-use-it)
 - [How it works](#how-it-works)
 - [Additional configuration](#additional-configuration)
+- [Troubleshooting](#troubleshooting)
 - [Feature requests](#feature-requests)
 
 ## About this project
@@ -126,6 +127,11 @@ For example, to disable the download button for images, you would edit the `ligh
   }
 }
 ```
+
+## Troubleshooting
+
+If you're using Cloudflare and having issues with videos not playing well, make sure your `/video/` paths are set to bypass cache.
+I ran into this issue myself, and found [some helpful advice here](https://community.cloudflare.com/t/mp4-wont-load-in-safari-using-cloudflare/10587/48).
 
 ## Feature requests
 
