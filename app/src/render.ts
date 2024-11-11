@@ -24,7 +24,8 @@ class Render {
       const startByte = parseInt(start, 10) || 0
       const endByte = startByte + 2499999
       headers.range = `bytes=${startByte}-${endByte}`
-      headerList.push('accept-ranges', 'content-range')
+      headerList.push('cache-control', 'content-range')
+      res.setHeader('accept-ranges', 'bytes')
       res.status(206) // Partial Content
     }
     const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + subpath, {
