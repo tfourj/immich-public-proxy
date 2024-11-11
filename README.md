@@ -91,6 +91,8 @@ individual image or gallery.
 
 If the shared link has expired or any of the assets have been put in the Immich trash, it will not return those.
 
+All incoming data is validated and sanitised, and anything unexpected is simply dropped with a 404.
+
 ## Additional configuration
 
 There are some additional configuration options you can change, for example the way the gallery is set up.
