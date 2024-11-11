@@ -45,8 +45,8 @@ class Immich {
    */
   async handleShareRequest (request: IncomingShareRequest, res: Response) {
     addResponseHeaders(res)
+    // Check that the key is a valid format
     if (!immich.isKey(request.key)) {
-      // This is not a valid key format
       log('Invalid share key ' + request.key)
       res.status(404).send()
     } else {
@@ -61,13 +61,14 @@ class Immich {
         res.status(401).send()
       } else if (sharedLinkRes.passwordRequired) {
         // Password required - show the visitor the password page
-        // `req.params.key` should already be sanitised at this point, but it never hurts to be explicit
+        // `req.params.key` is already sanitised at this point, but it never hurts to be explicit
         const key = request.key.replace(/[^\w-]/g, '')
         res.render('password', { key, lgConfig: render.lgConfig })
       } else if (sharedLinkRes.link) {
         // Valid shared link
         const link = sharedLinkRes.link
         if (!link.assets.length) {
+          // Immich didn't return any assets for this link (empty array)
           log('No assets for key ' + request.key)
           res.status(404).send()
         } else if (link.assets.length === 1) {
@@ -105,8 +106,7 @@ class Immich {
       password
     })
     const res = await fetch(url)
-    const contentType = res.headers.get('Content-Type') || ''
-    if (contentType.includes('application/json')) {
+    if ((res.headers.get('Content-Type') || '').includes('application/json')) {
       const jsonBody = await res.json()
       if (jsonBody) {
         if (res.status === 200) {

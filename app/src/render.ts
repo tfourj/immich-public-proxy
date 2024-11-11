@@ -20,7 +20,7 @@ class Render {
     const subpath = asset.type === AssetType.video ? '/video/playback' : '/' + size
     const headers = { range: '' }
 
-    // Stream the video in 2.5MB chunks
+    // For videos, request them in 2.5MB chunks rather than the entire video
     if (asset.type === AssetType.video) {
       const range = (req.range || '').replace(/bytes=/, '').split('-')
       const start = parseInt(range[0], 10) || 0
@@ -39,12 +39,12 @@ class Render {
 
     // Return the response to the client
     if (data.status >= 200 && data.status < 300) {
-      // Populate the response headers
+      // Populate the whitelisted response headers
       headerList.forEach(header => {
         const value = data.headers.get(header)
         if (value) res.setHeader(header, value)
       })
-      // Return the body
+      // Return the Immich asset binary data
       await data.body?.pipeTo(
         new WritableStream({
           write (chunk) { res.write(chunk) }

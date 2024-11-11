@@ -9,7 +9,7 @@ try {
 } catch (e) { }
 
 /**
- * Get a configuration option using dotted notation.
+ * Get a configuration option fron config.json using dotted notation.
  *
  * @param path
  * @param [defaultOption] - Specify a default option to return if no configuation value is found
@@ -39,6 +39,9 @@ export function getSize (req: Request) {
   return req.query?.size === 'thumbnail' ? ImageSize.thumbnail : ImageSize.original
 }
 
+/**
+ * Force a value to be a string
+ */
 export function toString (value: unknown) {
   return typeof value === 'string' ? value : ''
 }
