@@ -13,7 +13,7 @@ class Render {
   /**
    * Stream data from Immich back to the client
    */
-  async assetBuffer (req: IncomingShareRequest, res: Response, asset: Asset, size?: ImageSize) {
+  async assetBuffer (req: IncomingShareRequest, res: Response, asset: Asset, size?: ImageSize | string) {
     // Prepare the request
     const headerList = ['content-type', 'content-length', 'last-modified', 'etag']
     size = immich.validateImageSize(size)

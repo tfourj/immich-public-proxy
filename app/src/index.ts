@@ -2,7 +2,7 @@ import express from 'express'
 import immich from './immich'
 import render from './render'
 import dayjs from 'dayjs'
-import { AssetType } from './types'
+import { AssetType, ImageSize } from './types'
 import { decrypt } from './encrypt'
 import { log, toString, addResponseHeaders } from './functions'
 
@@ -36,6 +36,12 @@ app.get('/:type(photo|video)/:key/:id/:size?', async (req, res) => {
   addResponseHeaders(res)
   // Check for valid key and ID
   if (immich.isKey(req.params.key) && immich.isId(req.params.id)) {
+    // Validate the size parameter
+    if (req.params.size && !Object.values(ImageSize).includes(req.params.size as ImageSize)) {
+      log('Invalid size parameter ' + req.path)
+      res.status(404).send()
+      return
+    }
     let password
     // Validate the password payload, if one was provided
     if (req.query?.cr && req.query?.iv) {
@@ -59,7 +65,7 @@ app.get('/:type(photo|video)/:key/:id/:size?', async (req, res) => {
       const asset = sharedLink.assets.find(x => x.id === req.params.id)
       if (asset) {
         asset.type = req.params.type === 'video' ? AssetType.video : AssetType.image
-        render.assetBuffer(request, res, asset, immich.validateImageSize(req.params.size)).then()
+        render.assetBuffer(request, res, asset, req.params.size).then()
         return
       }
     }
