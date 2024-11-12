@@ -79,7 +79,7 @@ app.get('/healthcheck', async (_req, res) => {
   if (await immich.accessible()) {
     res.send('ok')
   } else {
-    res.status(502).send()
+    res.status(503).send()
   }
 })
 

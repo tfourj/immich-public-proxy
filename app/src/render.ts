@@ -22,7 +22,7 @@ class Render {
       subpath = '/video/playback'
     } else if (asset.type === AssetType.image) {
       // For images, there are three combinations of path + query string, depending on image size
-      if (size === ImageSize.original && getConfigOption('ipp.downloadOriginalPhoto', false)) {
+      if (size === ImageSize.original && getConfigOption('ipp.downloadOriginalPhoto', true)) {
         subpath = '/original'
       } else if (size === ImageSize.preview || size === ImageSize.original) {
         // IPP is configured in config.json to send the preview size instead of the original size
@@ -96,7 +96,7 @@ class Render {
             controls: true
           }
         })
-      } else if (asset.type === AssetType.image && getConfigOption('ipp.downloadOriginalPhoto', false)) {
+      } else if (asset.type === AssetType.image && getConfigOption('ipp.downloadOriginalPhoto', true)) {
         // Add a download link for the original-size image, if configured in config.json
         downloadUrl = immich.photoUrl(share.key, asset.id, ImageSize.original, asset.password)
       }
