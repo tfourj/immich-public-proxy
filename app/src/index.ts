@@ -16,14 +16,18 @@ app.use(express.json())
 // Serve static assets from the /public folder
 app.use(express.static('public', { setHeaders: addResponseHeaders }))
 
-// An incoming request for a shared link
+/*
+ * [ROUTE] An incoming request for a shared link
+ */
 app.get('/share/:key', async (req, res) => {
   await immich.handleShareRequest({
     key: req.params.key
   }, res)
 })
 
-// Receive an unlock request from the password page
+/*
+ * [ROUTE] Receive an unlock request from the password page
+ */
 app.post('/unlock', async (req, res) => {
   await immich.handleShareRequest({
     key: toString(req.body.key),
@@ -31,50 +35,69 @@ app.post('/unlock', async (req, res) => {
   }, res)
 })
 
-// Output the buffer data for a photo or video
+/*
+ * [ROUTE] Output the buffer data for a photo or video
+ */
 app.get('/:type(photo|video)/:key/:id/:size?', async (req, res) => {
+  // Add the headers configured in config.json (most likely `cache-control`)
   addResponseHeaders(res)
+
   // Check for valid key and ID
-  if (immich.isKey(req.params.key) && immich.isId(req.params.id)) {
-    // Validate the size parameter
-    if (req.params.size && !Object.values(ImageSize).includes(req.params.size as ImageSize)) {
-      log('Invalid size parameter ' + req.path)
-      res.status(404).send()
-      return
-    }
-    let password
-    // Validate the password payload, if one was provided
-    if (req.query?.cr && req.query?.iv) {
-      try {
-        const payload = JSON.parse(decrypt({
-          iv: toString(req.query.iv),
-          cr: toString(req.query.cr)
-        }))
-        if (payload?.expires && dayjs(payload.expires) > dayjs()) {
-          password = payload.password
-        } else {
-          log(`Attempted to load assets from ${req.params.key} with an expired decryption token`)
-        }
-      } catch (e) { }
-    }
-    // Check if the key is a valid share link
-    const sharedLink = (await immich.getShareByKey(req.params.key, password))?.link
-    const request = { key: req.params.key, range: req.headers.range || '' }
-    if (sharedLink?.assets.length) {
-      // Check that the requested asset exists in this share
-      const asset = sharedLink.assets.find(x => x.id === req.params.id)
-      if (asset) {
-        asset.type = req.params.type === 'video' ? AssetType.video : AssetType.image
-        render.assetBuffer(request, res, asset, req.params.size).then()
+  if (!immich.isKey(req.params.key) || !immich.isId(req.params.id)) {
+    log('Invalid key or ID for ' + req.path)
+    res.status(404).send()
+    return
+  }
+
+  // Validate the size parameter
+  if (req.params.size && !Object.values(ImageSize).includes(req.params.size as ImageSize)) {
+    log('Invalid size parameter ' + req.path)
+    res.status(404).send()
+    return
+  }
+
+  // Validate the password payload, if one was provided
+  let password
+  if (req.query?.cr && req.query?.iv) {
+    try {
+      const payload = JSON.parse(decrypt({
+        iv: toString(req.query.iv),
+        cr: toString(req.query.cr)
+      }))
+      if (payload?.expires && dayjs(payload.expires) > dayjs()) {
+        password = payload.password
+      } else {
+        log(`Attempted to load assets from ${req.params.key} with an expired decryption token`)
+        // Send 404 rather than 401 so as not to provide information to an attacker that there is "something" at this path
+        res.status(404).send()
         return
       }
-    }
+    } catch (e) { }
   }
-  log('No asset found for ' + req.path)
-  res.status(404).send()
+
+  // Fetch the shared link information from Immich, so we can check to make sure that the requested asset
+  // is allowed by this shared link.
+  const sharedLink = (await immich.getShareByKey(req.params.key, password))?.link
+  const request = {
+    key: req.params.key,
+    range: req.headers.range || ''
+  }
+  if (sharedLink?.assets.length) {
+    // Check that the requested asset exists in this share
+    const asset = sharedLink.assets.find(x => x.id === req.params.id)
+    if (asset) {
+      asset.type = req.params.type === 'video' ? AssetType.video : AssetType.image
+      render.assetBuffer(request, res, asset, req.params.size).then()
+    }
+  } else {
+    log('No asset found for ' + req.path)
+    res.status(404).send()
+  }
 })
 
-// Healthcheck
+/*
+ * [ROUTE] Healthcheck
+ */
 app.get('/healthcheck', async (_req, res) => {
   if (await immich.accessible()) {
     res.send('ok')
@@ -83,12 +106,15 @@ app.get('/healthcheck', async (_req, res) => {
   }
 })
 
-// Send a 404 for all other routes
+/*
+ * Send a 404 for all other routes
+ */
 app.get('*', (req, res) => {
   log('Invalid route ' + req.path)
   res.status(404).send()
 })
 
+// Start the ExpressJS server
 app.listen(3000, () => {
   console.log(dayjs().format() + ' Server started')
 })
