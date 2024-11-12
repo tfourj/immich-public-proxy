@@ -109,6 +109,12 @@ There are some additional configuration options you can change, for example the 
 
 3. Restart your container and your custom configuration should be active.
 
+### Immich Public Proxy options
+
+| Option                  | Description                                                                                                                 |
+|-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `downloadOriginalPhoto` | Set to `false` if you only want people to be able to download the 'preview' quality photo, rather than your original photo. |
+
 ### lightGallery
 
 The gallery is created using [lightGallery](https://github.com/sachinchoolur/lightGallery).
