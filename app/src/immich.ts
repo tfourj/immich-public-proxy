@@ -44,57 +44,73 @@ class Immich {
    * 404 - any other failed request. Check console.log for details.
    */
   async handleShareRequest (request: IncomingShareRequest, res: Response) {
+    // Add the headers configured in config.json (most likely `cache-control`)
     addResponseHeaders(res)
+
     // Check that the key is a valid format
     if (!immich.isKey(request.key)) {
       log('Invalid share key ' + request.key)
       res.status(404).send()
-    } else {
-      // Get information about the shared link via Immich API
-      const sharedLinkRes = await immich.getShareByKey(request.key, request.password)
-      if (!sharedLinkRes.valid) {
-        // This isn't a valid request - check the console for more information
-        res.status(404).send()
-      } else if (sharedLinkRes.passwordRequired && request.password) {
-        // A password is required, but the visitor-provided one doesn't match
-        log('Invalid password for key ' + request.key)
-        res.status(401).send()
-      } else if (sharedLinkRes.passwordRequired) {
-        // Password required - show the visitor the password page
-        // `req.params.key` is already sanitised at this point, but it never hurts to be explicit
-        const key = request.key.replace(/[^\w-]/g, '')
-        res.render('password', {
-          key,
-          lgConfig: render.lgConfig
-        })
-      } else if (sharedLinkRes.link) {
-        // Valid shared link
-        const link = sharedLinkRes.link
-        if (!link.assets.length) {
-          // Immich didn't return any assets for this link (empty array)
-          log('No assets for key ' + request.key)
-          res.status(404).send()
-        } else if (link.assets.length === 1) {
-          // This is an individual item (not a gallery)
-          log('Serving link ' + request.key)
-          const asset = link.assets[0]
-          if (asset.type === AssetType.image && !getConfigOption('ipp.singleImageGallery')) {
-            // For photos, output the image directly unless configured to show a gallery
-            await render.assetBuffer(request, res, link.assets[0], ImageSize.preview)
-          } else {
-            // Show a gallery page
-            const openItem = getConfigOption('ipp.singleItemAutoOpen', true) ? 1 : 0
-            await render.gallery(res, link, openItem)
-          }
-        } else {
-          // Multiple images - render as a gallery
-          log('Serving link ' + request.key)
-          await render.gallery(res, link)
-        }
+      return
+    }
+
+    // Get information about the shared link via Immich API
+    const sharedLinkRes = await immich.getShareByKey(request.key, request.password)
+    if (!sharedLinkRes.valid) {
+      // This isn't a valid request - check the console for more information
+      res.status(404).send()
+      return
+    }
+
+    // A password is required, but the visitor-provided one doesn't match
+    if (sharedLinkRes.passwordRequired && request.password) {
+      log('Invalid password for key ' + request.key)
+      res.status(401).send()
+      return
+    }
+
+    // Password required - show the visitor the password page
+    if (sharedLinkRes.passwordRequired) {
+      // `request.key` is already sanitised at this point, but it never hurts to be explicit
+      const key = request.key.replace(/[^\w-]/g, '')
+      res.render('password', {
+        key,
+        lgConfig: render.lgConfig
+      })
+      return
+    }
+
+    if (!sharedLinkRes.link) {
+      log('Unknown error with key ' + request.key)
+      res.status(404).send()
+      return
+    }
+
+    // Make sure there are some photo/video assets for this link
+    const link = sharedLinkRes.link
+    if (!link.assets.length) {
+      log('No assets for key ' + request.key)
+      res.status(404).send()
+      return
+    }
+
+    // Everything is ok - output the link page
+    if (link.assets.length === 1) {
+      // This is an individual item (not a gallery)
+      log('Serving link ' + request.key)
+      const asset = link.assets[0]
+      if (asset.type === AssetType.image && !getConfigOption('ipp.singleImageGallery')) {
+        // For photos, output the image directly unless configured to show a gallery
+        await render.assetBuffer(request, res, link.assets[0], ImageSize.preview)
       } else {
-        log('Unknown error with key ' + request.key)
-        res.status(404).send()
+        // Show a gallery page
+        const openItem = getConfigOption('ipp.singleItemAutoOpen', true) ? 1 : 0
+        await render.gallery(res, link, openItem)
       }
+    } else {
+      // Multiple images - render as a gallery
+      log('Serving link ' + request.key)
+      await render.gallery(res, link)
     }
   }
 

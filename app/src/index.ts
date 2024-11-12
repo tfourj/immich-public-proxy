@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(express.static('public', { setHeaders: addResponseHeaders }))
 
 /*
- * [ROUTE] An incoming request for a shared link
+ * [ROUTE] This is the request for a shared link
  */
 app.get('/share/:key', async (req, res) => {
   await immich.handleShareRequest({
@@ -36,7 +36,7 @@ app.post('/unlock', async (req, res) => {
 })
 
 /*
- * [ROUTE] Output the buffer data for a photo or video
+ * [ROUTE] This is the direct link to a photo or video asset
  */
 app.get('/:type(photo|video)/:key/:id/:size?', async (req, res) => {
   // Add the headers configured in config.json (most likely `cache-control`)
