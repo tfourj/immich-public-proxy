@@ -36,7 +36,7 @@ surface even further. The only things that the proxy can access are photos that 
 
 - Supports sharing photos and videos.
 - Supports password-protected shares.
-- If sharing a single image, the link will directly open the image file so that you can embed it anywhere you would a normal image.
+- If sharing a single image, by default the link will directly open the image file so that you can embed it anywhere you would a normal image. (This is configurable.)
 - All usage happens through Immich - you won't need to touch this app after the initial configuration.
 
 ### Why not simply put Immich behind a reverse proxy and only expose the `/share/` path to the public?
@@ -63,8 +63,7 @@ docker-compose up -d
 
 <img src="docs/server-settings.png" width="400" height="182">
 
-Now whenever you share an image or gallery through Immich, it will automatically create the
-correct public path for you.
+Now whenever you share an image or gallery through Immich, it will automatically create the correct public path for you.
 
 ## How to use it
 
