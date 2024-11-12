@@ -63,7 +63,10 @@ class Immich {
         // Password required - show the visitor the password page
         // `req.params.key` is already sanitised at this point, but it never hurts to be explicit
         const key = request.key.replace(/[^\w-]/g, '')
-        res.render('password', { key, lgConfig: render.lgConfig })
+        res.render('password', {
+          key,
+          lgConfig: render.lgConfig
+        })
       } else if (sharedLinkRes.link) {
         // Valid shared link
         const link = sharedLinkRes.link
@@ -77,7 +80,7 @@ class Immich {
           const asset = link.assets[0]
           if (asset.type === AssetType.image && !getConfigOption('ipp.singleImageGallery')) {
             // For photos, output the image directly unless configured to show a gallery
-            await render.assetBuffer(request, res, link.assets[0], request.size)
+            await render.assetBuffer(request, res, link.assets[0], ImageSize.preview)
           } else {
             // Show a gallery page
             const openItem = getConfigOption('ipp.singleItemAutoOpen', true) ? 1 : 0
@@ -175,11 +178,10 @@ class Immich {
    * Return the image data URL for a photo
    */
   photoUrl (key: string, id: string, size?: ImageSize, password?: string) {
-    const params = { key, size }
-    if (password) {
-      Object.assign(params, this.encryptPassword(password))
-    }
-    return this.buildUrl(`/photo/${key}/${id}`, params)
+    const path = ['photo', key, id]
+    if (size) path.push(size)
+    const params = password ? this.encryptPassword(password) : {}
+    return this.buildUrl('/' + path.join('/'), params)
   }
 
   /**
@@ -222,6 +224,14 @@ class Immich {
 
   async accessible () {
     return !!(await immich.request('/server/ping'))
+  }
+
+  validateImageSize (size: unknown) {
+    if (!size || !Object.values(ImageSize).includes(size as ImageSize)) {
+      return ImageSize.preview
+    } else {
+      return size as ImageSize
+    }
   }
 }
 

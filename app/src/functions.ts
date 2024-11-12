@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
-import { Request, Response } from 'express-serve-static-core'
-import { ImageSize } from './types'
+import { Response } from 'express-serve-static-core'
 
 let config = {}
 try {
@@ -30,14 +29,6 @@ export const getConfigOption = (path: string, defaultOption?: unknown) => {
  * Output a console.log message with timestamp
  */
 export const log = (message: string) => console.log(dayjs().format() + ' ' + message)
-
-/**
- * Sanitise the data for an incoming query string `size` parameter
- * e.g. https://example.com/share/abc...xyz?size=thumbnail
- */
-export function getSize (req: Request) {
-  return req.query?.size === 'thumbnail' ? ImageSize.thumbnail : ImageSize.original
-}
 
 /**
  * Force a value to be a string

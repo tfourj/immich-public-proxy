@@ -32,6 +32,7 @@ export interface SharedLinkResult {
 
 export enum ImageSize {
   thumbnail = 'thumbnail',
+  preview = 'preview',
   original = 'original'
 }
 

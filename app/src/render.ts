@@ -16,8 +16,22 @@ class Render {
   async assetBuffer (req: IncomingShareRequest, res: Response, asset: Asset, size?: ImageSize) {
     // Prepare the request
     const headerList = ['content-type', 'content-length', 'last-modified', 'etag']
-    size = size === ImageSize.thumbnail ? ImageSize.thumbnail : ImageSize.original
-    const subpath = asset.type === AssetType.video ? '/video/playback' : '/' + size
+    size = immich.validateImageSize(size)
+    let subpath, sizeQueryParam
+    if (asset.type === AssetType.video) {
+      subpath = '/video/playback'
+    } else if (asset.type === AssetType.image) {
+      // For images, there are three combinations of path + query string, depending on image size
+      if (size === ImageSize.original && getConfigOption('ipp.downloadOriginalPhoto', false)) {
+        subpath = '/original'
+      } else if (size === ImageSize.preview || size === ImageSize.original) {
+        // IPP is configured in config.json to send the preview size instead of the original size
+        subpath = '/thumbnail'
+        sizeQueryParam = 'preview'
+      } else {
+        subpath = '/' + size
+      }
+    }
     const headers = { range: '' }
 
     // For videos, request them in 2.5MB chunks rather than the entire video
@@ -33,6 +47,7 @@ class Render {
     // Request data from Immich
     const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + subpath, {
       key: asset.key,
+      size: sizeQueryParam,
       password: asset.password
     })
     const data = await fetch(url, { headers })
@@ -66,7 +81,7 @@ class Render {
   async gallery (res: Response, share: SharedLink, openItem?: number) {
     const items = []
     for (const asset of share.assets) {
-      let video
+      let video, downloadUrl
       if (asset.type === AssetType.video) {
         // Populate the data-video property
         video = JSON.stringify({
@@ -81,9 +96,13 @@ class Render {
             controls: true
           }
         })
+      } else if (asset.type === AssetType.image && getConfigOption('ipp.downloadOriginalPhoto', false)) {
+        // Add a download link for the original-size image, if configured in config.json
+        downloadUrl = immich.photoUrl(share.key, asset.id, ImageSize.original, asset.password)
       }
       items.push({
-        originalUrl: immich.photoUrl(share.key, asset.id, undefined, asset.password),
+        previewUrl: immich.photoUrl(share.key, asset.id, ImageSize.preview, asset.password),
+        downloadUrl,
         thumbnailUrl: immich.photoUrl(share.key, asset.id, ImageSize.thumbnail, asset.password),
         video
       })

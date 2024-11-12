@@ -4,7 +4,7 @@ import render from './render'
 import dayjs from 'dayjs'
 import { AssetType } from './types'
 import { decrypt } from './encrypt'
-import { log, getSize, toString, addResponseHeaders } from './functions'
+import { log, toString, addResponseHeaders } from './functions'
 
 require('dotenv').config()
 
@@ -19,8 +19,7 @@ app.use(express.static('public', { setHeaders: addResponseHeaders }))
 // An incoming request for a shared link
 app.get('/share/:key', async (req, res) => {
   await immich.handleShareRequest({
-    key: req.params.key,
-    size: getSize(req)
+    key: req.params.key
   }, res)
 })
 
@@ -33,7 +32,7 @@ app.post('/unlock', async (req, res) => {
 })
 
 // Output the buffer data for a photo or video
-app.get('/:type(photo|video)/:key/:id', async (req, res) => {
+app.get('/:type(photo|video)/:key/:id/:size?', async (req, res) => {
   addResponseHeaders(res)
   // Check for valid key and ID
   if (immich.isKey(req.params.key) && immich.isId(req.params.id)) {
@@ -60,7 +59,7 @@ app.get('/:type(photo|video)/:key/:id', async (req, res) => {
       const asset = sharedLink.assets.find(x => x.id === req.params.id)
       if (asset) {
         asset.type = req.params.type === 'video' ? AssetType.video : AssetType.image
-        render.assetBuffer(request, res, asset, getSize(req)).then()
+        render.assetBuffer(request, res, asset, immich.validateImageSize(req.params.size)).then()
         return
       }
     }

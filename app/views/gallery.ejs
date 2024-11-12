@@ -15,7 +15,8 @@
             <div class="play-icon"></div>
         </a>
     <% } else { %>
-        <a href="<%- item.originalUrl %>">
+        <a href="<%- item.previewUrl %>"<% if (item.downloadUrl) { %>
+           data-download-url="<%- item.downloadUrl %>"<% } %>>
             <img alt="" src="<%- item.thumbnailUrl %>"/>
         </a>
     <% }
