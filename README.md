@@ -30,6 +30,8 @@ which you have publicly shared.
 It is stateless and does not know anything about your Immich instance. It does not require an API key which reduces the attack 
 surface even further. The only things that the proxy can access are photos that you have made publicly available in Immich. 
 
+[Live demo](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
+
 ### Features
 
 - Supports sharing photos and videos.
