@@ -53,7 +53,7 @@ Here is an example setup for [securing Immich behind mTLS](./docs/securing-immic
 
 2. Update the value for `IMMICH_URL` in your docker-compose file to point to your local URL for Immich. This should not be a public URL.
 
-3. Start the docker container. You can test that it is working by visiting `https://your-server.com/healthcheck`. 
+3. Start the docker container. You can test that it is working by visiting `https://your-proxy-url.com/healthcheck`. 
 Check the container console output for any error messages.
 
 ```bash
