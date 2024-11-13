@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(express.static('public', { setHeaders: addResponseHeaders }))
 
 /*
- * [ROUTE] This is the request for a shared link
+ * [ROUTE] This is the main URL that someone would visit if they are opening a shared link
  */
 app.get('/share/:key', async (req, res) => {
   await immich.handleShareRequest({
