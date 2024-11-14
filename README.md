@@ -3,7 +3,7 @@
 <p align="center" width="100%">
 <a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/tags"><img alt="Docker pulls" src="https://badgen.net/docker/pulls/alangrainger/immich-public-proxy?icon=docker&label=docker%20pulls&color=green&scale=1.1"></a>
 <a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/tags"><img alt="Latest release" src="https://badgen.net/github/release/alangrainger/immich-public-proxy?scale=1.1"></a>
-<a href="https://github.com/alangrainger/immich-public-proxy/blob/main/LICENSE"><img alt="License AGPL-3.0" src="https://badgen.net/github/license/alangrainger/immich-public-proxy?color=green&scale=1.1"></a>
+<a href="https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo"><img alt="Open demo gallery" src="https://badgen.net/static/open/demo%20gallery/green?scale=1.1"></a>
 </p>
 
 Share your Immich photos and albums in a safe way without exposing your Immich instance to the public. 
@@ -16,7 +16,6 @@ Setup takes less than a minute, and you never need to touch it again as all of y
 
 ### Table of Contents
 
-- [Demo <img src="./docs/external-link.png" width="14" height="14">](https://immich-demo.note.sx/share/ffSw63qnIYMtpmg0RNvOui0Dpio7BbxsObjvH8YZaobIjIAzl5n7zTX5d6EDHdOYEvo)
 - [About this project](#about-this-project)
 - [Install with Docker](#how-to-install-with-docker)
 - [How to use it](#how-to-use-it)
