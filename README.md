@@ -1,8 +1,10 @@
 # Immich Public Proxy
 
-[![Docker pulls](https://badgen.net/docker/pulls/alangrainger/immich-public-proxy?icon=docker&label=pulls&color=green)](https://hub.docker.com/r/alangrainger/immich-public-proxy/)
-[![Latest release](https://badgen.net/github/release/alangrainger/immich-public-proxy)](https://hub.docker.com/r/alangrainger/immich-public-proxy/)
-![License](https://badgen.net/github/license/alangrainger/immich-public-proxy?color=green)
+<p align="center" width="100%">
+<a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/"><img alt="Docker pulls" src="https://badgen.net/docker/pulls/alangrainger/immich-public-proxy?icon=docker&label=pulls&color=green&scale=1.1"></a>
+<a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/"><img alt="Latest release" src="https://badgen.net/github/release/alangrainger/immich-public-proxy?scale=1.1"></a>
+<img alt="License AGPL-3.0" src="https://badgen.net/github/license/alangrainger/immich-public-proxy?color=green&scale=1.1">
+</p>
 
 Share your Immich photos and albums in a safe way without exposing your Immich instance to the public. 
 
