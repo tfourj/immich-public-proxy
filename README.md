@@ -1,7 +1,7 @@
 # Immich Public Proxy
 
 <p align="center" width="100%">
-<a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/"><img alt="Docker pulls" src="https://badgen.net/docker/pulls/alangrainger/immich-public-proxy?icon=docker&label=pulls&color=green&scale=1.1"></a>
+<a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/"><img alt="Docker pulls" src="https://badgen.net/docker/pulls/alangrainger/immich-public-proxy?icon=docker&label=docker%20pulls&color=green&scale=1.1"></a>
 <a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/"><img alt="Latest release" src="https://badgen.net/github/release/alangrainger/immich-public-proxy?scale=1.1"></a>
 <a href="https://github.com/alangrainger/immich-public-proxy/blob/main/LICENSE"><img alt="License AGPL-3.0" src="https://badgen.net/github/license/alangrainger/immich-public-proxy?color=green&scale=1.1"></a>
 </p>
