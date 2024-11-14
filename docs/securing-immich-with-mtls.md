@@ -1,5 +1,7 @@
 # Securing Immich with mTLS using Caddy
 
+Immich supports using a custom client certificate on both web and mobile apps, so it's (in my opinion) the safest way to limit access to only clients of your choice.
+
 ## Caddy docker-compose.yml
 
 ```yaml
