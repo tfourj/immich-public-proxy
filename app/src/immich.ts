@@ -99,8 +99,9 @@ class Immich {
       // This is an individual item (not a gallery)
       log('Serving link ' + request.key)
       const asset = link.assets[0]
-      if (asset.type === AssetType.image && !getConfigOption('ipp.singleImageGallery')) {
-        // For photos, output the image directly unless configured to show a gallery
+      if (asset.type === AssetType.image && !getConfigOption('ipp.singleImageGallery') && !request.password) {
+        // For photos, output the image directly unless configured to show a gallery,
+        // or unless it's a password-protected link
         await render.assetBuffer(request, res, link.assets[0], ImageSize.preview)
       } else {
         // Show a gallery page
