@@ -113,8 +113,8 @@ class Render {
       openItem,
       title: this.title(share),
       path: '/share/' + share.key,
-      showDownload: getConfigOption('ipp.allowDownloadAll', true),
-      showTitle: getConfigOption('ipp.showGalleryTitle', true),
+      showDownload: getConfigOption('ipp.allowDownloadAll', false),
+      showTitle: getConfigOption('ipp.showGalleryTitle', false),
       lgConfig: getConfigOption('lightGallery', {})
     })
   }
