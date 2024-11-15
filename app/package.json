@@ -1,6 +1,6 @@
 {
   "name": "immich-public-proxy",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "npx tsc",
@@ -16,20 +16,22 @@
   },
   "main": "dist/index.js",
   "dependencies": {
-    "express": "^4.21.1",
-    "dotenv": "^16.4.5",
+    "archiver": "^7.0.1",
     "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
-    "typescript": "^5.6.2",
-    "tslib": "^2.8.1"
+    "express": "^4.21.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.6.2"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2",
-    "@types/node": "^16.18.111",
+    "@types/archiver": "^6.0.3",
     "@types/express": "^4.17.21",
+    "@types/node": "^16.18.111",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
     "eslint": "^8.49.0",
-    "eslint-config-standard": "^17.1.0"
+    "eslint-config-standard": "^17.1.0",
+    "ts-node": "^10.9.2"
   }
 }

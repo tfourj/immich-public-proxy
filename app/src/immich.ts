@@ -94,8 +94,12 @@ class Immich {
       return
     }
 
-    // Everything is ok - output the link page
-    if (link.assets.length === 1) {
+    // Everything is ok - output the shared link data
+
+    if (request.mode === 'download' && getConfigOption('ipp.allowDownloadAll', false)) {
+      // Download all assets as a zip file
+      await render.downloadAll(res, link)
+    } else if (link.assets.length === 1) {
       // This is an individual item (not a gallery)
       log('Serving link ' + request.key)
       const asset = link.assets[0]

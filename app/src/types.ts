@@ -6,6 +6,7 @@ export enum AssetType {
 export interface Asset {
   id: string;
   key: string;
+  originalFileName?: string;
   password?: string;
   type: AssetType;
   isTrashed: boolean;
@@ -39,6 +40,7 @@ export enum ImageSize {
 export interface IncomingShareRequest {
   key: string;
   password?: string;
+  mode?: string;
   size?: ImageSize;
   range?: string;
 }

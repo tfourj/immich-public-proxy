@@ -5,7 +5,9 @@
     },
     "singleImageGallery": false,
     "singleItemAutoOpen": true,
-    "downloadOriginalPhoto": true
+    "downloadOriginalPhoto": true,
+    "showGalleryTitle": false,
+    "allowDownloadAll": false
   },
   "lightGallery": {
     "controls": true,

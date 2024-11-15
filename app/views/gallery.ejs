@@ -7,6 +7,16 @@
     <link type="text/css" rel="stylesheet" href="/lightgallery-bundle.min.css"/>
 </head>
 <body>
+<div id="header">
+    <% if (showTitle) { %>
+        <h1><%- title || 'Gallery' %></h1>
+    <% } %>
+    <% if (showDownload) { %>
+    <div id="download-all">
+        <a href="<%- path %>/download" title="Download all"><img src="/images/download-all.svg" height="24" width="24" alt="Download all"></a>
+    </div>
+    <% } %>
+</div>
 <div id="lightgallery">
     <% items.forEach(item => {
     if (item.video) { %>
@@ -15,8 +25,11 @@
             <div class="play-icon"></div>
         </a>
     <% } else { %>
-        <a href="<%- item.previewUrl %>"<% if (item.downloadUrl) { %>
-           data-download-url="<%- item.downloadUrl %>"<% } %>>
+        <a href="<%- item.previewUrl %>"
+        <% if (item.downloadUrl) { %>
+           data-download-url="<%- item.downloadUrl %>"
+                <% } %>
+        >
             <img alt="" src="<%- item.thumbnailUrl %>"/>
         </a>
     <% }

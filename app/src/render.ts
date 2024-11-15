@@ -2,6 +2,7 @@ import immich from './immich'
 import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink } from './types'
 import { getConfigOption } from './functions'
+import archiver from 'archiver'
 
 class Render {
   lgConfig
@@ -111,6 +112,9 @@ class Render {
       items,
       openItem,
       title: this.title(share),
+      path: '/share/' + share.key,
+      showDownload: getConfigOption('ipp.allowDownloadAll', true),
+      showTitle: getConfigOption('ipp.showGalleryTitle', true),
       lgConfig: getConfigOption('lightGallery', {})
     })
   }
@@ -120,6 +124,27 @@ class Render {
    */
   title (share: SharedLink) {
     return share.description || share?.album?.albumName || ''
+  }
+
+  /**
+   * Download all assets as a zip file
+   */
+  async downloadAll (res: Response, share: SharedLink) {
+    res.setHeader('Content-Type', 'application/zip')
+    const title = this.title(share).replace(/[^\w .-]/g, '') + '.zip'
+    res.setHeader('Content-Disposition', `attachment; filename="${title}"`)
+    const archive = archiver('zip', { zlib: { level: 9 } })
+    archive.pipe(res)
+    for (const asset of share.assets) {
+      const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + '/original', {
+        key: asset.key,
+        password: asset.password
+      })
+      const data = await fetch(url)
+      archive.append(Buffer.from(await data.arrayBuffer()), { name: asset.originalFileName || asset.id })
+    }
+    await archive.finalize()
+    res.end()
   }
 }
 
