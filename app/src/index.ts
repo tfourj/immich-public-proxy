@@ -108,6 +108,19 @@ app.get('/healthcheck', async (_req, res) => {
 })
 
 /*
+ * [ROUTE] Home page
+ *
+ * It was requested here to have *something* on the home page:
+ * https://github.com/alangrainger/immich-public-proxy/discussions/19
+ *
+ * If you don't want to see this, you can redirect to a URL of your choice by changing your
+ * reverse proxy config, or even redirect to 404 if you like.
+ */
+app.get('/', (_req, res) => {
+  res.render('home')
+})
+
+/*
  * Send a 404 for all other routes
  */
 app.get('*', (req, res) => {
