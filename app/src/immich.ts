@@ -30,7 +30,7 @@ class Immich {
   }
 
   apiUrl () {
-    return process.env.IMMICH_URL + '/api'
+    return (process.env.IMMICH_URL || '').replace(/\/$/, '') + '/api'
   }
 
   /**
@@ -125,7 +125,7 @@ class Immich {
    */
   async getShareByKey (key: string, password?: string): Promise<SharedLinkResult> {
     let link
-    const url = this.buildUrl(process.env.IMMICH_URL + '/api/shared-links/me', {
+    const url = this.buildUrl(this.apiUrl() + '/shared-links/me', {
       key,
       password
     })
@@ -166,6 +166,8 @@ class Immich {
     try {
       console.log(res.headers.get('Content-Type'))
       console.log((await res.text()).slice(0, 500))
+      log('Unexpected response from Immich API at ' + this.apiUrl())
+      log('Please make sure the IPP container is able to reach this path.')
     } catch (e) {
       console.log(e)
     }
