@@ -19,7 +19,7 @@ app.use(express.static('public', { setHeaders: addResponseHeaders }))
 /*
  * [ROUTE] This is the main URL that someone would visit if they are opening a shared link
  */
-app.get('/share/:key/:mode?', async (req, res) => {
+app.get('/share/:key/:mode(download)?', async (req, res) => {
   await immich.handleShareRequest({
     key: req.params.key,
     mode: req.params.mode
