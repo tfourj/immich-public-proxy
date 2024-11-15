@@ -163,6 +163,11 @@ class Immich {
     }
     // Otherwise return failure
     log('Immich response ' + res.status + ' for key ' + key)
+    try {
+      console.log((await res.text()).slice(0, 500))
+    } catch (e) {
+      console.log(e)
+    }
     return {
       valid: false
     }
