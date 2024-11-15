@@ -130,7 +130,7 @@ class Immich {
       password
     })
     const res = await fetch(url)
-    if ((res.headers.get('Content-Type') || '').includes('application/json')) {
+    if ((res.headers.get('Content-Type') || '').toLowerCase().includes('application/json')) {
       const jsonBody = await res.json()
       if (jsonBody) {
         if (res.status === 200) {
@@ -164,6 +164,7 @@ class Immich {
     // Otherwise return failure
     log('Immich response ' + res.status + ' for key ' + key)
     try {
+      console.log(res.headers.get('Content-Type'))
       console.log((await res.text()).slice(0, 500))
     } catch (e) {
       console.log(e)
