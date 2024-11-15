@@ -30,7 +30,7 @@ class Immich {
   }
 
   apiUrl () {
-    return (process.env.IMMICH_URL || '').replace(/\/$/, '') + '/api'
+    return (process.env.IMMICH_URL || '').replace(/\/*$/, '') + '/api'
   }
 
   /**
