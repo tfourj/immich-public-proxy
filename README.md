@@ -120,6 +120,7 @@ There are some additional configuration options you can change, for example the 
 
 | Option                  | Description                                                                                                                 |
 |-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `responseHeaders`       | Change the headers sent with your web responses. By default there is `cache-control` and CORS added.                        |
 | `downloadOriginalPhoto` | Set to `false` if you only want people to be able to download the 'preview' quality photo, rather than your original photo. |
 | `showGalleryTitle`      | Show a title on the gallery page.                                                                                           |
 | `allowDownloadAll`      | Allow visitors to download all files as a zip.                                                                              |
