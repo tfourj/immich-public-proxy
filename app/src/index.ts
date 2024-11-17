@@ -2,7 +2,6 @@ import express from 'express'
 import immich from './immich'
 import render from './render'
 import dayjs from 'dayjs'
-import cors from 'cors'
 import { AssetType, ImageSize } from './types'
 import { decrypt } from './encrypt'
 import { log, toString, addResponseHeaders } from './functions'
@@ -10,8 +9,6 @@ import { log, toString, addResponseHeaders } from './functions'
 require('dotenv').config()
 
 const app = express()
-// Enable CORS
-app.use(cors())
 // Add the EJS view engine, to render the gallery page
 app.set('view engine', 'ejs')
 // For parsing the password unlock form
