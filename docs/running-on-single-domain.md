@@ -14,7 +14,7 @@ https://your-domain.com {
     @public path /share /share/*
     handle @public {
         # Your IPP server and port
-        reverse_proxy your_server:3000
+        reverse_proxy YOUR_SERVER:3000
     }
     
     # All other paths, require basic auth and send to Immich
@@ -23,7 +23,7 @@ https://your-domain.com {
             user password_hash
         }
         # Your Immich server and port
-        reverse_proxy your_server:2283
+        reverse_proxy YOUR_SERVER:2283
     }
 }
 ```
