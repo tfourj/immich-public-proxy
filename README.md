@@ -17,7 +17,7 @@ Setup takes less than a minute, and you never need to touch it again as all of y
 ### Table of Contents
 
 - [About this project](#about-this-project)
-- [Install with Docker](#how-to-install-with-docker)
+- [Install with Docker](#installation)
 - [How to use it](#how-to-use-it)
 - [How it works](#how-it-works)
 - [Additional configuration](#additional-configuration)
@@ -53,7 +53,7 @@ to make that path public. Any existing or future vulnerability has the potential
 For me, the ideal setup is to have Immich secured privately behind mTLS or VPN, and only allow public access to Immich Public Proxy.
 Here is an example setup for [securing Immich behind mTLS](./docs/securing-immich-with-mtls.md) using Caddy.
 
-## How to install with Docker
+## Installation
 
 1. Download the [docker-compose.yml](https://github.com/alangrainger/immich-public-proxy/blob/main/docker-compose.yml) file.
 
@@ -71,6 +71,12 @@ docker-compose up -d
 <img src="docs/server-settings.png" width="400" height="182">
 
 Now whenever you share an image or gallery through Immich, it will automatically create the correct public path for you.
+
+### Running on a single domain
+
+Because all IPP paths are under `/share/...`, you can run Immich Public Proxy and Immich on the same domain.
+
+See the instructions here: [Running on a single domain](./docs/running-on-single-domain.md).
 
 ## How to use it
 

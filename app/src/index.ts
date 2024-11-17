@@ -13,8 +13,22 @@ const app = express()
 app.set('view engine', 'ejs')
 // For parsing the password unlock form
 app.use(express.json())
-// Serve static assets from the /public folder
+// Serve static assets from the 'public' folder as /share/static
+app.use('/share/static', express.static('public', { setHeaders: addResponseHeaders }))
+// Serve the same assets on /, to allow for /robots.txt and /favicon.ico
 app.use(express.static('public', { setHeaders: addResponseHeaders }))
+
+/*
+ * [ROUTE] Healthcheck
+ * The path matches for /share/healthcheck, and also the legacy /healthcheck
+ */
+app.get(/^(|\/share)\/healthcheck$/, async (_req, res) => {
+  if (await immich.accessible()) {
+    res.send('ok')
+  } else {
+    res.status(503).send()
+  }
+})
 
 /*
  * [ROUTE] This is the main URL that someone would visit if they are opening a shared link
@@ -29,7 +43,7 @@ app.get('/share/:key/:mode(download)?', async (req, res) => {
 /*
  * [ROUTE] Receive an unlock request from the password page
  */
-app.post('/unlock', async (req, res) => {
+app.post('/share/unlock', async (req, res) => {
   await immich.handleShareRequest({
     key: toString(req.body.key),
     password: toString(req.body.password)
@@ -39,7 +53,7 @@ app.post('/unlock', async (req, res) => {
 /*
  * [ROUTE] This is the direct link to a photo or video asset
  */
-app.get('/:type(photo|video)/:key/:id/:size?', async (req, res) => {
+app.get('/share/:type(photo|video)/:key/:id/:size?', async (req, res) => {
   // Add the headers configured in config.json (most likely `cache-control`)
   addResponseHeaders(res)
 
@@ -97,17 +111,6 @@ app.get('/:type(photo|video)/:key/:id/:size?', async (req, res) => {
 })
 
 /*
- * [ROUTE] Healthcheck
- */
-app.get('/healthcheck', async (_req, res) => {
-  if (await immich.accessible()) {
-    res.send('ok')
-  } else {
-    res.status(503).send()
-  }
-})
-
-/*
  * [ROUTE] Home page
  *
  * It was requested here to have *something* on the home page:
@@ -116,7 +119,7 @@ app.get('/healthcheck', async (_req, res) => {
  * If you don't want to see this, you can redirect to a URL of your choice by changing your
  * reverse proxy config, or even redirect to 404 if you like.
  */
-app.get('/', (_req, res) => {
+app.get(/^\/(|share)\/*$/, (_req, res) => {
   addResponseHeaders(res)
   res.render('home')
 })

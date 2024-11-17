@@ -158,18 +158,23 @@ class Immich {
             valid: true,
             passwordRequired: true
           }
+        } else if (jsonBody?.message === 'Invalid share key') {
+          log('Invalid share key ' + key)
+        } else {
+          console.log(JSON.stringify(jsonBody))
         }
       }
-    }
-    // Otherwise return failure
-    log('Immich response ' + res.status + ' for key ' + key)
-    try {
-      console.log(res.headers.get('Content-Type'))
-      console.log((await res.text()).slice(0, 500))
-      log('Unexpected response from Immich API at ' + this.apiUrl())
-      log('Please make sure the IPP container is able to reach this path.')
-    } catch (e) {
-      console.log(e)
+    } else {
+      // Otherwise return failure
+      log('Immich response ' + res.status + ' for key ' + key)
+      try {
+        console.log(res.headers.get('Content-Type'))
+        console.log((await res.text()).slice(0, 500))
+        log('Unexpected response from Immich API at ' + this.apiUrl())
+        log('Please make sure the IPP container is able to reach this path.')
+      } catch (e) {
+        console.log(e)
+      }
     }
     return {
       valid: false
@@ -210,7 +215,7 @@ class Immich {
     const path = ['photo', key, id]
     if (size) path.push(size)
     const params = password ? this.encryptPassword(password) : {}
-    return this.buildUrl('/' + path.join('/'), params)
+    return this.buildUrl('/share/' + path.join('/'), params)
   }
 
   /**
@@ -218,7 +223,7 @@ class Immich {
    */
   videoUrl (key: string, id: string, password?: string) {
     const params = password ? this.encryptPassword(password) : {}
-    return this.buildUrl(`/video/${key}/${id}`, params)
+    return this.buildUrl(`/share/video/${key}/${id}`, params)
   }
 
   /**
