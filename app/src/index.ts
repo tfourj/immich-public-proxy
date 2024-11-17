@@ -117,6 +117,7 @@ app.get('/healthcheck', async (_req, res) => {
  * reverse proxy config, or even redirect to 404 if you like.
  */
 app.get('/', (_req, res) => {
+  addResponseHeaders(res)
   res.render('home')
 })
 
