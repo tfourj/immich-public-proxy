@@ -53,6 +53,11 @@ class Render {
     })
     const data = await fetch(url, { headers })
 
+    // Add the filename for downloaded assets
+    if (size === ImageSize.original && asset.originalFileName && getConfigOption('ipp.downloadOriginalPhoto', true)) {
+      res.setHeader('Content-Disposition', `attachment; filename="${asset.originalFileName}"`)
+    }
+
     // Return the response to the client
     if (data.status >= 200 && data.status < 300) {
       // Populate the whitelisted response headers
@@ -97,7 +102,8 @@ class Render {
             controls: true
           }
         })
-      } else if (asset.type === AssetType.image && getConfigOption('ipp.downloadOriginalPhoto', true)) {
+      }
+      if (getConfigOption('ipp.downloadOriginalPhoto', true)) {
         // Add a download link for the original-size image, if configured in config.json
         downloadUrl = immich.photoUrl(share.key, asset.id, ImageSize.original, asset.password)
       }

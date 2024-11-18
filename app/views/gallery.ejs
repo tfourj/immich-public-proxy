@@ -21,7 +21,11 @@
 <div id="lightgallery">
     <% items.forEach(item => {
     if (item.video) { %>
-        <a data-video='<%- item.video %>'>
+        <a data-video='<%- item.video %>'
+        <% if (item.downloadUrl) { %>
+           data-download-url="<%- item.downloadUrl %>"
+                <% } %>
+        >
             <img alt="" src="<%- item.thumbnailUrl %>"/>
             <div class="play-icon"></div>
         </a>
