@@ -160,6 +160,8 @@ For example, to disable the download button for images, you would edit the `ligh
 If you're using Cloudflare and having issues with videos not playing well, make sure your `/share/video/` paths are set to bypass cache.
 I ran into this issue myself, and found [some helpful advice here](https://community.cloudflare.com/t/mp4-wont-load-in-safari-using-cloudflare/10587/48).
 
+<a href="docs/cloudflare-video-cache.webp"><img src="docs/cloudflare-video-cache.webp" style="width:70%"></a>
+
 ## Feature requests
 
 You can [add feature requests here](https://github.com/alangrainger/immich-public-proxy/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop),
