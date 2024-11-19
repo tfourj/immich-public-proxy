@@ -74,6 +74,9 @@ docker-compose up -d
 
 Now whenever you share an image or gallery through Immich, it will automatically create the correct public path for you.
 
+🚨 **IMPORTANT**: If you're using Cloudflare, please make sure to set your `/share/video/*` path to Bypass Cache, otherwise you may
+run into video playback issues. See [Troubleshooting](#troubleshooting) for more information.
+
 ### Running on a single domain
 
 Because all IPP paths are under `/share/...`, you can run Immich Public Proxy and Immich on the same domain.
