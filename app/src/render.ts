@@ -39,7 +39,8 @@ class Render {
     if (asset.type === AssetType.video) {
       const range = (req.range || '').replace(/bytes=/, '').split('-')
       const start = parseInt(range[0], 10) || 0
-      headers.range = `bytes=${start}-${start + 2499999}`
+      const end = parseInt(range[1], 10) || start + 2499999
+      headers.range = `bytes=${start}-${end}`
       headerList.push('cache-control', 'content-range')
       res.setHeader('accept-ranges', 'bytes')
       res.status(206) // Partial Content
@@ -98,8 +99,8 @@ class Render {
             }
           ],
           attributes: {
-            preload: false,
-            controls: true
+            playsinline: 'playsinline',
+            controls: 'controls'
           }
         })
       }
