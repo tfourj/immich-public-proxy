@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import express from 'express'
 import immich from './immich'
 import render from './render'

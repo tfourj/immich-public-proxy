@@ -15,6 +15,7 @@
     "url": "https://github.com/alangrainger/immich-public-proxy.git"
   },
   "main": "dist/index.js",
+  "bin": "dist/index.js",
   "dependencies": {
     "archiver": "^7.0.1",
     "dayjs": "^1.11.13",
