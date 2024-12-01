@@ -3,7 +3,6 @@ import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink } from './types'
 import { getConfigOption } from './functions'
 import archiver from 'archiver'
-import dayjs from 'dayjs'
 
 class Render {
   lgConfig
