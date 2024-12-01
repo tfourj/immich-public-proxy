@@ -2,9 +2,16 @@ import express from 'express'
 import immich from './immich'
 import render from './render'
 import dayjs from 'dayjs'
+import { Request, Response, NextFunction } from 'express-serve-static-core'
 import { AssetType, ImageSize } from './types'
 import { decrypt } from './encrypt'
 import { log, toString, addResponseHeaders } from './functions'
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    password?: string;
+  }
+}
 
 require('dotenv').config()
 
@@ -17,6 +24,26 @@ app.use(express.json())
 app.use('/share/static', express.static('public', { setHeaders: addResponseHeaders }))
 // Serve the same assets on /, to allow for /robots.txt and /favicon.ico
 app.use(express.static('public', { setHeaders: addResponseHeaders }))
+
+const checkPassword = (req: Request, res: Response, next: NextFunction) => {
+  if (req.query?.cr && req.query?.iv) {
+    try {
+      const payload = JSON.parse(decrypt({
+        iv: toString(req.query.iv),
+        cr: toString(req.query.cr)
+      }))
+      if (payload?.expires && dayjs(payload.expires) > dayjs()) {
+        req.password = payload.password
+      } else {
+        log(`Attempted to load assets from ${req.params.key} with an expired decryption token`)
+        // Send 404 rather than 401 so as not to provide information to an attacker that there is "something" at this path
+        res.status(404).send()
+        return
+      }
+    } catch (e) { }
+  }
+  next()
+}
 
 /*
  * [ROUTE] Healthcheck
@@ -33,10 +60,11 @@ app.get(/^(|\/share)\/healthcheck$/, async (_req, res) => {
 /*
  * [ROUTE] This is the main URL that someone would visit if they are opening a shared link
  */
-app.get('/share/:key/:mode(download)?', async (req, res) => {
+app.get('/share/:key/:mode(download)?', checkPassword, async (req, res) => {
   await immich.handleShareRequest({
     key: req.params.key,
-    mode: req.params.mode
+    mode: req.params.mode,
+    password: req.password
   }, res)
 })
 
@@ -53,7 +81,7 @@ app.post('/share/unlock', async (req, res) => {
 /*
  * [ROUTE] This is the direct link to a photo or video asset
  */
-app.get('/share/:type(photo|video)/:key/:id/:size?', async (req, res) => {
+app.get('/share/:type(photo|video)/:key/:id/:size?', checkPassword, async (req, res) => {
   // Add the headers configured in config.json (most likely `cache-control`)
   addResponseHeaders(res)
 
@@ -71,28 +99,9 @@ app.get('/share/:type(photo|video)/:key/:id/:size?', async (req, res) => {
     return
   }
 
-  // Validate the password payload, if one was provided
-  let password
-  if (req.query?.cr && req.query?.iv) {
-    try {
-      const payload = JSON.parse(decrypt({
-        iv: toString(req.query.iv),
-        cr: toString(req.query.cr)
-      }))
-      if (payload?.expires && dayjs(payload.expires) > dayjs()) {
-        password = payload.password
-      } else {
-        log(`Attempted to load assets from ${req.params.key} with an expired decryption token`)
-        // Send 404 rather than 401 so as not to provide information to an attacker that there is "something" at this path
-        res.status(404).send()
-        return
-      }
-    } catch (e) { }
-  }
-
   // Fetch the shared link information from Immich, so we can check to make sure that the requested asset
   // is allowed by this shared link.
-  const sharedLink = (await immich.getShareByKey(req.params.key, password))?.link
+  const sharedLink = (await immich.getShareByKey(req.params.key, req.password))?.link
   const request = {
     key: req.params.key,
     range: req.headers.range || ''

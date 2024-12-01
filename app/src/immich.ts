@@ -136,6 +136,7 @@ class Immich {
         if (res.status === 200) {
           // Normal response - get the shared assets
           link = jsonBody as SharedLink
+          link.password = password
           if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
             // This link has expired
             log('Expired link ' + key)

@@ -17,6 +17,7 @@ export interface SharedLink {
   type: string;
   description?: string;
   assets: Asset[];
+  password?: string;
   album?: {
     id: string;
     albumName?: string;

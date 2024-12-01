@@ -3,6 +3,7 @@ import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink } from './types'
 import { getConfigOption } from './functions'
 import archiver from 'archiver'
+import dayjs from 'dayjs'
 
 class Render {
   lgConfig
@@ -121,6 +122,7 @@ class Render {
       title: this.title(share),
       path: '/share/' + share.key,
       showDownload: getConfigOption('ipp.allowDownloadAll', false),
+      password: share.password ? immich.encryptPassword(share.password) : {},
       showTitle: getConfigOption('ipp.showGalleryTitle', false),
       lgConfig: getConfigOption('lightGallery', {})
     })
@@ -130,7 +132,7 @@ class Render {
    * Attempt to get a title from the link description or the album title
    */
   title (share: SharedLink) {
-    return share.description || share?.album?.albumName || ''
+    return share.description || share?.album?.albumName || 'Gallery'
   }
 
   /**
