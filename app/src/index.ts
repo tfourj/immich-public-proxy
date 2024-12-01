@@ -7,6 +7,7 @@ import { AssetType, ImageSize } from './types'
 import { decrypt } from './encrypt'
 import { log, toString, addResponseHeaders } from './functions'
 
+// Extend the Request type with a `password` property
 declare module 'express-serve-static-core' {
   interface Request {
     password?: string;
@@ -25,6 +26,9 @@ app.use('/share/static', express.static('public', { setHeaders: addResponseHeade
 // Serve the same assets on /, to allow for /robots.txt and /favicon.ico
 app.use(express.static('public', { setHeaders: addResponseHeaders }))
 
+/**
+ * Middleware to decode an encrypted password sent from the frontend (if provided)
+ */
 const checkPassword = (req: Request, res: Response, next: NextFunction) => {
   if (req.query?.cr && req.query?.iv) {
     try {
