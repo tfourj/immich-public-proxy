@@ -19,7 +19,9 @@ Setup takes less than a minute, and you never need to touch it again as all of y
 ### Table of Contents
 
 - [About this project](#about-this-project)
-- [Install with Docker](#installation)
+- [Installation](#installation)
+  - [Install with Docker](#install-with-docker--podman)
+  - [Install with Kubernetes](docs/kubernetes.md)
 - [How to use it](#how-to-use-it)
 - [How it works](#how-it-works)
 - [Additional configuration](#additional-configuration)
@@ -57,6 +59,8 @@ Here is an example setup for [securing Immich behind mTLS](./docs/securing-immic
 
 ## Installation
 
+### Install with Docker / Podman
+
 1. Download the [docker-compose.yml](https://github.com/alangrainger/immich-public-proxy/blob/main/docker-compose.yml) file.
 
 2. Update the value for `IMMICH_URL` in your docker-compose file to point to your local URL for Immich. This should not be a public URL.
@@ -77,11 +81,15 @@ Now whenever you share an image or gallery through Immich, it will automatically
 🚨 **IMPORTANT**: If you're using Cloudflare, please make sure to set your `/share/video/*` path to Bypass Cache, otherwise you may
 run into video playback issues. See [Troubleshooting](#troubleshooting) for more information.
 
-### Running on a single domain
+#### Running on a single domain
 
 Because all IPP paths are under `/share/...`, you can run Immich Public Proxy and Immich on the same domain.
 
 See the instructions here: [Running on a single domain](./docs/running-on-single-domain.md).
+
+### Install with Kubernetes
+
+[See the docs here](docs/kubernetes.md).
 
 ## How to use it
 
