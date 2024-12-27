@@ -1,6 +1,9 @@
-function initLightGallery (config = {}) {
-  lightGallery(document.getElementById('lightgallery'), Object.assign({
+function initLightGallery (params = {}) {
+  // Create the lightGallery instance
+  const lgEl = document.getElementById('lightgallery')
+  const lg = lightGallery(lgEl, Object.assign({
     plugins: [lgZoom, lgThumbnail, lgVideo, lgFullscreen],
+    speed: 500,
     /*
     This license key was graciously provided by LightGallery under their
     GPLv3 open-source project license:
@@ -15,5 +18,41 @@ function initLightGallery (config = {}) {
 
     https://www.lightgalleryjs.com/docs/settings/#licenseKey
     */
-  }, config))
+  }, params.lgConfig))
+
+  // repeat the array for testing
+  let items = []
+  for (let i = 0; i < 50; i++) {
+    items = items.concat(params.items)
+  }
+
+  // Append thumbnails
+  items.forEach(item => {
+    if (item.video) {
+      lgEl.insertAdjacentHTML('beforeend', `<a data-video='${item.video}'
+        ${item.downloadUrl ? 'data-download-url="' + item.downloadUrl + '"' : ''}>
+        <img alt="" src="${item.thumbnailUrl}"/><div class="play-icon"></div></a>`)
+    } else {
+      lgEl.insertAdjacentHTML('beforeend', `<a href="${item.previewUrl}"
+        ${item.downloadUrl ? 'data-download-url="' + item.downloadUrl + '"' : ''}>
+        <img alt="" src="${item.thumbnailUrl}"/></a>`)
+    }
+  })
+  lg.refresh()
+
+  let timeout
+  window.addEventListener('scroll', () => {
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(handleScroll, 100)
+  })
+}
+
+function handleScroll () {
+  const scrollPosition = window.innerHeight + window.scrollY
+  const pageHeight = document.documentElement.scrollHeight
+  const buffer = 100 // pixels before bottom to trigger load
+
+  if (pageHeight - scrollPosition <= buffer) {
+    loadMoreItems()
+  }
 }
