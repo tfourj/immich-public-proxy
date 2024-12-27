@@ -1,6 +1,6 @@
 # Install with Kubernetes
 
-Thanks to [@vanchaxy](https://github.com/vanchaxy) for providing these docs.
+Thanks to [@vanchaxy](https://github.com/vanchaxy) for providing these docs in [#42](https://github.com/alangrainger/immich-public-proxy/issues/42).
 
 See the [official Immich docs](https://immich.app/docs/install/kubernetes/) for additional information.
 
