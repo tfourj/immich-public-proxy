@@ -10,6 +10,9 @@
 
 Share your Immich photos and albums in a safe way without exposing your Immich instance to the public.
 
+👉 See a [Live demo gallery](https://immich-demo.note.sx/share/gJfs8l4LcJJrBUpjhMnDoKXFt1Tm5vKXPbXl8BgwPtLtEBCOOObqbQdV5i0oun5hZjQ)
+serving straight out of my own Immich instance.
+
 Setup takes less than a minute, and you never need to touch it again as all of your sharing stays managed within Immich.
 
 <p align="center" width="100%">
@@ -38,9 +41,6 @@ which you have publicly shared.
 
 It is stateless and does not know anything about your Immich instance. It does not require an API key which reduces the attack 
 surface even further. The only things that the proxy can access are photos that you have made publicly available in Immich. 
-
-See a [Live demo gallery](https://immich-demo.note.sx/share/gJfs8l4LcJJrBUpjhMnDoKXFt1Tm5vKXPbXl8BgwPtLtEBCOOObqbQdV5i0oun5hZjQ)
-serving straight out of my own Immich instance.
 
 ### Features
 
