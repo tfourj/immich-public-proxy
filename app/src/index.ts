@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { Request, Response, NextFunction } from 'express-serve-static-core'
 import { AssetType, ImageSize } from './types'
 import { decrypt } from './encrypt'
-import { log, toString, addResponseHeaders } from './functions'
+import { log, toString, addResponseHeaders, getConfigOption } from './functions'
 
 // Extend the Request type with a `password` property
 declare module 'express-serve-static-core' {
@@ -131,13 +131,15 @@ app.get('/share/:type(photo|video)/:key/:id/:size?', checkPassword, async (req, 
  * It was requested here to have *something* on the home page:
  * https://github.com/alangrainger/immich-public-proxy/discussions/19
  *
- * If you don't want to see this, you can redirect to a URL of your choice by changing your
- * reverse proxy config, or even redirect to 404 if you like.
+ * If you don't want to see this, set showHomePage as false in your config.json:
+ * https://github.com/alangrainger/immich-public-proxy?tab=readme-ov-file#immich-public-proxy-options
  */
-app.get(/^\/(|share)\/*$/, (_req, res) => {
-  addResponseHeaders(res)
-  res.render('home')
-})
+if (getConfigOption('ipp.showHomePage', true)) {
+  app.get(/^\/(|share)\/*$/, (_req, res) => {
+    addResponseHeaders(res)
+    res.render('home')
+  })
+}
 
 /*
  * Send a 404 for all other routes
