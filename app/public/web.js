@@ -4,6 +4,9 @@ class LGallery {
   element
   index = 0
 
+  /**
+   * Create a lightGallery instance and populate it with the first page of gallery items
+   */
   init (params = {}) {
     // Create the lightGallery instance
     this.element = document.getElementById('lightgallery')
@@ -35,6 +38,9 @@ class LGallery {
     lgallery.handleScroll()
   }
 
+  /**
+   * Listen for scroll events and load more gallery items
+   */
   handleScroll () {
     const rect = lgallery.element.getBoundingClientRect()
     const scrollPosition = Math.max(0, rect.bottom - window.innerHeight)
@@ -45,10 +51,16 @@ class LGallery {
     }
   }
 
+  /**
+   * Load more gallery items as per lightGallery docs
+   * https://www.lightgalleryjs.com/demos/infinite-scrolling/
+   */
   loadMoreItems () {
-    const numberOfItems = 80
+    const numberOfItems = 2
     if (this.index < this.items.length) {
-      // Append thumbnails
+      this.index += numberOfItems
+
+      // Append new thumbnails
       this.items
         .slice(this.index, this.index + numberOfItems)
         .forEach(item => {
@@ -63,7 +75,6 @@ class LGallery {
           }
         })
       this.lightGallery.refresh()
-      this.index += numberOfItems
     }
   }
 }
