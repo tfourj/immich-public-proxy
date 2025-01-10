@@ -150,7 +150,8 @@ For example, to disable the home page at `/` and at `/share` you need to change 
 ```json
 {
   "ipp": {
-    "showHomePage": false
+    "showHomePage": false,
+    ...
   }
 }
 
