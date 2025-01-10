@@ -33,7 +33,7 @@
 <script src="/share/static/lg/lg-zoom.min.js"></script>
 <script type="text/javascript">
   lgallery.init(<%- JSON.stringify({lgConfig, items, openItem}) %>) // initLightGallery imported from web.js
- <% if (false && openItem) { %>
+ <% if (openItem) { %>
   const openItem = <%- openItem %>
   const thumbs = document.querySelectorAll('#lightgallery a')
   if (thumbs.length >= openItem) {

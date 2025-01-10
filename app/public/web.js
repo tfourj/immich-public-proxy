@@ -25,13 +25,7 @@ class LGallery {
       https://www.lightgalleryjs.com/docs/settings/#licenseKey
       */
     }, params.lgConfig))
-
-    // repeat the array for testing
-    let items = []
-    for (let i = 0; i < 50; i++) {
-      items = items.concat(params.items)
-    }
-    this.items = items
+    this.items = params.items
 
     let timeout
     window.addEventListener('scroll', () => {
@@ -52,7 +46,7 @@ class LGallery {
   }
 
   loadMoreItems () {
-    const numberOfItems = 20
+    const numberOfItems = 100
     if (this.index < this.items.length) {
       // Append thumbnails
       this.items
