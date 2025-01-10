@@ -46,7 +46,7 @@ class LGallery {
   }
 
   loadMoreItems () {
-    const numberOfItems = 100
+    const numberOfItems = 80
     if (this.index < this.items.length) {
       // Append thumbnails
       this.items

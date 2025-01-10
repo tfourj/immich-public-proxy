@@ -76,12 +76,10 @@ app.get('/share/:key/:mode(download)?', checkPassword, async (req, res) => {
 
 /*
  * [ROUTE] Receive an unlock request from the password page
+ * Returns an encrypted unlock key which lasts for 1 hour
  */
 app.post('/share/unlock', async (req, res) => {
-  await immich.handleShareRequest({
-    key: toString(req.body.key),
-    password: toString(req.body.password)
-  }, res)
+  res.send(immich.encryptPassword(req.body.password))
 })
 
 /*
