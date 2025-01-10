@@ -56,7 +56,7 @@ class LGallery {
    * https://www.lightgalleryjs.com/demos/infinite-scrolling/
    */
   loadMoreItems () {
-    const numberOfItems = 2
+    const numberOfItems = 80
     if (this.index < this.items.length) {
       this.index += numberOfItems
 
