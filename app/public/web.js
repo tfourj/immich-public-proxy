@@ -58,8 +58,6 @@ class LGallery {
   loadMoreItems () {
     const numberOfItems = 80
     if (this.index < this.items.length) {
-      this.index += numberOfItems
-
       // Append new thumbnails
       this.items
         .slice(this.index, this.index + numberOfItems)
@@ -74,6 +72,7 @@ class LGallery {
         <img alt="" src="${item.thumbnailUrl}"/></a>`)
           }
         })
+      this.index += numberOfItems
       this.lightGallery.refresh()
     }
   }
