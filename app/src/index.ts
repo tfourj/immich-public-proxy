@@ -40,11 +40,6 @@ const checkPassword = (req: Request, res: Response, next: NextFunction) => {
       }))
       if (payload?.expires && dayjs(payload.expires) > dayjs()) {
         req.password = payload.password
-      } else {
-        log(`Attempted to load assets from ${req.params.key} with an expired decryption token`)
-        // Send 404 rather than 401 so as not to provide information to an attacker that there is "something" at this path
-        res.status(404).send()
-        return
       }
     } catch (e) { }
   }
