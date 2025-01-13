@@ -24,7 +24,30 @@
     </div>
     <% } %>
 </div>
-<div id="lightgallery"></div>
+<div id="lightgallery">
+    <%
+    // Load the first 50 thumbnails, then load more as the user scrolls. See web.js
+    items.slice(0, 50).forEach(item => {
+    if (item.video) { %>
+        <a data-video='<%- item.video %>'
+        <% if (item.downloadUrl) { %>
+           data-download-url="<%- item.downloadUrl %>"
+                <% } %>
+        >
+            <img alt="" src="<%- item.thumbnailUrl %>"/>
+            <div class="play-icon"></div>
+        </a>
+    <% } else { %>
+        <a href="<%- item.previewUrl %>"
+        <% if (item.downloadUrl) { %>
+           data-download-url="<%- item.downloadUrl %>"
+                <% } %>
+        >
+            <img alt="" src="<%- item.thumbnailUrl %>"/>
+        </a>
+    <% }
+    }) %>
+</div>
 <script src="/share/static/web.js"></script>
 <script src="/share/static/lg/lightgallery.min.js"></script>
 <script src="/share/static/lg/lg-fullscreen.min.js"></script>

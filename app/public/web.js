@@ -1,8 +1,11 @@
+// How many thumbnails to load per "page" fetched from Immich
+const PER_PAGE = 50
+
 class LGallery {
   items
   lightGallery
   element
-  index = 0
+  index = PER_PAGE
 
   /**
    * Create a lightGallery instance and populate it with the first page of gallery items
@@ -56,11 +59,10 @@ class LGallery {
    * https://www.lightgalleryjs.com/demos/infinite-scrolling/
    */
   loadMoreItems () {
-    const numberOfItems = 80
     if (this.index < this.items.length) {
       // Append new thumbnails
       this.items
-        .slice(this.index, this.index + numberOfItems)
+        .slice(this.index, this.index + PER_PAGE)
         .forEach(item => {
           if (item.video) {
             this.element.insertAdjacentHTML('beforeend', `<a data-video='${item.video}'
@@ -72,7 +74,7 @@ class LGallery {
         <img alt="" src="${item.thumbnailUrl}"/></a>`)
           }
         })
-      this.index += numberOfItems
+      this.index += PER_PAGE
       this.lightGallery.refresh()
     }
   }
