@@ -94,7 +94,7 @@ class Render {
         video = JSON.stringify({
           source: [
             {
-              src: immich.videoUrl(share.key, asset.id, asset.password),
+              src: immich.videoUrl(share.key, asset.id),
               type: await immich.getVideoContentType(asset)
             }
           ],
@@ -106,12 +106,12 @@ class Render {
       }
       if (getConfigOption('ipp.downloadOriginalPhoto', true)) {
         // Add a download link for the original-size image, if configured in config.json
-        downloadUrl = immich.photoUrl(share.key, asset.id, ImageSize.original, asset.password)
+        downloadUrl = immich.photoUrl(share.key, asset.id, ImageSize.original)
       }
       items.push({
-        previewUrl: immich.photoUrl(share.key, asset.id, ImageSize.preview, asset.password),
+        previewUrl: immich.photoUrl(share.key, asset.id, ImageSize.preview),
         downloadUrl,
-        thumbnailUrl: immich.photoUrl(share.key, asset.id, ImageSize.thumbnail, asset.password),
+        thumbnailUrl: immich.photoUrl(share.key, asset.id, ImageSize.thumbnail),
         video
       })
     }

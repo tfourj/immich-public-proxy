@@ -152,9 +152,9 @@ class Immich {
             // Sort album if there is a sort order specified
             const sortOrder = link.album?.order
             if (sortOrder === 'asc') {
-              link.assets.sort((a, b) => a.fileCreatedAt.localeCompare(b.fileCreatedAt))
+              link.assets.sort((a, b) => a?.fileCreatedAt?.localeCompare(b.fileCreatedAt))
             } else if (sortOrder === 'desc') {
-              link.assets.sort((a, b) => b.fileCreatedAt.localeCompare(a.fileCreatedAt))
+              link.assets.sort((a, b) => b?.fileCreatedAt?.localeCompare(a.fileCreatedAt))
             }
             return {
               valid: true,
@@ -220,7 +220,7 @@ class Immich {
   /**
    * Return the image data URL for a photo
    */
-  photoUrl (key: string, id: string, size?: ImageSize, password?: string) {
+  photoUrl (key: string, id: string, size?: ImageSize) {
     const path = ['photo', key, id]
     if (size) path.push(size)
     return this.buildUrl('/share/' + path.join('/'))
@@ -229,7 +229,7 @@ class Immich {
   /**
    * Return the video data URL for a video
    */
-  videoUrl (key: string, id: string, password?: string) {
+  videoUrl (key: string, id: string) {
     return this.buildUrl(`/share/video/${key}/${id}`)
   }
 
