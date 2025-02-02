@@ -1,3 +1,5 @@
+import { Request } from 'express-serve-static-core'
+
 export enum AssetType {
   image = 'IMAGE',
   video = 'VIDEO'
@@ -41,6 +43,7 @@ export enum ImageSize {
 }
 
 export interface IncomingShareRequest {
+  req: Request;
   key: string;
   password?: string;
   mode?: string;

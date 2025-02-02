@@ -3,7 +3,6 @@ import dayjs from 'dayjs'
 import { addResponseHeaders, getConfigOption, log } from './functions'
 import render from './render'
 import { Response } from 'express-serve-static-core'
-import { encrypt } from './encrypt'
 
 class Immich {
   /**
@@ -65,8 +64,9 @@ class Immich {
     // A password is required, but the visitor-provided one doesn't match
     if (sharedLinkRes.passwordRequired && request.password) {
       log('Invalid password for key ' + request.key)
-      res.status(401).send()
-      return
+      res.status(401)
+      // Delete the cookie-session data, so that it doesn't keep saying "Invalid password"
+      if (request.req?.session) delete request.req.session[request.key]
     }
 
     // Password required - show the visitor the password page
@@ -75,7 +75,8 @@ class Immich {
       const key = request.key.replace(/[^\w-]/g, '')
       res.render('password', {
         key,
-        lgConfig: render.lgConfig
+        lgConfig: render.lgConfig,
+        notifyInvalidPassword: !!request.password
       })
       return
     }
@@ -222,16 +223,14 @@ class Immich {
   photoUrl (key: string, id: string, size?: ImageSize, password?: string) {
     const path = ['photo', key, id]
     if (size) path.push(size)
-    const params = password ? this.encryptPassword(password) : {}
-    return this.buildUrl('/share/' + path.join('/'), params)
+    return this.buildUrl('/share/' + path.join('/'))
   }
 
   /**
    * Return the video data URL for a video
    */
   videoUrl (key: string, id: string, password?: string) {
-    const params = password ? this.encryptPassword(password) : {}
-    return this.buildUrl(`/share/video/${key}/${id}`, params)
+    return this.buildUrl(`/share/video/${key}/${id}`)
   }
 
   /**
@@ -248,20 +247,6 @@ class Immich {
    */
   isKey (key: string) {
     return !!key.match(/^[\w-]+$/)
-  }
-
-  /**
-   * When loading assets from a password-protected link, make the decryption key valid for a
-   * short time. If the visitor loads the share link again, it will renew that expiry time.
-   * Even though the recipient already knows the password, this is just in case - for example
-   * to protect against the password-protected link being revoked, but the asset links still
-   * being valid.
-   */
-  encryptPassword (password: string) {
-    return encrypt(JSON.stringify({
-      password,
-      expires: dayjs().add(1, 'hour').format()
-    }))
   }
 
   async accessible () {

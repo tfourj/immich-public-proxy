@@ -121,7 +121,6 @@ class Render {
       title: this.title(share),
       path: '/share/' + share.key,
       showDownload: getConfigOption('ipp.allowDownloadAll', false),
-      password: share.password ? immich.encryptPassword(share.password) : {},
       showTitle: getConfigOption('ipp.showGalleryTitle', false),
       lgConfig: getConfigOption('lightGallery', {})
     })
