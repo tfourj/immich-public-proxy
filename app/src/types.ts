@@ -10,7 +10,7 @@ export interface Asset {
   key: string;
   originalFileName?: string;
   password?: string;
-  fileCreatedAt: string;
+  fileCreatedAt?: string; // May not exist - see https://github.com/alangrainger/immich-public-proxy/issues/61
   type: AssetType;
   isTrashed: boolean;
 }

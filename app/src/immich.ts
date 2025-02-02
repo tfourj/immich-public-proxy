@@ -152,9 +152,9 @@ class Immich {
             // Sort album if there is a sort order specified
             const sortOrder = link.album?.order
             if (sortOrder === 'asc') {
-              link.assets.sort((a, b) => a?.fileCreatedAt?.localeCompare(b.fileCreatedAt))
+              link.assets.sort((a, b) => a?.fileCreatedAt?.localeCompare(b.fileCreatedAt || '') || 0)
             } else if (sortOrder === 'desc') {
-              link.assets.sort((a, b) => b?.fileCreatedAt?.localeCompare(a.fileCreatedAt))
+              link.assets.sort((a, b) => b?.fileCreatedAt?.localeCompare(a.fileCreatedAt || '') || 0)
             }
             return {
               valid: true,
