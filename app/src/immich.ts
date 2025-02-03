@@ -43,6 +43,8 @@ class Immich {
    * 404 - any other failed request. Check console.log for details.
    */
   async handleShareRequest (request: IncomingShareRequest, res: Response) {
+    addResponseHeaders(res)
+
     // Check that the key is a valid format
     if (!immich.isKey(request.key)) {
       log('Invalid share key ' + request.key)
@@ -66,13 +68,17 @@ class Immich {
       if (request.req?.session) delete request.req.session[request.key]
     }
 
+    // Don't cache password-protected albums
+    if (sharedLinkRes.passwordRequired || request.password) {
+      res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+      res.header('Pragma', 'no-cache')
+      res.header('Expires', '0')
+    }
+
     // Password required - show the visitor the password page
     if (sharedLinkRes.passwordRequired) {
       // `request.key` is already sanitised at this point, but it never hurts to be explicit
       const key = request.key.replace(/[^\w-]/g, '')
-      res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
-      res.header('Pragma', 'no-cache')
-      res.header('Expires', '0')
       res.render('password', {
         key,
         lgConfig: render.lgConfig,
@@ -96,7 +102,6 @@ class Immich {
     }
 
     // Everything is ok - output the shared link data
-    addResponseHeaders(res)
 
     if (request.mode === 'download' && getConfigOption('ipp.allowDownloadAll', false)) {
       // Download all assets as a zip file
