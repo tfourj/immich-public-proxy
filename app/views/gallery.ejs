@@ -14,11 +14,9 @@
     <% } %>
     <%
     if (showDownload) {
-        // If there is a password required for the download, format it as a query string
-        const passwordQuery = Object.entries(password).length ? '?' + (new URLSearchParams(password)).toString() : ''
     %>
     <div id="download-all">
-        <a href="<%- path %>/download<%- passwordQuery %>" title="Download all"><img src="/share/static/images/download-all.svg"
+        <a href="<%- path %>/download" title="Download all"><img src="/share/static/images/download-all.svg"
                                                                                      height="24"
                                                                                      width="24" alt="Download all"></a>
     </div>
