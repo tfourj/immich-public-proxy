@@ -35,6 +35,8 @@ app.use(express.json())
 app.use('/share/static', express.static('public', { setHeaders: addResponseHeaders }))
 // Serve the same assets on /, to allow for /robots.txt and /favicon.ico
 app.use(express.static('public', { setHeaders: addResponseHeaders }))
+// Remove the X-Powered-By ExpressJS header
+app.disable('x-powered-by')
 
 /**
  * Middleware to decode the encrypted data stored in the session cookie

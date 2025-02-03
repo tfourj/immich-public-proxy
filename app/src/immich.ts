@@ -43,9 +43,6 @@ class Immich {
    * 404 - any other failed request. Check console.log for details.
    */
   async handleShareRequest (request: IncomingShareRequest, res: Response) {
-    // Add the headers configured in config.json (most likely `cache-control`)
-    addResponseHeaders(res)
-
     // Check that the key is a valid format
     if (!immich.isKey(request.key)) {
       log('Invalid share key ' + request.key)
@@ -73,6 +70,9 @@ class Immich {
     if (sharedLinkRes.passwordRequired) {
       // `request.key` is already sanitised at this point, but it never hurts to be explicit
       const key = request.key.replace(/[^\w-]/g, '')
+      res.header('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+      res.header('Pragma', 'no-cache')
+      res.header('Expires', '0')
       res.render('password', {
         key,
         lgConfig: render.lgConfig,
@@ -96,6 +96,7 @@ class Immich {
     }
 
     // Everything is ok - output the shared link data
+    addResponseHeaders(res)
 
     if (request.mode === 'download' && getConfigOption('ipp.allowDownloadAll', false)) {
       // Download all assets as a zip file
