@@ -197,6 +197,8 @@ however my goal with this project is to keep it as lean as possible.
 Due to the sensitivity of data contained within Immich, I want anyone with a bit of coding knowledge
 to be able to read this codebase and fully understand everything it is doing.
 
+The most basic rule for this project is that it has **read-only** access to Immich.
+
 Things that will not be considered for this project are:
 
 - Anything that modifies Immich or its files in any way. If it requires an API key or privileged accesss, it won't be considered as a new feature.
