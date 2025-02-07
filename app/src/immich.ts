@@ -25,6 +25,7 @@ class Immich {
       }
     } catch (e) {
       log('Unable to reach Immich on ' + process.env.IMMICH_URL)
+      log(`From the server IPP is running on, see if you can curl to ${this.apiUrl()}/server/ping and receive a JSON result.`)
     }
   }
 
