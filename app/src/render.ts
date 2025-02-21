@@ -140,7 +140,7 @@ class Render {
     res.setHeader('Content-Type', 'application/zip')
     const title = this.title(share).replace(/[^\w .-]/g, '') + '.zip'
     res.setHeader('Content-Disposition', `attachment; filename="${title}"`)
-    const archive = archiver('zip', { zlib: { level: 9 } })
+    const archive = archiver('zip', { zlib: { level: 6 } })
     archive.pipe(res)
     for (const asset of share.assets) {
       const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + '/original', {
@@ -148,10 +148,15 @@ class Render {
         password: asset.password
       })
       const data = await fetch(url)
+      // Check the response for validity
+      if (!data.ok) {
+        console.warn(`Failed to fetch asset: ${asset.id}`)
+        continue
+      }
       archive.append(Buffer.from(await data.arrayBuffer()), { name: asset.originalFileName || asset.id })
     }
     await archive.finalize()
-    res.end()
+    archive.on('end', () => res.end())
   }
 }
 
