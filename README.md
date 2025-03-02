@@ -28,6 +28,9 @@ Setup takes less than a minute, and you never need to touch it again as all of y
 - [How to use it](#how-to-use-it)
 - [How it works](#how-it-works)
 - [Additional configuration](#additional-configuration)
+  - [IPP options](#immich-public-proxy-options)
+  - [lightGallery](#lightgallery)
+  - [Custom error pages](#customising-your-error-response-pages)
 - [Troubleshooting](#troubleshooting)
 - [Feature requests](#feature-requests)
 
@@ -179,6 +182,10 @@ For example, to disable the download button for images, you would edit the `ligh
   }
 }
 ```
+
+### Customising your error response pages
+
+See [Custom repsonses](docs/custom-responses.md).
 
 ## Troubleshooting
 
