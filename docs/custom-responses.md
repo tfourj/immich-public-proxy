@@ -23,6 +23,14 @@ https://ipp.example.com {
 }
 ```
 
+If you wanted to drop the connection completely without responding at all, you can use:
+
+```
+handle_response @404 {
+    abort
+}
+```
+
 ## Apache
 
 ```
