@@ -4,7 +4,7 @@ To avoid giving information away about your server, IPP responds with a limited 
 
 | Code | Reason                                                                                          |
 |------|-------------------------------------------------------------------------------------------------|
-| 503  | Healthcheck failed - Immich is not accessible.                                                  |
+| 503  | Healthcheck failed: Immich is not accessible. Only on the `/healthcheck` route.                 |
 | 401  | Invalid password provided for a password-protected share link.                                  |
 | 404  | All other invalid requests, e.g. album doesn't exist, share link is expired, non-existing file. |
 
