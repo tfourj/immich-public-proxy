@@ -8,7 +8,13 @@ To avoid giving information away about your server, IPP responds with a limited 
 | 401  | Invalid password provided for a password-protected share link.                                  |
 | 404  | All other invalid requests, e.g. album doesn't exist, share link is expired, non-existing file. |
 
-Instead of sending these codes, you can customise the response(s) using your reverse proxy.
+Instead of sending these codes, you can customise the response(s) using your reverse proxy. For example you could:
+
+- Send a different response code.
+- Send your own custom 404 page.
+- Redirect to a new website.
+- Drop the connection entirely (no response).
+- And so on...
 
 ## Caddy
 
