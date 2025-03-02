@@ -185,7 +185,14 @@ For example, to disable the download button for images, you would edit the `ligh
 
 ### Customising your error response pages
 
-See [Custom repsonses](docs/custom-responses.md).
+You can customise the responses that IPP sends using your reverse proxy. For example you could:
+
+- Send your own custom 404 page.
+- Redirect to a new website.
+- Drop the connection entirely (no response).
+- And so on...
+
+See [Custom repsonses](docs/custom-responses.md) for more details.
 
 ## Troubleshooting
 
