@@ -192,7 +192,7 @@ You can customise the responses that IPP sends using your reverse proxy. For exa
 - Drop the connection entirely (no response).
 - And so on...
 
-See [Custom repsonses](docs/custom-responses.md) for more details.
+See [Custom responses](docs/custom-responses.md) for more details.
 
 ## Troubleshooting
 
