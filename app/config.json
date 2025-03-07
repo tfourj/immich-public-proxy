@@ -10,7 +10,7 @@
     "showGalleryTitle": false,
     "allowDownloadAll": false,
     "showHomePage": true,
-    "stealthMode": false
+    "customInvalidResponse": false
   },
   "lightGallery": {
     "controls": true,

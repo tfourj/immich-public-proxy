@@ -3,6 +3,7 @@ import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink } from './types'
 import { getConfigOption } from './functions'
 import archiver from 'archiver'
+import { respondToInvalidRequest } from './invalidRequestHandler'
 
 class Render {
   lgConfig
@@ -74,10 +75,7 @@ class Render {
       )
       res.end()
     } else {
-      if (getConfigOption('ipp.stealthMode', true)) {
-        res.destroy();
-      }
-      res.status(404).send()
+      respondToInvalidRequest(res, 404)
     }
   }
 

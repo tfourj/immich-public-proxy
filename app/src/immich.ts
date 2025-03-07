@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { addResponseHeaders, getConfigOption, log } from './functions'
 import render from './render'
 import { Response } from 'express-serve-static-core'
+import { respondToInvalidRequest } from './invalidRequestHandler'
 
 class Immich {
   /**
@@ -49,10 +50,7 @@ class Immich {
     // Check that the key is a valid format
     if (!immich.isKey(request.key)) {
       log('Invalid share key ' + request.key)
-      if (getConfigOption('ipp.stealthMode', true)) {
-        res.destroy();
-      }
-      res.status(404).send()
+      respondToInvalidRequest(res, 404)
       return
     }
 
@@ -60,10 +58,7 @@ class Immich {
     const sharedLinkRes = await immich.getShareByKey(request.key, request.password)
     if (!sharedLinkRes.valid) {
       // This isn't a valid request - check the console for more information
-      if (getConfigOption('ipp.stealthMode', true)) {
-        res.destroy();
-      }
-      res.status(404).send()
+      respondToInvalidRequest(res, 404)
       return
     }
 
@@ -96,7 +91,7 @@ class Immich {
 
     if (!sharedLinkRes.link) {
       log('Unknown error with key ' + request.key)
-      res.status(404).send()
+      respondToInvalidRequest(res, 404)
       return
     }
 
@@ -104,7 +99,7 @@ class Immich {
     const link = sharedLinkRes.link
     if (!link.assets.length) {
       log('No assets for key ' + request.key)
-      res.status(404).send()
+      respondToInvalidRequest(res, 404)
       return
     }
 

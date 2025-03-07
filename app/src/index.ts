@@ -10,6 +10,7 @@ import { Request, Response, NextFunction } from 'express-serve-static-core'
 import { AssetType, ImageSize } from './types'
 import { log, toString, addResponseHeaders, getConfigOption } from './functions'
 import { decrypt, encrypt } from './encrypt'
+import { respondToInvalidRequest } from './invalidRequestHandler'
 
 // Extend the Request type with a `password` property
 declare module 'express-serve-static-core' {
@@ -107,20 +108,14 @@ app.get('/share/:type(photo|video)/:key/:id/:size?', decodeCookie, async (req, r
   // Check for valid key and ID
   if (!immich.isKey(req.params.key) || !immich.isId(req.params.id)) {
     log('Invalid key or ID for ' + req.path)
-    if (getConfigOption('ipp.stealthMode', true)) {
-      res.destroy();
-    }
-    res.status(404).send()
+    respondToInvalidRequest(res, 404)
     return
   }
 
   // Validate the size parameter
   if (req.params.size && !Object.values(ImageSize).includes(req.params.size as ImageSize)) {
     log('Invalid size parameter ' + req.path)
-    if (getConfigOption('ipp.stealthMode', true)) {
-      res.destroy();
-    }
-    res.status(404).send()
+    respondToInvalidRequest(res, 404)
     return
   }
 
@@ -141,10 +136,7 @@ app.get('/share/:type(photo|video)/:key/:id/:size?', decodeCookie, async (req, r
     }
   } else {
     log('No asset found for ' + req.path)
-    if (getConfigOption('ipp.stealthMode', true)) {
-      res.destroy();
-    }
-    res.status(404).send()
+    respondToInvalidRequest(res, 404)
   }
 })
 
@@ -169,10 +161,7 @@ if (getConfigOption('ipp.showHomePage', true)) {
  */
 app.get('*', (req, res) => {
   log('Invalid route ' + req.path)
-  if (getConfigOption('ipp.stealthMode', true)) {
-    res.destroy(); 
-  }
-  res.status(404).send()
+  respondToInvalidRequest(res, 404)
 })
 
 // Start the ExpressJS server
