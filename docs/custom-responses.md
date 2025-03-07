@@ -8,15 +8,29 @@ To avoid giving information away about your server, IPP responds with a limited 
 | 401  | Invalid password provided for a password-protected share link.                                  |
 | 404  | All other invalid requests, e.g. album doesn't exist, share link is expired, non-existing file. |
 
-Instead of sending these codes, you can customise the response(s) using your reverse proxy. For example you could:
+Instead of sending these codes, you can customise the response by [changing the configuration option](../README.md#immich-public-proxy-options) for `customInvalidResponse`.
 
-- Send a different response code.
-- Send your own custom 404 page.
-- Redirect to a new website.
-- Drop the connection entirely (no response).
-- And so on...
+Possible options are:
 
-## Caddy
+| Option           | Data type | Example                 | Action                                   |
+|------------------|-----------|-------------------------|------------------------------------------|
+| HTTP status code | `integer` | `404`                   | Sends an HTTP status code.               |
+| Redirect URL     | `string`  | `"https://example.com"` | Redirects to another website.            |
+| `null`           | `null`    | `null`                  | Drops the connection without responding. |
+| `false`          | `boolean` | `false`                 | Responds with the default status code.   |
+
+## Custom function
+
+If you want to go even further, you can write your own custom function. Do this by taking a copy of the `app/dist/invalidRequestHandler.js` file,
+then mounting it back as a Docker volume into the correct location for the container to use.
+
+## Customising the response using your Reverse Proxy
+
+You can also choose to customise these responses using your reverse proxy, which might give you more flexibility depending on your use-case.
+
+Here are some examples:
+
+### Caddy
 
 ```
 https://ipp.example.com {
@@ -37,7 +51,7 @@ If you wanted to drop the connection completely without responding at all, you c
         }
 ```
 
-## Apache
+### Apache
 
 ```
 <VirtualHost *:80>
