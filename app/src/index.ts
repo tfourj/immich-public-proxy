@@ -66,7 +66,6 @@ const decodeCookie = (req: Request, _res: Response, next: NextFunction) => {
 app.get(/^(|\/share)\/healthcheck$/, async (_req, res) => {
   if (await immich.accessible()) {
     res.send('ok')
-    throw new Error('asdf')
   } else {
     res.status(503).send()
   }

@@ -1,10 +1,4 @@
-FROM node:lts-slim
-
-# Install wget for healthcheck
-RUN apt-get update && \
-    apt-get install -y wget && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+FROM node:lts-alpine
 
 WORKDIR /app
 
