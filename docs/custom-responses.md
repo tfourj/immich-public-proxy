@@ -19,6 +19,8 @@ Possible options are:
 | `null`           | `null`    | `null`                  | Drops the connection without responding. |
 | `false`          | `boolean` | `false`                 | Responds with the default status code.   |
 
+If you want to send a custom 404 page, you would do that with either of the below options - using a [custom function](#custom-function), or through your [reverse proxy](#customising-the-response-using-your-reverse-proxy).
+
 ## Custom function
 
 If you want to go even further, you can write your own custom function. Do this by taking a copy of the `app/dist/invalidRequestHandler.js` file,
@@ -52,6 +54,8 @@ If you wanted to drop the connection completely without responding at all, you c
 ```
 
 ### Apache
+
+Show a custom 404 page:
 
 ```
 <VirtualHost *:80>

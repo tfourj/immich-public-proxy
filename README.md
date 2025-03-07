@@ -191,6 +191,7 @@ You can customise the responses that IPP sends for invalid requests. For example
 - Drop the connection entirely (no response).
 - Redirect to a new website.
 - Send a different status code.
+- Send a custom 404 page.
 - And so on...
 
 See [Custom responses](docs/custom-responses.md) for more details.
