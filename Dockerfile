@@ -10,8 +10,6 @@ WORKDIR /app
 
 COPY app/ ./
 
-RUN npm install pm2 -g
-
 RUN chown -R node:node /app
 
 USER node
@@ -29,4 +27,4 @@ RUN npx tsc --noCheck
 
 HEALTHCHECK --interval=30s --start-period=10s --timeout=5s CMD wget -q --spider http://localhost:3000/share/healthcheck || exit 1
 
-CMD ["pm2-runtime", "dist/index.js" ]
+CMD ["node", "dist/index.js" ]

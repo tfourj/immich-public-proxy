@@ -66,6 +66,7 @@ const decodeCookie = (req: Request, _res: Response, next: NextFunction) => {
 app.get(/^(|\/share)\/healthcheck$/, async (_req, res) => {
   if (await immich.accessible()) {
     res.send('ok')
+    throw new Error('asdf')
   } else {
     res.status(503).send()
   }
@@ -164,8 +165,26 @@ app.get('*', (req, res) => {
   respondToInvalidRequest(res, 404)
 })
 
+// Send the correct process error code for any uncaught exceptions
+// so that Docker can gracefully restart the container
+process.on('uncaughtException', (err) => {
+  console.error('There was an uncaught error', err)
+  server.close()
+  process.exit(1)
+})
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
+  server.close()
+  process.exit(1)
+})
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM. Gracefully shutting down...')
+  server.close()
+  process.exit(0)
+})
+
 // Start the ExpressJS server
 const port = process.env.IPP_PORT || 3000
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(dayjs().format() + ' Server started on port ' + port)
 })

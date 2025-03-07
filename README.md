@@ -184,6 +184,17 @@ For example, to disable the download button for images, you would edit the `ligh
 }
 ```
 
+### Customising your error response pages
+
+You can customise the responses that IPP sends for invalid requests. For example you could:
+
+- Drop the connection entirely (no response).
+- Redirect to a new website.
+- Send a different status code.
+- And so on...
+
+See [Custom responses](docs/custom-responses.md) for more details.
+
 ## Troubleshooting
 
 If you're using Cloudflare and having issues with videos not playing well, make sure your `/share/video/` paths are set to bypass cache.

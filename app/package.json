@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "npx tsc",
-    "test": "podman build --build-arg PACKAGE_VERSION=$(npm pkg get version | xargs) --format docker -t immich-proxy-test .. && podman run --init -it -p=3000:3000 --env-file .env immich-proxy-test",
+    "test": "podman build --build-arg PACKAGE_VERSION=$(npm pkg get version | xargs) --format docker -t immich-proxy-test .. && podman run --init -it -p=3000:3000 --env-file .env --restart=always immich-proxy-test",
     "start": "node dist/index.js"
   },
   "author": "Alan Grainger",
