@@ -20,6 +20,7 @@ export interface SharedLink {
   type: string;
   description?: string;
   assets: Asset[];
+  allowDownload?: boolean;
   password?: string;
   album?: {
     id: string;
@@ -49,4 +50,10 @@ export interface IncomingShareRequest {
   mode?: string;
   size?: ImageSize;
   range?: string;
+}
+
+export enum DownloadAll {
+  disabled,
+  perImmich,
+  always
 }

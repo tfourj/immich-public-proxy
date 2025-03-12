@@ -1,7 +1,7 @@
 import immich from './immich'
 import { Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink } from './types'
-import { getConfigOption } from './functions'
+import { canDownload, getConfigOption } from './functions'
 import archiver from 'archiver'
 import { respondToInvalidRequest } from './invalidRequestHandler'
 
@@ -121,7 +121,7 @@ class Render {
       openItem,
       title: this.title(share),
       path: '/share/' + share.key,
-      showDownload: getConfigOption('ipp.allowDownloadAll', false),
+      showDownload: canDownload(share),
       showTitle: getConfigOption('ipp.showGalleryTitle', false),
       lgConfig: getConfigOption('lightGallery', {})
     })

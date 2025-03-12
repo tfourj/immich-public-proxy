@@ -1,6 +1,6 @@
 import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink, SharedLinkResult } from './types'
 import dayjs from 'dayjs'
-import { addResponseHeaders, getConfigOption, log } from './functions'
+import { addResponseHeaders, canDownload, getConfigOption, log } from './functions'
 import render from './render'
 import { Response } from 'express-serve-static-core'
 import { respondToInvalidRequest } from './invalidRequestHandler'
@@ -105,7 +105,7 @@ class Immich {
 
     // Everything is ok - output the shared link data
 
-    if (request.mode === 'download' && getConfigOption('ipp.allowDownloadAll', false)) {
+    if (request.mode === 'download' && canDownload(link)) {
       // Download all assets as a zip file
       await render.downloadAll(res, link)
     } else if (link.assets.length === 1) {
