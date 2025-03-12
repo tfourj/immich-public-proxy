@@ -140,14 +140,14 @@ There are some additional configuration options you can change, for example the 
 
 ### Immich Public Proxy options
 
-| Option                  | Type     | Description                                                                                                                          |
-|-------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `responseHeaders`       | `object` | Change the headers sent with your web responses. By default there is `cache-control` and CORS added.                                 |
-| `downloadOriginalPhoto` | `bool`   | Set to `false` if you only want people to be able to download the 'preview' quality photo, rather than your original photo.          |
-| `showGalleryTitle`      | `bool`   | Show a title on the gallery page.                                                                                                    |
-| `allowDownloadAll`      | `int`    | Allow visitors to download all files as a zip.<br>`0` disable downloads<br>`1` follow Immich setting per share<br>`2` always allowed |
-| `showHomePage`          | `bool`   | Set to `false` to remove the IPP shield page at `/` and at `/share`                                                                  |
-| `customInvalidResponse` | various  | Send a custom response instead of the default 404 - see [Custom responses](docs/custom-responses.md) for more details.               |
+| Option                  | Type     | Description                                                                                                                                                                                                                       |
+|-------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `responseHeaders`       | `object` | Change the headers sent with your web responses. By default there is `cache-control` and CORS added.                                                                                                                              |
+| `downloadOriginalPhoto` | `bool`   | Set to `false` if you only want people to be able to download the 'preview' quality photo, rather than your original photo.                                                                                                       |
+| `showGalleryTitle`      | `bool`   | Show a title on the gallery page.                                                                                                                                                                                                 |
+| `allowDownloadAll`      | `int`    | Allow visitors to download all files as a zip.<br>`0` disable downloads<br>`1` follow Immich setting per share ([example](https://github.com/user-attachments/assets/79ea8c08-71ce-42ab-b025-10aec384938a))<br>`2` always allowed |
+| `showHomePage`          | `bool`   | Set to `false` to remove the IPP shield page at `/` and at `/share`                                                                                                                                                               |
+| `customInvalidResponse` | various  | Send a custom response instead of the default 404 - see [Custom responses](docs/custom-responses.md) for more details.                                                                                                            |
 
 For example, to disable the home page at `/` and at `/share` you need to change `showHomePage` to `false`:
 
