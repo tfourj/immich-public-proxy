@@ -88,6 +88,14 @@ class Render {
    */
   async gallery (res: Response, share: SharedLink, openItem?: number) {
     const items = []
+
+    // Originally I had the base URL as a config option in .env.
+    // The issue with that is people who may be wanting to route in via multiple
+    // public URLs. So instead we generate the base URL from the incoming request data.
+    // This may cause issues with some reverse proxies, in which case just make sure
+    // that you're sending the correct `host` header to IPP.
+    const baseUrl = res.req.protocol + '://' + res.req.headers.host
+
     for (const asset of share.assets) {
       let video, downloadUrl
       if (asset.type === AssetType.video) {
@@ -112,7 +120,7 @@ class Render {
       items.push({
         previewUrl: immich.photoUrl(share.key, asset.id, ImageSize.preview),
         downloadUrl,
-        thumbnailUrl: immich.photoUrl(share.key, asset.id, ImageSize.thumbnail),
+        thumbnailUrl: baseUrl + immich.photoUrl(share.key, asset.id, ImageSize.thumbnail),
         video
       })
     }
