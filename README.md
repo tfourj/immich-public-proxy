@@ -204,7 +204,7 @@ I ran into this issue myself, and found [some helpful advice here](https://commu
 
 <a href="docs/cloudflare-video-cache.webp"><img src="docs/cloudflare-video-cache.webp" style="width:70%"></a>
 
-This project is tested with BrowserStack.
+I use Linux/Android, so this project is tested with BrowserStack for Apple/Windows devices.
 
 ## Feature requests
 
