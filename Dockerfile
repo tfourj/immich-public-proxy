@@ -19,6 +19,4 @@ ENV NODE_ENV=production
 # Type checking is done in the repo before building the image.
 RUN npx tsc --noCheck
 
-HEALTHCHECK --interval=30s --start-period=10s --timeout=5s CMD wget -q --spider http://localhost:3000/share/healthcheck || exit 1
-
 CMD ["node", "dist/index.js" ]
