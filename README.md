@@ -1,5 +1,13 @@
 # Immich Public Proxy
 
+## WARNING - Don't update to Immich v1.132
+
+This will cause IPP to stop functioning. I'm working to resolve this.
+
+See https://github.com/alangrainger/immich-public-proxy/issues/87
+
+---
+
 <p align="center" width="100%">
 <a href="https://hub.docker.com/r/alangrainger/immich-public-proxy/tags">
     <img alt="Docker pulls" src="https://badgen.net/docker/pulls/alangrainger/immich-public-proxy?v1.9.0&icon=docker&label=docker%20pulls&color=green&scale=1.1"></a>
