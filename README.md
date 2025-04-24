@@ -1,8 +1,8 @@
 # Immich Public Proxy
 
-## WARNING - Don't update to Immich v1.132
+## 🚨 WARNING - Don't update to Immich v1.132+ 🚨
 
-This will cause IPP to stop functioning. I'm working to resolve this.
+This will cause IPP to stop functioning, as Immich no longer outputs shared album info without an API key. I'm working to resolve this.
 
 See https://github.com/alangrainger/immich-public-proxy/issues/87
 
