@@ -5,6 +5,11 @@ export enum AssetType {
   video = 'VIDEO'
 }
 
+export enum AlbumType {
+  album = 'ALBUM',
+  individual = 'INDIVIDUAL'
+}
+
 export interface Asset {
   id: string;
   key: string;
@@ -13,6 +18,11 @@ export interface Asset {
   fileCreatedAt?: string; // May not exist - see https://github.com/alangrainger/immich-public-proxy/issues/61
   type: AssetType;
   isTrashed: boolean;
+}
+
+export interface Album {
+  id: string;
+  assets: Asset[];
 }
 
 export interface SharedLink {
