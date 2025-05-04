@@ -1,4 +1,13 @@
-import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink, SharedLinkResult } from './types'
+import {
+  Album,
+  AlbumType,
+  Asset,
+  AssetType,
+  ImageSize,
+  IncomingShareRequest,
+  SharedLink,
+  SharedLinkResult
+} from './types'
 import dayjs from 'dayjs'
 import { addResponseHeaders, canDownload, getConfigOption, log } from './functions'
 import render from './render'
@@ -94,14 +103,15 @@ class Immich {
       respondToInvalidRequest(res, 404)
       return
     }
+    const link = sharedLinkRes.link
 
     // Make sure there are some photo/video assets for this link
-    const link = sharedLinkRes.link
+    /*
     if (!link.assets.length) {
       log('No assets for key ' + request.key)
       respondToInvalidRequest(res, 404)
       return
-    }
+    } */
 
     // Everything is ok - output the shared link data
 
@@ -145,6 +155,25 @@ class Immich {
         if (res.status === 200) {
           // Normal response - get the shared assets
           link = jsonBody as SharedLink
+
+          // For an album, we need to make a second request to Immich to populate
+          // the array of assets
+          if (link.type === AlbumType.album) {
+            const albumRes = await fetch(this.buildUrl(this.apiUrl() + '/albums/' + link?.album?.id, {
+              key,
+              password
+            }))
+            const album = await albumRes.json() as Album
+            if (!album?.id) {
+              log('Invalid album ID - ' + link?.album?.id)
+              return {
+                valid: false
+              }
+            }
+            // Replace the empty link.assets array with the array of assets from the album
+            link.assets = album.assets
+          }
+
           link.password = password
           if (link.expiresAt && dayjs(link.expiresAt) < dayjs()) {
             // This link has expired

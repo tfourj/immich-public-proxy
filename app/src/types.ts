@@ -9,6 +9,11 @@ export interface ExifInfo {
   description?: string;
 }
 
+export enum AlbumType {
+  album = 'ALBUM',
+  individual = 'INDIVIDUAL'
+}
+
 export interface Asset {
   id: string;
   key: string;
@@ -18,6 +23,11 @@ export interface Asset {
   type: AssetType;
   isTrashed: boolean;
   exifInfo?: ExifInfo;
+}
+
+export interface Album {
+  id: string;
+  assets: Asset[];
 }
 
 export interface SharedLink {
