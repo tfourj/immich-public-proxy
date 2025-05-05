@@ -122,7 +122,7 @@ class Render {
         downloadUrl,
         thumbnailUrl: baseUrl + immich.photoUrl(share.key, asset.id, ImageSize.thumbnail),
         video,
-        description: asset?.exifInfo?.description ?? ''
+        description: getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' ? asset.exifInfo.description : ''
       })
     }
     res.render('gallery', {
