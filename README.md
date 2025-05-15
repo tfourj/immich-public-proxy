@@ -211,6 +211,14 @@ I ran into this issue myself, and found [some helpful advice here](https://commu
 
 I use Linux/Android, so this project is tested with BrowserStack for Apple/Windows devices.
 
+### Can't reach Immich using `localhost:2283`
+
+This is a normal Docker thing, nothing to do with IPP.
+
+From inside a Docker container, you can't reach another container using `localhost`. You need to use a Docker network IP or your server's IP address.
+
+[Here's a guide on connecting Docker containers](https://dionarodrigues.dev/blog/docker-networking-how-to-connect-different-containers).
+
 ## Feature requests
 
 You can [add feature requests here](https://github.com/alangrainger/immich-public-proxy/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop),
