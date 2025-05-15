@@ -204,6 +204,8 @@ See [Custom responses](docs/custom-responses.md) for more details.
 
 ## Troubleshooting
 
+### Video playback
+
 If you're using Cloudflare and having issues with videos not playing well, make sure your `/share/video/` paths are set to bypass cache.
 I ran into this issue myself, and found [some helpful advice here](https://community.cloudflare.com/t/mp4-wont-load-in-safari-using-cloudflare/10587/48).
 
