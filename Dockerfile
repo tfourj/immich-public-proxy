@@ -1,4 +1,4 @@
-FROM node:lts-alpine as builder
+FROM node:lts-alpine AS builder
 
 USER node
 WORKDIR /app
@@ -7,14 +7,15 @@ COPY -chown=node:node app/ ./
 RUN npm ci \
     && npx tsc 
 
-FROM node:lts-alpine as runner
+FROM node:lts-alpine AS runner
+
+RUN apk --no-cache add curl 
 
 USER node
 WORKDIR /app
 COPY --chown=node:node app/ ./
 
-RUN apk --no-cache add curl \
-    && npm ci --omit=dev
+RUN npm ci --omit=dev
 
 ARG PACKAGE_VERSION
 ENV APP_VERSION=${PACKAGE_VERSION}
