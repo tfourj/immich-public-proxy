@@ -64,7 +64,7 @@ class LGallery {
       this.items
         .slice(this.index, this.index + PER_PAGE)
         .forEach(item => {
-          this.element.insertAdjacentHTML('beforeend', item)
+          this.element.insertAdjacentHTML('beforeend', item + '\n')
         })
       this.index += PER_PAGE
       this.lightGallery.refresh()
