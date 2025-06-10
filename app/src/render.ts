@@ -132,7 +132,10 @@ class Render {
         '</a>'
       ].join('')
 
-      items.push(itemHtml)
+      items.push({
+        html: itemHtml,
+        thumbnailUrl
+      })
     }
     res.render('gallery', {
       items,

@@ -32,7 +32,7 @@
     <%
     // Load the first 50 thumbnails, then load more as the user scrolls. See web.js
     items.slice(0, 50).forEach(item => {
-    %><%- item %>
+    %><%- item.html %>
     <% }) %>
 </div>
 <script src="/share/static/web.js"></script>
