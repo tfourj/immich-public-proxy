@@ -18,6 +18,7 @@ export interface Asset {
   id: string;
   key: string;
   originalFileName?: string;
+  originalMimeType: string;
   password?: string;
   fileCreatedAt?: string; // May not exist - see https://github.com/alangrainger/immich-public-proxy/issues/61
   type: AssetType;

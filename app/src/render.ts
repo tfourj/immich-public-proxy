@@ -119,7 +119,11 @@ class Render {
       }
 
       const thumbnailUrl = baseUrl + immich.photoUrl(share.key, asset.id, ImageSize.thumbnail)
-      const previewUrl = immich.photoUrl(share.key, asset.id, ImageSize.preview)
+
+      // For certain media types, use the original file rather than the preview
+      const originalSizeMimes = ['image/gif']
+
+      const previewUrl = immich.photoUrl(share.key, asset.id, originalSizeMimes.includes(asset.originalMimeType || '') ? ImageSize.original : ImageSize.preview)
       const description = getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' ? asset.exifInfo.description.replace(/'/g, '&apos;') : ''
 
       // Create the full HTML element source to pass to the gallery view
