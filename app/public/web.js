@@ -68,6 +68,9 @@ class LGallery {
         })
       this.index += PER_PAGE
       this.lightGallery.refresh()
+    } else {
+      // Remove the loading spinner once all items are loaded
+      document.getElementById('loading-spinner')?.remove()
     }
   }
 }

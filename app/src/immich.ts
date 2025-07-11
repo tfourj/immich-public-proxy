@@ -255,6 +255,18 @@ class Immich {
   }
 
   /**
+   * Return the correct preview size, depending on the image MIME type
+   */
+  getPreviewImageSize (asset: Asset) {
+    // For certain media types, use the original file rather than the preview
+    if (['image/gif'].includes(asset.originalMimeType || '')) {
+      return ImageSize.original
+    } else {
+      return ImageSize.preview
+    }
+  }
+
+  /**
    * Return the image data URL for a photo
    */
   photoUrl (key: string, id: string, size?: ImageSize) {
