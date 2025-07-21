@@ -31,6 +31,7 @@ Setup takes less than a minute, and you never need to touch it again as all of y
   - [IPP options](#immich-public-proxy-options)
   - [lightGallery](#lightgallery)
   - [Custom error pages](#customising-your-error-response-pages)
+  - [Serving from multiple domains](#serving-from-multiple-domains)
 - [Troubleshooting](#troubleshooting)
 - [Feature requests](#feature-requests)
 
@@ -208,7 +209,9 @@ See [Custom responses](docs/custom-responses.md) for more details.
 
 If you're serving the same IPP from multiple domains, instead of setting the public URL in your docker-compose file, you can set it dynamically via a HTTP header in the request from your reverse proxy to IPP.
 
-Set a custom `publicBaseUrl` header on each request with the value of your public base URL (example `https://your-proxy-url.com`).
+1. Remove the `PUBLIC_BASE_URL` environment variable from your docker-compose file.
+
+2. Set a custom `publicBaseUrl` header on each request with the value of your public base URL (example `https://your-proxy-url.com`).
 
 ## Troubleshooting
 
