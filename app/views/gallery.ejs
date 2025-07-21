@@ -7,7 +7,7 @@
     // Add an og-image using the first image's thumbnail
     if (items?.[0]?.thumbnailUrl) {
     %>
-        <meta property="og:image" content="<%- items[0].thumbnailUrl %>"/>
+        <meta property="og:image" content="<%- publicBaseUrl %><%- items[0].thumbnailUrl %>"/>
     <% } %>
     <link rel="icon" href="/share/static/favicon.ico" type="image/x-icon">
     <link type="text/css" rel="stylesheet" href="/share/static/style.css"/>

@@ -89,12 +89,9 @@ class Render {
   async gallery (res: Response, share: SharedLink, openItem?: number) {
     const items = []
 
-    // Originally I had the base URL as a config option in .env.
-    // The issue with that is people who may be wanting to route in via multiple
-    // public URLs. So instead we generate the base URL from the incoming request data.
-    // This may cause issues with some reverse proxies, in which case just make sure
-    // that you're sending the correct `host` header to IPP.
-    const baseUrl = res.req.protocol + '://' + res.req.headers.host
+    // publicBaseUrl is used for the og:image, which requires a fully qualified URL.
+    // You can specify this in your config.json file, or send it dynamically as a `host` header
+    const publicBaseUrl = getConfigOption('ipp.publicBaseUrl', null) || res.req.headers.publicBaseUrl || ''
 
     for (const asset of share.assets) {
       let video, downloadUrl
@@ -118,7 +115,7 @@ class Render {
         downloadUrl = immich.photoUrl(share.key, asset.id, ImageSize.original)
       }
 
-      const thumbnailUrl = baseUrl + immich.photoUrl(share.key, asset.id, ImageSize.thumbnail)
+      const thumbnailUrl = immich.photoUrl(share.key, asset.id, ImageSize.thumbnail)
       const previewUrl = immich.photoUrl(share.key, asset.id, immich.getPreviewImageSize(asset))
       const description = getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' ? asset.exifInfo.description.replace(/'/g, '&apos;') : ''
 
@@ -141,6 +138,7 @@ class Render {
       items,
       openItem,
       title: this.title(share),
+      publicBaseUrl,
       path: '/share/' + share.key,
       showDownload: canDownload(share),
       showTitle: getConfigOption('ipp.showGalleryTitle', false),

@@ -1,5 +1,6 @@
 {
   "ipp": {
+    "publicBaseUrl": "https://your-proxy-url.com",
     "responseHeaders": {
       "Cache-Control": "public, max-age=2592000",
       "Access-Control-Allow-Origin":  "*"
