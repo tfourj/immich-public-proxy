@@ -91,7 +91,7 @@ class Render {
 
     // publicBaseUrl is used for the og:image, which requires a fully qualified URL.
     // You can specify this in your config.json file, or send it dynamically as a `host` header
-    const publicBaseUrl = getConfigOption('ipp.publicBaseUrl', null) || res.req.headers.publicBaseUrl || ''
+    const publicBaseUrl = process.env.PUBLIC_BASE_URL || res.req.headers.publicBaseUrl || (res.req.protocol + '://' + res.req.headers.host)
 
     for (const asset of share.assets) {
       let video, downloadUrl

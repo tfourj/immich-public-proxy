@@ -68,7 +68,9 @@ Here is an example setup for [securing Immich behind mTLS](./docs/securing-immic
 
 2. Update the value for `IMMICH_URL` in your docker-compose file to point to your local URL for Immich. This should not be a public URL.
 
-3. Start the docker container. You can test that it is working by visiting `https://your-proxy-url.com/share/healthcheck`. 
+3. Update the value for `PUBLIC_BASE_URL` to be the public base URL for IPP, without a trailing slash (example `https://your-proxy-url.com`). 
+
+4. Start the docker container. You can test that it is working by visiting `https://your-proxy-url.com/share/healthcheck`. 
 Check the container console output for any error messages.
 
 ```bash
@@ -142,7 +144,6 @@ There are some additional configuration options you can change, for example the 
 
 | Option                  | Type     | Description                                                                                                                                                                                                                                                                 |
 |-------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `publicBaseUrl`         | `string` | Set this to be the base public URL of your IPP instance. This is used for generating the `og:image` URL. If you want to use multiple public URLs, you can instead set this value to `null` and send a `publicBaseUrl` header on the request from your reverse proxy to IPP. |
 | `responseHeaders`       | `object` | Change the headers sent with your web responses. By default there is `cache-control` and CORS added.                                                                                                                                                                        |
 | `singleImageGallery`    | `bool`   | By default a link to a single image will directly open the image file. Set to `true` if you want to show a gallery page instead for a single item.                                                                                                                          |
 | `downloadOriginalPhoto` | `bool`   | Set to `false` if you only want people to be able to download the 'preview' quality photo, rather than your original photo.                                                                                                                                                 |
@@ -202,6 +203,12 @@ You can customise the responses that IPP sends for invalid requests. For example
 - And so on...
 
 See [Custom responses](docs/custom-responses.md) for more details.
+
+### Serving from multiple domains
+
+If you're serving the same IPP from multiple domains, instead of setting the public URL in your docker-compose file, you can set it dynamically via a HTTP header in the request from your reverse proxy to IPP.
+
+Set a custom `publicBaseUrl` header on each request with the value of your public base URL (example `https://your-proxy-url.com`).
 
 ## Troubleshooting
 
