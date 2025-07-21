@@ -90,7 +90,7 @@ class Render {
     const items = []
 
     // publicBaseUrl is used for the og:image, which requires a fully qualified URL.
-    // You can specify this in your config.json file, or send it dynamically as a `host` header
+    // You can specify this in your docker-compose file, or send it dynamically as a `publicBaseUrl` header
     const publicBaseUrl = process.env.PUBLIC_BASE_URL || res.req.headers.publicBaseUrl || (res.req.protocol + '://' + res.req.headers.host)
 
     for (const asset of share.assets) {
