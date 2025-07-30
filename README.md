@@ -142,20 +142,7 @@ There are some additional configuration options you can change, for example the 
 
 3. Restart your container and your custom configuration should be active.
 
-Alternatively, rather than a `config.json` file, you can pass the configuration inline from your `docker-compose.yml` file like this:
-
-```yaml
-  environment:
-    PUBLIC_BASE_URL: https://your-proxy-url.com
-    IMMICH_URL: http://your-internal-immich-server:2283
-    CONFIG: |
-      {
-        "ipp": {
-          "singleImageGallery": false,
-          ...
-        }
-      }
-```
+Alternatively, you can [pass the configuration inline](docs/inline-configuration.md) from your `docker-compose.yml` file.
 
 ### Immich Public Proxy options
 
