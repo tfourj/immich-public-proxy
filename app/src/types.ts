@@ -5,6 +5,11 @@ export enum AssetType {
   video = 'VIDEO'
 }
 
+export enum KeyType {
+  key = 'key',
+  slug = 'slug'
+}
+
 export interface ExifInfo {
   description?: string;
 }
@@ -62,6 +67,7 @@ export enum ImageSize {
 export interface IncomingShareRequest {
   req: Request;
   key: string;
+  keyType?: KeyType;
   password?: string;
   mode?: string;
   size?: ImageSize;

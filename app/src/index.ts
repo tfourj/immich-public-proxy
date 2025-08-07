@@ -6,9 +6,9 @@ import immich from './immich'
 import crypto from 'crypto'
 import render from './render'
 import dayjs from 'dayjs'
-import { Request, Response, NextFunction } from 'express-serve-static-core'
-import { AssetType, ImageSize } from './types'
-import { log, toString, addResponseHeaders, getConfigOption } from './functions'
+import { NextFunction, Request, Response } from 'express-serve-static-core'
+import { AssetType, ImageSize, KeyType } from './types'
+import { addResponseHeaders, getConfigOption, log, toString } from './functions'
 import { decrypt, encrypt } from './encrypt'
 import { respondToInvalidRequest } from './invalidRequestHandler'
 
@@ -74,10 +74,11 @@ app.get(/^(|\/share)\/healthcheck$/, async (_req, res) => {
 /*
  * [ROUTE] This is the main URL that someone would visit if they are opening a shared link
  */
-app.get('/share/:key/:mode(download)?', decodeCookie, async (req, res) => {
+app.get('/:shareType(share|s)/:key/:mode(download)?', decodeCookie, async (req, res) => {
   await immich.handleShareRequest({
     req,
     key: req.params.key,
+    keyType: req.params.shareType === 's' ? KeyType.slug : KeyType.key,
     mode: req.params.mode,
     password: req.password
   }, res)

@@ -5,6 +5,7 @@ import {
   AssetType,
   ImageSize,
   IncomingShareRequest,
+  KeyType,
   SharedLink,
   SharedLinkResult
 } from './types'
@@ -58,13 +59,13 @@ class Immich {
 
     // Check that the key is a valid format
     if (!immich.isKey(request.key)) {
-      log('Invalid share key ' + request.key)
+      log('Wrong key format ' + request.key)
       respondToInvalidRequest(res, 404)
       return
     }
 
     // Get information about the shared link via Immich API
-    const sharedLinkRes = await immich.getShareByKey(request.key, request.password)
+    const sharedLinkRes = await immich.getShareByKey(request.key, request.password, request.keyType || KeyType.key)
     if (!sharedLinkRes.valid) {
       // This isn't a valid request - check the console for more information
       respondToInvalidRequest(res, 404)
@@ -142,10 +143,10 @@ class Immich {
    * Query Immich for the SharedLink metadata for a given key.
    * The key is what is returned in the URL when you create a share in Immich.
    */
-  async getShareByKey (key: string, password?: string): Promise<SharedLinkResult> {
+  async getShareByKey (key: string, password?: string, keyType: KeyType = KeyType.key): Promise<SharedLinkResult> {
     let link
     const url = this.buildUrl(this.apiUrl() + '/shared-links/me', {
-      key,
+      [keyType]: key,
       password
     })
     const res = await fetch(url)
