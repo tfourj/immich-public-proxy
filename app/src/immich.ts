@@ -156,12 +156,13 @@ class Immich {
         if (res.status === 200) {
           // Normal response - get the shared assets
           link = jsonBody as SharedLink
+          link.keyType = keyType
 
           // For an album, we need to make a second request to Immich to populate
           // the array of assets
           if (link.type === AlbumType.album) {
             const albumRes = await fetch(this.buildUrl(this.apiUrl() + '/albums/' + link?.album?.id, {
-              key,
+              [keyType]: key,
               password
             }))
             const album = await albumRes.json() as Album
@@ -309,6 +310,10 @@ class Immich {
     } else {
       return size as ImageSize
     }
+  }
+
+  getKeyTypeFromShare (shareType: string) {
+    return shareType === 's' ? KeyType.slug : KeyType.key
   }
 }
 

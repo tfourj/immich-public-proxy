@@ -38,6 +38,7 @@ export interface Album {
 
 export interface SharedLink {
   key: string;
+  keyType: KeyType;
   type: string;
   description?: string;
   assets: Asset[];

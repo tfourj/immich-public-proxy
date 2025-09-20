@@ -16,6 +16,18 @@ class Render {
    * Stream data from Immich back to the client
    */
   async assetBuffer (req: IncomingShareRequest, res: Response, asset: Asset, size?: ImageSize | string) {
+    // Get meta info regarding the asset
+    const metaRes = await fetch(immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id), {
+      key: asset.key
+    }))
+    const meta = await metaRes.json()
+
+    // Make sure we should display this asset
+    if (meta.isTrashed || meta.visibility === 'locked') {
+      respondToInvalidRequest(res, 404)
+      return
+    }
+
     // Prepare the request
     const headerList = ['content-type', 'content-length', 'last-modified', 'etag']
     size = immich.validateImageSize(size)
