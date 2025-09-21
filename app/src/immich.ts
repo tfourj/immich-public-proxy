@@ -186,6 +186,7 @@ class Immich {
             // Populate the shared assets with the public key/password
             link.assets.forEach(asset => {
               asset.key = key
+              asset.keyType = keyType
               asset.password = password
             })
             // Sort album if there is a sort order specified
@@ -234,7 +235,7 @@ class Immich {
    */
   async getVideoContentType (asset: Asset) {
     const data = await this.request(this.buildUrl('/assets/' + encodeURIComponent(asset.id) + '/video/playback', {
-      key: asset.key,
+      [asset.keyType]: asset.key,
       password: asset.password
     }))
     return data.headers.get('Content-Type')

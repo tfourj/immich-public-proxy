@@ -22,6 +22,7 @@ export enum AlbumType {
 export interface Asset {
   id: string;
   key: string;
+  keyType: KeyType;
   originalFileName?: string;
   originalMimeType: string;
   password?: string;
