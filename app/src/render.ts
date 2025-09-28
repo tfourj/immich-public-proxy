@@ -108,12 +108,19 @@ class Render {
     for (const asset of share.assets) {
       let video, downloadUrl
       if (asset.type === AssetType.video) {
-        // Populate the data-video property
+        let videoType = await immich.getVideoContentType(asset)
+
+        // Override QuickTime MOV for HTML5-friendly playback
+        if (videoType === 'video/quicktime') {
+          videoType = 'video/mp4' // Force HTML5-compatible type
+        }
+
+        // Populate the data-video property for LightGallery
         video = JSON.stringify({
           source: [
             {
               src: immich.videoUrl(share.key, asset.id),
-              type: await immich.getVideoContentType(asset)
+              type: videoType
             }
           ],
           attributes: {
