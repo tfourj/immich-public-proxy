@@ -14,6 +14,7 @@
     "showMetadata": {
       "description": false
     },
+    "forceUnsupportedVideosToMP4": true,
     "customInvalidResponse": false
   },
   "lightGallery": {

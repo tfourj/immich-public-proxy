@@ -110,8 +110,9 @@ class Render {
       if (asset.type === AssetType.video) {
         let videoType = await immich.getVideoContentType(asset)
 
-        // Override QuickTime MOV for HTML5-friendly playback
-        if (videoType === 'video/quicktime') {
+        // Optionally override QuickTime MOV for HTML5-friendly playback
+        const forceUnsupportedVideosToMP4 = getConfigOption('ipp.forceUnsupportedVideosToMP4', false)
+        if (forceUnsupportedVideosToMP4 && videoType === 'video/quicktime') {
           videoType = 'video/mp4' // Force HTML5-compatible type
         }
 
