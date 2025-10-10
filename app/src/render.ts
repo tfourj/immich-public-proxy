@@ -4,6 +4,7 @@ import { Asset, AssetType, ImageSize, IncomingShareRequest, SharedLink } from '.
 import { canDownload, getConfigOption } from './functions'
 import archiver from 'archiver'
 import { respondToInvalidRequest } from './invalidRequestHandler'
+import { sanitize } from './includes/sanitize'
 
 class Render {
   lgConfig
@@ -178,8 +179,9 @@ class Render {
    */
   async downloadAll (res: Response, share: SharedLink) {
     res.setHeader('Content-Type', 'application/zip')
-    const title = this.title(share).replace(/[^\w .-]/g, '') + '.zip'
-    res.setHeader('Content-Disposition', `attachment; filename="${title}"`)
+    let filename = (sanitize(this.title(share)) || 'photos') + '.zip'
+    filename = encodeURI(filename)
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${filename}`)
     const archive = archiver('zip', { zlib: { level: 6 } })
     archive.pipe(res)
     for (const asset of share.assets) {
