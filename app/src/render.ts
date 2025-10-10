@@ -171,7 +171,7 @@ class Render {
    */
   async downloadAll (res: Response, share: SharedLink) {
     res.setHeader('Content-Type', 'application/zip')
-    const title = sanitize(this.title(share)) + '.zip'
+    const title = (sanitize(this.title(share)) || 'photos') + '.zip'
     res.setHeader('Content-Disposition', `attachment; filename="${title}"`)
     const archive = archiver('zip', { zlib: { level: 6 } })
     archive.pipe(res)
