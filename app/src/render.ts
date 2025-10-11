@@ -25,7 +25,7 @@ class Render {
 
     // Make sure we should display this asset
     if (meta.isTrashed || meta.visibility === 'locked') {
-      respondToInvalidRequest(res, 404)
+      respondToInvalidRequest(res, 404, `Asset ${asset.id} is trashed or locked`)
       return
     }
 
@@ -88,7 +88,7 @@ class Render {
       )
       res.end()
     } else {
-      respondToInvalidRequest(res, 404)
+      respondToInvalidRequest(res, 404, 'Non-200 response from Immich for asset ' + asset.id)
     }
   }
 

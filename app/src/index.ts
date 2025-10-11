@@ -8,7 +8,7 @@ import render from './render'
 import dayjs from 'dayjs'
 import { NextFunction, Request, Response } from 'express-serve-static-core'
 import { Asset, AssetType, ImageSize, KeyType } from './types'
-import { addResponseHeaders, getConfigOption, log, toString } from './functions'
+import { addResponseHeaders, getConfigOption, toString } from './functions'
 import { decrypt, encrypt } from './encrypt'
 import { respondToInvalidRequest } from './invalidRequestHandler'
 
@@ -79,7 +79,7 @@ app.get('/:shareType(share|s)/:key/:mode(download)?', decodeCookie, async (req, 
 
   if (keyType === KeyType.slug && !getConfigOption('ipp.allowSlugLinks', true)) {
     // Slug type links are not allowed
-    respondToInvalidRequest(res, 404)
+    respondToInvalidRequest(res, 404, 'Slug links are disabled in config.json')
   } else {
     await immich.handleShareRequest({
       req,
@@ -115,15 +115,13 @@ app.get('/share/:type(photo|video)/:key/:id/:size?', decodeCookie, async (req, r
 
   // Check for valid key and ID
   if (!immich.isKey(req.params.key) || !immich.isId(req.params.id)) {
-    log('Invalid key or ID for ' + req.path)
-    respondToInvalidRequest(res, 404)
+    respondToInvalidRequest(res, 404, 'Invalid key or ID for ' + req.path)
     return
   }
 
   // Validate the size parameter
   if (req.params.size && !Object.values(ImageSize).includes(req.params.size as ImageSize)) {
-    log('Invalid size parameter ' + req.path)
-    respondToInvalidRequest(res, 404)
+    respondToInvalidRequest(res, 404, 'Invalid size parameter ' + req.path)
     return
   }
 
@@ -160,8 +158,7 @@ if (getConfigOption('ipp.showHomePage', true)) {
  * Send a 404 for all other routes
  */
 app.get('*', (req, res) => {
-  log('Invalid route ' + req.path)
-  respondToInvalidRequest(res, 404)
+  respondToInvalidRequest(res, 404, 'Invalid route ' + req.path)
 })
 
 // Send the correct process error code for any uncaught exceptions
