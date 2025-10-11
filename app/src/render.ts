@@ -88,7 +88,12 @@ class Render {
       )
       res.end()
     } else {
-      respondToInvalidRequest(res, 404, 'Non-200 response from Immich for asset ' + asset.id)
+      let immichMessage = ''
+      try {
+        const json = await data.json()
+        if (json.message) immichMessage = '\nResponse from Immich: ' + json.message
+      } catch (e) { }
+      respondToInvalidRequest(res, 404, 'Failed response from Immich for asset ' + asset.id + ' on this URL:\n' + url + immichMessage)
     }
   }
 
