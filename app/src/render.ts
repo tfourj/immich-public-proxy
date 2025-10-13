@@ -62,7 +62,7 @@ class Render {
 
     // Request data from Immich
     const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + subpath, {
-      key: asset.key,
+      [asset.keyType || 'key']: asset.key,
       size: sizeQueryParam,
       password: asset.password
     })
