@@ -59,8 +59,7 @@ class Immich {
 
     // Check that the key is a valid format
     if (!immich.isKey(request.key)) {
-      log('Wrong key format ' + request.key)
-      respondToInvalidRequest(res, 404)
+      respondToInvalidRequest(res, 404, 'Wrong key format ' + request.key)
       return
     }
 
@@ -68,7 +67,7 @@ class Immich {
     const sharedLinkRes = await immich.getShareByKey(request.key, request.password, request.keyType || KeyType.key)
     if (!sharedLinkRes.valid) {
       // This isn't a valid request - check the console for more information
-      respondToInvalidRequest(res, 404)
+      respondToInvalidRequest(res, 404, 'Invalid request')
       return
     }
 
@@ -100,8 +99,7 @@ class Immich {
     }
 
     if (!sharedLinkRes.link) {
-      log('Unknown error with key ' + request.key)
-      respondToInvalidRequest(res, 404)
+      respondToInvalidRequest(res, 404, 'Unknown error with key ' + request.key)
       return
     }
     const link = sharedLinkRes.link

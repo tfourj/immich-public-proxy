@@ -25,7 +25,7 @@ class Render {
 
     // Make sure we should display this asset
     if (meta.isTrashed || meta.visibility === 'locked') {
-      respondToInvalidRequest(res, 404)
+      respondToInvalidRequest(res, 404, `Asset ${asset.id} is trashed or locked`)
       return
     }
 
@@ -62,7 +62,7 @@ class Render {
 
     // Request data from Immich
     const url = immich.buildUrl(immich.apiUrl() + '/assets/' + encodeURIComponent(asset.id) + subpath, {
-      key: asset.key,
+      [asset.keyType || 'key']: asset.key,
       size: sizeQueryParam,
       password: asset.password
     })
@@ -88,7 +88,12 @@ class Render {
       )
       res.end()
     } else {
-      respondToInvalidRequest(res, 404)
+      let immichMessage = ''
+      try {
+        const json = await data.json()
+        if (json.message) immichMessage = '\nResponse from Immich: ' + json.message
+      } catch (e) { }
+      respondToInvalidRequest(res, 404, 'Failed response from Immich for asset ' + asset.id + ' on this URL:\n' + url + immichMessage)
     }
   }
 
