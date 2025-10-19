@@ -59,7 +59,7 @@ To view a shared album in Immich, you need access to the `/api/` path. If you're
 to make that path public. Any existing or future vulnerability has the potential to compromise your Immich instance.
 
 For me, the ideal setup is to have Immich secured privately behind mTLS or VPN, and only allow public access to Immich Public Proxy.
-Here is an example setup for [securing Immich behind mTLS](./docs/securing-immich-with-mtls.md) using Caddy.
+Here is an example setup for [securing Immich behind mTLS](./docs/securing-immich-with-mtls.md) using a reverse proxy such as Caddy or Traefik.
 
 ## Installation
 
