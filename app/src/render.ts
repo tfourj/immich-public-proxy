@@ -70,7 +70,7 @@ class Render {
 
     // Add the filename for downloaded assets
     if (size === ImageSize.original && asset.originalFileName && getConfigOption('ipp.downloadOriginalPhoto', true)) {
-      res.setHeader('Content-Disposition', `attachment; filename="${asset.originalFileName}"`)
+      res.setHeader('Content-Disposition', `attachment; filename="${this.getFilename(asset)}"`)
     }
 
     // Return the response to the client
@@ -111,9 +111,7 @@ class Render {
     // You can specify this in your docker-compose file, or send it dynamically as a `publicBaseUrl` header
     const publicBaseUrl = process.env.PUBLIC_BASE_URL || res.req.headers.publicBaseUrl || (res.req.protocol + '://' + res.req.headers.host)
 
-    const now = Date.now()
-    for (let i = 0; i < share.assets.length; i++) {
-      const asset = share.assets[i]
+    for (const asset of share.assets) {
       let video, downloadUrl
       if (asset.type === AssetType.video) {
         // Populate the data-video property
@@ -139,20 +137,12 @@ class Render {
       const previewUrl = immich.photoUrl(share.key, asset.id, immich.getPreviewImageSize(asset))
       const description = getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' ? asset.exifInfo.description.replace(/'/g, '&apos;') : ''
 
-      // Filename for the downloaded image
-      let filename = 'img_' + (now + i)
-      if (getConfigOption('ipp.downloadedFilename') === 1) {
-        filename = asset.originalFileName || filename
-      } else if (getConfigOption('ipp.downloadedFilename') === 2) {
-        filename = asset.id
-      }
-
       // Create the full HTML element source to pass to the gallery view
       const itemHtml = [
         video ? `<a data-video='${video}'` : `<a href="${previewUrl}"`,
         downloadUrl ? ` data-download-url="${downloadUrl}"` : '',
         description ? ` data-sub-html='<p>${description}</p>'` : '',
-        ` data-download="${filename}"><img alt="" src="${thumbnailUrl}"/>`,
+        ` data-download="${this.getFilename(asset)}"><img alt="" src="${thumbnailUrl}"/>`,
         video ? '<div class="play-icon"></div>' : '',
         '</a>'
       ].join('')
@@ -202,10 +192,27 @@ class Render {
         console.warn(`Failed to fetch asset: ${asset.id}`)
         continue
       }
-      archive.append(Buffer.from(await data.arrayBuffer()), { name: asset.originalFileName || asset.id })
+      archive.append(Buffer.from(await data.arrayBuffer()), { name: this.getFilename(asset) })
     }
     await archive.finalize()
     archive.on('end', () => res.end())
+  }
+
+  /**
+   * Generate a filename for the downloaded asset based on the configuration option chosen
+   */
+  getFilename (asset: Asset) {
+    switch (getConfigOption('ipp.downloadedFilename')) {
+      case 1:
+        // Immich's ID number for this asset
+        return asset.id
+      case 2:
+        // A sanitised version of the ID number
+        return 'img_' + asset.id.slice(0, 8)
+      default:
+        // By default, it will choose the asset's original filename
+        return asset.originalFileName || asset.id
+    }
   }
 }
 
