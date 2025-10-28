@@ -137,12 +137,20 @@ class Render {
       const previewUrl = immich.photoUrl(share.key, asset.id, immich.getPreviewImageSize(asset))
       const description = getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' ? asset.exifInfo.description.replace(/'/g, '&apos;') : ''
 
+      // Filename for the downloaded image
+      let filename = 'img_' + Date.now()
+      if (getConfigOption('ipp.downloadedFilename') === 1) {
+        filename = asset.originalFileName || filename
+      } else if (getConfigOption('ipp.downloadedFilename') === 2) {
+        filename = asset.id
+      }
+
       // Create the full HTML element source to pass to the gallery view
       const itemHtml = [
         video ? `<a data-video='${video}'` : `<a href="${previewUrl}"`,
         downloadUrl ? ` data-download-url="${downloadUrl}"` : '',
         description ? ` data-sub-html='<p>${description}</p>'` : '',
-        `><img alt="" src="${thumbnailUrl}"/>`,
+        ` data-download="${filename}"><img alt="" src="${thumbnailUrl}"/>`,
         video ? '<div class="play-icon"></div>' : '',
         '</a>'
       ].join('')
