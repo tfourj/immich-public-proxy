@@ -70,7 +70,7 @@ class Render {
 
     // Add the filename for downloaded assets
     if (size === ImageSize.original && asset.originalFileName && getConfigOption('ipp.downloadOriginalPhoto', true)) {
-      res.setHeader('Content-Disposition', `attachment; filename="${asset.originalFileName}"`)
+      res.setHeader('Content-Disposition', `attachment; filename="${this.getFilename(asset)}"`)
     }
 
     // Return the response to the client
@@ -150,7 +150,7 @@ class Render {
         video ? `<a data-video='${video}'` : `<a href="${previewUrl}"`,
         downloadUrl ? ` data-download-url="${downloadUrl}"` : '',
         description ? ` data-sub-html='<p>${description}</p>'` : '',
-        `><img alt="" src="${thumbnailUrl}"/>`,
+        ` data-download="${this.getFilename(asset)}"><img alt="" src="${thumbnailUrl}"/>`,
         video ? '<div class="play-icon"></div>' : '',
         '</a>'
       ].join('')
@@ -200,10 +200,27 @@ class Render {
         console.warn(`Failed to fetch asset: ${asset.id}`)
         continue
       }
-      archive.append(Buffer.from(await data.arrayBuffer()), { name: asset.originalFileName || asset.id })
+      archive.append(Buffer.from(await data.arrayBuffer()), { name: this.getFilename(asset) })
     }
     await archive.finalize()
     archive.on('end', () => res.end())
+  }
+
+  /**
+   * Generate a filename for the downloaded asset based on the configuration option chosen
+   */
+  getFilename (asset: Asset) {
+    switch (getConfigOption('ipp.downloadedFilename')) {
+      case 1:
+        // Immich's ID number for this asset
+        return asset.id
+      case 2:
+        // A sanitised version of the ID number
+        return 'img_' + asset.id.slice(0, 8)
+      default:
+        // By default, it will choose the asset's original filename
+        return asset.originalFileName || asset.id
+    }
   }
 }
 
