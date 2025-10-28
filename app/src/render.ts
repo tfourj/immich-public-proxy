@@ -111,7 +111,9 @@ class Render {
     // You can specify this in your docker-compose file, or send it dynamically as a `publicBaseUrl` header
     const publicBaseUrl = process.env.PUBLIC_BASE_URL || res.req.headers.publicBaseUrl || (res.req.protocol + '://' + res.req.headers.host)
 
-    for (const asset of share.assets) {
+    const now = Date.now()
+    for (let i = 0; i < share.assets.length; i++) {
+      const asset = share.assets[i]
       let video, downloadUrl
       if (asset.type === AssetType.video) {
         // Populate the data-video property
@@ -138,7 +140,7 @@ class Render {
       const description = getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' ? asset.exifInfo.description.replace(/'/g, '&apos;') : ''
 
       // Filename for the downloaded image
-      let filename = 'img_' + Date.now()
+      let filename = 'img_' + (now + i)
       if (getConfigOption('ipp.downloadedFilename') === 1) {
         filename = asset.originalFileName || filename
       } else if (getConfigOption('ipp.downloadedFilename') === 2) {
