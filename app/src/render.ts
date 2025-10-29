@@ -202,16 +202,17 @@ class Render {
    * Generate a filename for the downloaded asset based on the configuration option chosen
    */
   getFilename (asset: Asset) {
+    const extension = asset.originalFileName?.match(/(\.\w+)$/)?.[1] || ''
     switch (getConfigOption('ipp.downloadedFilename')) {
       case 1:
         // Immich's ID number for this asset
-        return asset.id
+        return asset.id + extension
       case 2:
         // A sanitised version of the ID number
-        return 'img_' + asset.id.slice(0, 8)
+        return 'img_' + asset.id.slice(0, 8) + extension
       default:
         // By default, it will choose the asset's original filename
-        return asset.originalFileName || asset.id
+        return asset.originalFileName || (asset.id + extension)
     }
   }
 }
