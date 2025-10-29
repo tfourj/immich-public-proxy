@@ -1,15 +1,15 @@
-FROM node:lts-alpine AS builder
+FROM node:lts-alpine3.20 AS builder
 
 USER node
 WORKDIR /app
 COPY --chown=node:node app/ ./
 
 RUN npm ci \
-    && npx tsc 
+    && npx tsc
 
-FROM node:lts-alpine AS runner
+FROM node:lts-alpine3.20 AS runner
 
-RUN apk --no-cache add curl 
+RUN apk --no-cache add curl
 
 USER node
 WORKDIR /app
