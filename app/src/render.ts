@@ -112,13 +112,13 @@ class Render {
     // Use .map to generate an array of promises, then await them all to load in parallel.
     const items = await Promise.all(share.assets.map(async (asset) => {
       let video, downloadUrl
-      if (asset.type === AssetType.video) { 
+      if (asset.type === AssetType.video) {
         // Populate the data-video property
         video = JSON.stringify({
           source: [
             {
               src: immich.videoUrl(share.key, asset.id),
-              type: await immich.getVideoContentType(asset) 
+              type: await immich.getVideoContentType(asset)
             }
           ],
           attributes: {
