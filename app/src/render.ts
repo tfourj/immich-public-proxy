@@ -105,13 +105,12 @@ class Render {
    * @param [openItem] - Immediately open a lightbox to the Nth item when the gallery loads
    */
   async gallery (res: Response, share: SharedLink, openItem?: number) {
-    const items = []
-
     // publicBaseUrl is used for the og:image, which requires a fully qualified URL.
     // You can specify this in your docker-compose file, or send it dynamically as a `publicBaseUrl` header
     const publicBaseUrl = process.env.PUBLIC_BASE_URL || res.req.headers.publicBaseUrl || (res.req.protocol + '://' + res.req.headers.host)
 
-    for (const asset of share.assets) {
+    // Use .map to generate an array of promises, then await them all to load in parallel.
+    const items = await Promise.all(share.assets.map(async (asset) => {
       let video, downloadUrl
       if (asset.type === AssetType.video) {
         // Populate the data-video property
@@ -147,11 +146,12 @@ class Render {
         '</a>'
       ].join('')
 
-      items.push({
+      return {
         html: itemHtml,
         thumbnailUrl
-      })
-    }
+      };
+    }));
+    
     res.render('gallery', {
       items,
       openItem,
