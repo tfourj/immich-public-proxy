@@ -148,10 +148,11 @@ class Render {
 
       return {
         html: itemHtml,
-        thumbnailUrl
-      };
-    }));
-    
+        thumbnailUrl,
+        previewUrl
+      }
+    }))
+
     res.render('gallery', {
       items,
       openItem,
