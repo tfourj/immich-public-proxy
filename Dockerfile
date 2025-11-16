@@ -2,12 +2,15 @@
 # an issue here: https://github.com/alangrainger/immich-public-proxy/actions/runs/18898568957/job/53940927581#step:8:212
 #
 # Later I need to remove the fixed version number and test the build again.
-FROM node:lts-alpine3.20 AS builder
+# Use BUILDPLATFORM to build natively, avoiding QEMU emulation issues
+# This compiles TypeScript on the build machine, then copies JS to target platform
+FROM --platform=$BUILDPLATFORM node:lts-alpine3.20 AS builder
 
 USER node
 WORKDIR /app
 COPY --chown=node:node app/ ./
 
+# Build TypeScript - this runs natively on BUILDPLATFORM, avoiding QEMU issues
 RUN npm ci \
     && npx tsc
 
